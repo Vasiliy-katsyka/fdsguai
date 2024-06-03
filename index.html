@@ -42,8 +42,8 @@
     }
 
     .coin {
-      width: 150px;
-      height: 150px;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
       cursor: pointer;
       margin: 0 auto; /* Center the coin horizontally */
@@ -263,7 +263,6 @@
     function clickCoin() {
       clickCount += clickMultiplier;
       updateClickCount();
-      saveBalance(); // Save balance after every click
       showClickText(clickMultiplier); // Show the click text
     }
 
@@ -314,10 +313,10 @@
 
     // Function for "Earn" button
     function earnClick() {
-      // Add 5k clicks
+      window.open("https://youtube.com/@kvikontent");
       clickCount += 5000;
       updateClickCount();
-      saveBalance(); // Save the new balance
+      // You can add a message here to acknowledge earning clicks
       alert("You earned 5,000 clicks! Thanks for subscribing!");
     }
 
@@ -339,115 +338,12 @@
       }, 100);
     }
 
-    let lastClickTime = 0; // For rate limiting
-    const clickInterval = 2; // Minimum time between clicks (in milliseconds)
-    
-    // Add event listener to the coin for mobile
-    const coin = document.querySelector('.coin');
-    coin.addEventListener('touchstart', handleTouchStart);
-    coin.addEventListener('touchend', handleTouchEnd);
-    
-    // Handle touch start event
-    function handleTouchStart(event) {
-      // Prevent default behavior (blue frame)
-      event.preventDefault();
-      const now = Date.now();
-    
-      // Rate limiting (allow only one click every clickInterval milliseconds)
-      if (now - lastClickTime < clickInterval) {
-        return; 
-      }
-      lastClickTime = now;
-    
-      // Simulate a click for the clickCount logic
-      clickCoin();
-    }
-    // Function to load the user's balance from the CSV file
-    async function loadBalance(userId) {
-      try {
-        const response = await fetch('user_balances.csv');
-        const csvData = await response.text();
-        const rows = csvData.split('\n');
-        for (const row of rows) {
-          const [id, balance] = row.split(',');
-          if (id === userId) {
-            return parseInt(balance);
-          }
-        }
-        return 0; // Balance not found
-      } catch (error) {
-        console.error('Error loading balance:', error);
-        return 0;
-      }
-    }
-
-    // Function to save the user's balance to the CSV file
-    async function saveUserBalance(userId, balance) {
-      try {
-        // Read the existing CSV data
-        const response = await fetch('user_balances.csv');
-        const csvData = await response.text();
-        const rows = csvData.split('\n');
-
-        // Find the user's row or create a new one
-        let userRow = null;
-        for (let i = 0; i < rows.length; i++) {
-          const [id, _balance] = rows[i].split(',');
-          if (id === userId) {
-            userRow = i;
-            break;
-          }
-        }
-
-        // Update or create the user's row
-        if (userRow !== null) {
-          rows[userRow] = `${userId},${balance}`;
-        } else {
-          rows.push(`${userId},${balance}`);
-        }
-
-        // Save the updated CSV data
-        const updatedCsv = rows.join('\n');
-        const blob = new Blob([updatedCsv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'user_balances.csv';
-        link.click();
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error('Error saving balance:', error);
-      }
-    }
-
-    // Function to initialize the game (load balance from CSV)
-    async function initializeGame() {
-      const userId = Telegram.WebApp.WebAppUser.id;
-      try {
-        const balance = await loadBalance(userId);
-        clickCount = balance;
-        updateClickCount();
-      } catch (error) {
-        console.error("Error loading balance:", error);
-      }
-    }
-
-    // Function to save the user's balance
-    async function saveBalance() {
-      const userId = Telegram.WebApp.WebAppUser.id;
-      try {
-        await saveUserBalance(userId, clickCount);
-      } catch (error) {
-        console.error("Error saving balance:", error);
-      }
-    }
-
     // Add event listener to the coin for mobile
     const coin = document.querySelector('.coin');
     coin.addEventListener('click', clickCoin);
 
     // Initialize the game
-    initializeGame();
+    updateClickCount();
   </script>
 </body>
 </html>
