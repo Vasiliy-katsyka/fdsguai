@@ -339,6 +339,29 @@
       }, 100);
     }
 
+    let lastClickTime = 0; // For rate limiting
+    const clickInterval = 2; // Minimum time between clicks (in milliseconds)
+    
+    // Add event listener to the coin for mobile
+    const coin = document.querySelector('.coin');
+    coin.addEventListener('touchstart', handleTouchStart);
+    coin.addEventListener('touchend', handleTouchEnd);
+    
+    // Handle touch start event
+    function handleTouchStart(event) {
+      // Prevent default behavior (blue frame)
+      event.preventDefault();
+      const now = Date.now();
+    
+      // Rate limiting (allow only one click every clickInterval milliseconds)
+      if (now - lastClickTime < clickInterval) {
+        return; 
+      }
+      lastClickTime = now;
+    
+      // Simulate a click for the clickCount logic
+      clickCoin();
+    }
     // Function to load the user's balance from the CSV file
     async function loadBalance(userId) {
       try {
