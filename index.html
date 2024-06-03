@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KVCoin</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      background: linear-gradient(to bottom, #800080, #000000); /* Purple to black gradient */
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative; /* To position the click text */
+      width: 90%; /* Adjust container width for mobile */
+      margin: 0 auto; /* Center the container horizontally */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center horizontally */
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        width: 70%;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        width: 50%;
+      }
+    }
+
+    .coin {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin: 0 auto; /* Center the coin horizontally */
+      background: linear-gradient(to bottom, #ffcc00, #ff8000); /* Yellow to Orange gradient */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
+      position: relative; /* To position the click text */
+    }
+
+    .counter {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: #800080;
+    }
+
+    .button {
+      background-color: #800080; /* Purple background */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
+      margin: 5px; /* Add some spacing between buttons */
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button:hover {
+      background-color: #4b0082; /* Darker purple on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 10;
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      color: #800080; /* Purple color for h2 */
+    }
+
+    .upgrade {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .upgrade-cost {
+      font-weight: bold;
+      color: #800080; /* Purple color for upgrade cost */
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #800080; /* Purple color for close button */
+    }
+
+    .close-button:hover {
+      color: red;
+    }
+
+    .upgrade-input {
+      width: 50px;
+      text-align: center;
+      /* Add accessibility label */
+      aria-label="Upgrade amount";
+    }
+
+    .clicks-per-tap {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #800080;
+    }
+
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      background: linear-gradient(to right, #0000ff, #ffffff); /* Blue-white gradient */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu-container {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .menu-button {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 5px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .menu-button svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+    .menu-button:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .click-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -100%); /* Adjust vertical position */
+      font-size: 24px;
+      font-weight: bold;
+      color: #800080; /* Purple color */
+      opacity: 1; /* Initially visible */
+      transition: transform 0.3s ease, opacity 0.5s ease; /* Smooth transitions */
+    }
+
+    .click-text.fly-up {
+      transform: translate(-50%, -150%); /* Fly up */
+      opacity: 0; /* Fade out */
+    }
+
+    /* Styles for mobile */
+    @media (max-width: 768px) {
+      .menu-container {
+        flex-direction: column; /* Stack buttons vertically */
+      }
+
+      .menu-button {
+        width: 100%; /* Make buttons full width */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <div class="title">KVCoin</div>
+
+  <div class="container">
+    <div class="counter">Clicks: <span id="clickCount">0</span></div>
+    <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
+    <div class="coin" onclick="clickCoin()"></div>
+    <button class="button" onclick="openPopup()">Boosts</button>
+    <div class="click-text" id="clickText"></div> 
+  </div>
+
+  <div class="menu-container">
+    <button class="menu-button" onclick="miningClick()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>
+      Mining
+    </button>
+    <button class="menu-button" onclick="earnClick()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
+      Earn
+    </button>
+    <button class="menu-button" onclick="aboutClick()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
+      About
+    </button>
+  </div>
+
+  <div class="popup" id="popup">
+    <button class="close-button" onclick="closePopup()">×</button>
+    <h2>Upgrades</h2>
+    <div class="upgrade">
+      <span>Click Multiplier +1</span>
+      <span class="upgrade-cost" id="upgradeCost1">Cost: 500 clicks</span>
+    </div>
+    <div class="upgrade">
+      <span>Click Multiplier +2</span>
+      <span class="upgrade-cost" id="upgradeCost2">Cost: 1500 clicks</span>
+    </div>
+    <div class="upgrade">
+      <span>Click Multiplier +5</span>
+      <span class="upgrade-cost" id="upgradeCost3">Cost: 5000 clicks</span>
+    </div>
+    <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount"> 
+    <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
+  </div>
+
+  <script>
+    let clickCount = 0;
+    let clickMultiplier = 1;
+    let upgradeCosts = [500, 1500, 5000]; // Increased initial costs
+    let upgradeLevel = [0, 0, 0]; // Array to track upgrade levels
+
+    // Update click count display
+    function updateClickCount() {
+      document.getElementById('clickCount').textContent = clickCount;
+      document.getElementById('clicksPerTap').textContent = clickMultiplier;
+    }
+
+    // Function to handle coin click
+    function clickCoin() {
+      clickCount += clickMultiplier;
+      updateClickCount();
+      showClickText(clickMultiplier); // Show the click text
+    }
+
+    // Function to open the popup
+    function openPopup() {
+      document.getElementById('popup').style.display = 'block';
+      updateUpgradeCosts(); // Update costs when popup opens
+    }
+
+    // Function to close the popup
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Function to handle click upgrade
+    function upgradeClick() {
+      let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
+      let upgradeIndex = 0; // Start with the first upgrade
+
+      // Loop through upgrades to find the cheapest affordable one
+      while (upgradeIndex < upgradeCosts.length) {
+        if (clickCount >= upgradeCosts[upgradeIndex] * upgradeAmount) {
+          // Buy the upgrade
+          clickCount -= upgradeCosts[upgradeIndex] * upgradeAmount;
+          clickMultiplier += (upgradeIndex + 1) * upgradeAmount; // Increase multiplier based on level
+          upgradeLevel[upgradeIndex] += upgradeAmount; // Increase upgrade level
+          updateClickCount();
+          updateUpgradeCosts(); // Update costs after upgrade
+          break; // Exit the loop after buying an upgrade
+        }
+        upgradeIndex++;
+      }
+    }
+
+    // Function to update upgrade costs
+    function updateUpgradeCosts() {
+      for (let i = 0; i < upgradeCosts.length; i++) {
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200); // Increased cost increase rate
+        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + upgradeCosts[i] + ' clicks';
+      }
+    }
+
+    // Function for "Mining" button
+    function miningClick() {
+      // Placeholder for future mining logic
+      alert("Mining feature is under development!");
+    }
+
+    // Function for "Earn" button
+    function earnClick() {
+      // Add 5k clicks
+      clickCount += 5000;
+      updateClickCount();
+      // You can add a message here to acknowledge earning clicks
+      alert("You earned 5,000 clicks! Thanks for subscribing!");
+    }
+
+    // Function for "About" button
+    function aboutClick() {
+      // Display information about the creator
+      alert("KVCoin created by Vasiliy Katsyka");
+    }
+
+    // Function to show click text above the coin
+    function showClickText(clicks) {
+      let clickText = document.getElementById('clickText');
+      clickText.textContent = `+${clicks}`;
+      clickText.classList.remove('fly-up'); // Reset the class
+
+      // Add a small delay before applying the fly-up class
+      setTimeout(() => {
+        clickText.classList.add('fly-up');
+      }, 100);
+    }
+
+    // Initialize the game
+    updateClickCount();
+  </script>
+</body>
+</html>
