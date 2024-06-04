@@ -12,11 +12,11 @@
       height: 100vh;
       margin: 0;
       background-color: #f0f0f0;
-      background: linear-gradient(to bottom, #800080, #000000); /* Purple to black gradient */
+      background: #000000 url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;/*linear-gradient(to bottom, #800080, #000000); Purple to black gradient */
     }
 
     .container {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
+      background: #ffffff url(https://img.freepik.com/premium-vector/abstract-blur-soft-gradient-pastel-dreamy-background_95561-354.jpg?size=626&ext=jpg) center center/cover no-repeat;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -51,12 +51,17 @@
       background: linear-gradient(to bottom, #ffcc00, #ff8000); /* Yellow to Orange gradient */
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
       position: relative; /* To position the click text */
+      margin-bottom: 10px;
     }
 
     .counter {
       font-size: 30px;
       margin-bottom: 10px;
-      color: #800080;
+      background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex; /* To allow aligning the counter and image */
+  	  align-items: center; /* Vertical alignment */
     }
 
     .button {
@@ -82,6 +87,20 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
     }
 
+    .row-info {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
+      height: 60px;
+      width: 60%;
+      color: #000;
+      align-items: center;
+      margin-top: 20px;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
+      margin: 10px; /* Add some spacing between buttons */
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
     .popup {
       position: fixed;
       top: 50%;
@@ -202,7 +221,9 @@
       opacity: 0; /* Fade out */
     }
 
-
+    .counter img {
+      margin-left: 5px;
+    }
   </style>
 </head>
 <body>
@@ -212,7 +233,11 @@
   <div class="title">KVCoin</div>
 
   <div class="container">
-    <div class="counter">Clicks: <span id="clickCount">0</span></div>
+    
+    <div class="counter">
+  	   <span id="clickCount">0</span><p>   </p>
+  	   <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/coin3.png?raw=true" alt="Coin Texture" width="35" height="35"> 
+    </div>
     <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
     <div class="coin"></div>
     <button class="menu-button" onclick="openPopup()">
