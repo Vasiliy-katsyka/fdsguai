@@ -106,7 +106,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #fff;
+      background: #ffffff url(https://img.freepik.com/premium-vector/abstract-blur-soft-gradient-pastel-dreamy-background_95561-354.jpg?size=626&ext=jpg) center center/cover no-repeat;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -185,6 +185,19 @@
       margin: 5px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
+    
+    .earn-button {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 5px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
     .menu-button svg {
       width: 24px;
@@ -226,7 +239,7 @@
     }
   </style>
 </head>
-<body>
+  <body>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -240,17 +253,14 @@
     </div>
     <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
     <div class="coin"></div>
-    <button class="menu-button" onclick="openPopup()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
-    Boosts</button>
+    
     <div class="click-text" id="clickText"></div> 
   </div>
 
   <div class="menu-container">
-    <button class="menu-button" onclick="miningClick()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>
-      Mining
-    </button>
+    <button class="menu-button" onclick="openPopup()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
+    Boosts</button>
     <button class="menu-button" onclick="earnClick()">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
       Earn
@@ -270,6 +280,14 @@
     </div>
     <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount"> 
     <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
+  </div>
+
+  <div class="popup" id="earnPopup">
+    <button class="close-button" onclick="closeEarnPopup()">×</button>
+    <h2>Earn Clicks</h2>
+    <button class="earn-button" onclick="openYouTube()">Subscribe YouTube | +5k</button>
+    <button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button>
+    <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
   </div>
 
   <script>
@@ -336,19 +354,49 @@
       alert("Mining feature is under development!");
     }
 
-    // Function for "Earn" button
+    // Function to open the earn popup
     function earnClick() {
+      document.getElementById('earnPopup').style.display = 'block';
+    }
+
+    // Function to close the earn popup
+    function closeEarnPopup() {
+      document.getElementById('earnPopup').style.display = 'none';
+    }
+
+    // Function to open the YouTube channel
+    function openYouTube() {
       window.open("https://youtube.com/@kvikontent");
-      clickCount += 5000;
+      closeEarnPopup(); // Close the popup after opening the link
+    }
+
+    // Function to subscribe to the Telegram channel
+    function subscribeTelegram() {
+      window.open("https://t.me/freemusic2023");
+      clickCount += 1000; // Add 1k clicks
       updateClickCount();
-      // You can add a message here to acknowledge earning clicks
-      alert("You earned 5,000 clicks! Thanks for subscribing!");
+      alert("You earned 1,000 clicks! Thanks for subscribing!");
+      closeEarnPopup(); // Close the popup after subscribing
+    }
+
+    // Function to check Telegram Premium status
+    function checkTelegramPremium() {
+      Telegram.WebApp.ready().then(() => {
+        if (Telegram.WebApp.is_premium) {
+          clickCount += 10000; // Add 10k clicks
+          updateClickCount();
+          alert("You earned 10,000 clicks! Thanks for being a premium member!");
+          closeEarnPopup(); // Close the popup after checking
+        } else {
+          alert("Firstly buy premium.");
+        }
+      });
     }
 
     // Function for "About" button
     function aboutClick() {
       // Display information about the creator
-      alert("KVCoin created by Vasiliy Katsyka");
+      window.open("https://t.me/kvcoinAnnouncements");
     }
 
     // Function to show click text above the coin
