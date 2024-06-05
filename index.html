@@ -163,10 +163,10 @@
     }
 
     .title {
-      font-size: 48px;
+      font-size: 28px;
       font-weight: bold;
-      margin-bottom: 10px;
-      margin-top: 10px;
+      margin-bottom: 20px;
+      margin-top: 20px;
       text-align: center;
       background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
       -webkit-background-clip: text;
@@ -314,13 +314,32 @@
   <script>
     let clickCount = 0;
     let clickMultiplier = 1;
-    let upgradeCosts = [500, 1500, 5000]; // Increased initial costs
-    let upgradeLevel = [0, 0, 0]; // Array to track upgrade levels
+    let upgradeCosts = [500, 1500, 5000]; 
+    let upgradeLevel = [0, 0, 0];
+
+    // Load data from localStorage
+    if (localStorage.getItem('clickCount')) {
+      clickCount = parseInt(localStorage.getItem('clickCount'));
+    }
+    if (localStorage.getItem('clickMultiplier')) {
+      clickMultiplier = parseInt(localStorage.getItem('clickMultiplier'));
+    }
+    if (localStorage.getItem('upgradeLevel')) {
+      upgradeLevel = JSON.parse(localStorage.getItem('upgradeLevel'));
+    }
+    if (localStorage.getItem('upgradeCosts')) {
+      upgradeCosts = JSON.parse(localStorage.getItem('upgradeCosts'));
+    }
 
     // Update click count display
     function updateClickCount() {
       document.getElementById('clickCount').textContent = clickCount;
       document.getElementById('clicksPerTap').textContent = clickMultiplier;
+      // Save data to localStorage
+      localStorage.setItem('clickCount', clickCount);
+      localStorage.setItem('clickMultiplier', clickMultiplier);
+      localStorage.setItem('upgradeLevel', JSON.stringify(upgradeLevel));
+      localStorage.setItem('upgradeCosts', JSON.stringify(upgradeCosts));
     }
 
     // Function to handle coin click
@@ -346,16 +365,14 @@
       let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
       let upgradeIndex = 0; // Start with the first upgrade
 
-      // Loop through upgrades to find the cheapest affordable one
       while (upgradeIndex < upgradeCosts.length) {
         if (clickCount >= upgradeCosts[upgradeIndex] * upgradeAmount) {
-          // Buy the upgrade
           clickCount -= upgradeCosts[upgradeIndex] * upgradeAmount;
-          clickMultiplier += (upgradeIndex + 1) * upgradeAmount; // Increase multiplier based on level
-          upgradeLevel[upgradeIndex] += upgradeAmount; // Increase upgrade level
+          clickMultiplier += (upgradeIndex + 1) * upgradeAmount;
+          upgradeLevel[upgradeIndex] += upgradeAmount;
           updateClickCount();
-          updateUpgradeCosts(); // Update costs after upgrade
-          break; // Exit the loop after buying an upgrade
+          updateUpgradeCosts();
+          break;
         }
         upgradeIndex++;
       }
@@ -364,14 +381,13 @@
     // Function to update upgrade costs
     function updateUpgradeCosts() {
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200); // Increased cost increase rate
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200); 
         document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + upgradeCosts[i] + ' clicks';
       }
     }
 
     // Function for "Mining" button
     function miningClick() {
-      // Placeholder for future mining logic
       alert("Mining feature is under development!");
     }
 
@@ -388,45 +404,34 @@
     // Function to open the YouTube channel
     function openYouTube() {
       window.open("https://youtube.com/@kvikontent");
-      closeEarnPopup(); // Close the popup after opening the link
+      closeEarnPopup(); 
     }
 
     // Function to subscribe to the Telegram channel
     function subscribeTelegram() {
       window.open("https://t.me/freemusic2023");
-      clickCount += 1000; // Add 1k clicks
+      clickCount += 1000;
       updateClickCount();
       alert("You earned 1,000 clicks! Thanks for subscribing!");
-      closeEarnPopup(); // Close the popup after subscribing
+      closeEarnPopup(); 
     }
 
-    // Function to check Telegram Premium status
-    function checkTelegramPremium() {
-      Telegram.WebApp.ready().then(() => {
-        if (Telegram.WebApp.is_premium) {
-          clickCount += 10000; // Add 10k clicks
-          updateClickCount();
-          alert("You earned 10,000 clicks! Thanks for being a premium member!");
-          closeEarnPopup(); // Close the popup after checking
-        } else {
-          alert("Firstly buy premium.");
-        }
-      });
+    // Replace Telegram Premium with a 'Buy Premium' button
+    function buyPremium() {
+      alert("Not implemented yet");
     }
 
     // Function for "About" button
     function aboutClick() {
-      // Display information about the creator
-      window.open("https://t.me/kvcoinAnnouncements");
+      window.open("https://t.me/LobsterCoinAnnouncements");
     }
 
     // Function to show click text above the coin
     function showClickText(clicks) {
       let clickText = document.getElementById('clickText');
       clickText.textContent = `+${clicks}`;
-      clickText.classList.remove('fly-up'); // Reset the class
+      clickText.classList.remove('fly-up'); 
 
-      // Add a small delay before applying the fly-up class
       setTimeout(() => {
         clickText.classList.add('fly-up');
       }, 100);
