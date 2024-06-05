@@ -599,6 +599,9 @@
     // Function to open the YouTube channel
     function openYouTube() {
       window.open("https://youtube.com/@kvikontent");
+      clickCount += 5000;
+      updateClickCount();
+      alert("You earned 5,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
     }
 
@@ -682,13 +685,32 @@
       document.getElementById('profitPerHour').textContent = totalProfit;
     }
 
-    // Function to add "earn per hour" to click count every second
+    // Function to add "earn per hour" to click count
     function addEarnPerHour() {
       let profitPerHour = parseInt(document.getElementById('profitPerHour').textContent);
-      let earnEvery20Seconds = Math.round(profitPerHour / 1800);
-      clickCount += earnEvery20Seconds;
+      let earnEverySecond = Math.round(profitPerHour / 3600); // Earn clicks every second
+      clickCount += earnEverySecond;
       updateClickCount();
     }
+
+    // Calculate and update profit per hour on page load
+    updateProfitPerHour();
+
+    // Store the last time the page was updated in localStorage
+    let lastUpdateTime = new Date().getTime();
+    if (localStorage.getItem('lastUpdateTime')) {
+      lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime'));
+    }
+
+    // Calculate and add earned clicks on page load
+    let elapsedTime = new Date().getTime() - lastUpdateTime;
+    addEarnPerHour(elapsedTime); // Add earned clicks based on elapsed time
+
+    // Update click count every second
+    setInterval(addEarnPerHour, 1000);
+
+    // Update localStorage with the current time on page load
+    localStorage.setItem('lastUpdateTime', new Date().getTime());
 
     // Add event listener to the coin for mobile
     const coin = document.querySelector('.coin');
