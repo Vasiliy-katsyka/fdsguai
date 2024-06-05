@@ -12,7 +12,7 @@
       height: 100vh;
       margin: 0;
       background-color: #f0f0f0;
-      background: linear-gradient(0deg, #ffae00 63%, #000000 100%);/*linear-gradient(to bottom, #800080, #000000); Purple to black gradient */
+      background: linear-gradient(0deg, #ffae00 63%, #000000 100%);
     }
 
     .container {
@@ -21,12 +21,12 @@
       border-radius: 20px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       text-align: center;
-      position: relative; /* To position the click text */
-      width: 100%; /* Adjust container width for mobile */
+      position: relative;
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Center horizontally */
+      align-items: center;
     }
 
     @media (min-width: 768px) {
@@ -47,22 +47,22 @@
       border-radius: 50%;
       opacity: 100%;
       cursor: pointer;
-      margin: 0 auto; /* Center the coin horizontally */
+      margin: 0 auto;
       margin-top: 60px;
       background: #ffcc00 url(https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true) center center/cover no-repeat;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
-      position: relative; /* To position the click text */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: relative;
       margin-bottom: 10px;
     }
 
     .counter {
       font-size: 50px;
       margin-bottom: 10px;
-      background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      display: flex; /* To allow aligning the counter and image */
-  	  align-items: center; /* Vertical alignment */
+      display: flex;
+      align-items: center;
     }
 
     .button {
@@ -74,18 +74,18 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
-      margin: 10px; /* Add some spacing between buttons */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 10px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .button:hover {
-      background-color: #4b0082; /* Darker purple on hover */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+      background-color: #4b0082;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
-    
+
     .coin:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .row-info {
@@ -97,11 +97,11 @@
       margin-top: 20px;
       border: none;
       border-radius: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow */
-      margin: 10px; /* Add some spacing between buttons */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 10px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
-    
+
     .popup {
       position: fixed;
       top: 50%;
@@ -117,7 +117,7 @@
 
     .popup h2 {
       margin-top: 0;
-      background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -130,7 +130,7 @@
 
     .upgrade-cost {
       font-weight: bold;
-      color: #800080; /* Purple color for upgrade cost */
+      color: #800080;
     }
 
     .close-button {
@@ -140,7 +140,7 @@
       background-color: transparent;
       border: none;
       cursor: pointer;
-      color: #800080; /* Purple color for close button */
+      color: #800080;
     }
 
     .close-button:hover {
@@ -150,14 +150,13 @@
     .upgrade-input {
       width: 50px;
       text-align: center;
-      /* Add accessibility label */
       aria-label="Upgrade amount";
     }
 
     .clicks-per-tap {
       font-size: 20px;
       margin-bottom: 10px;
-      background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -167,22 +166,22 @@
       font-weight: bold;
       margin-bottom: 20px;
       margin-top: 20px;
-      text-align: center;
-      background: linear-gradient(to right, #FF00D8, #00FFF3); /* Blue-white gradient */
+      text-align: left; /* Align title to the left */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
+
     .menu-container {
       background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
       width: 100%;
       display: flex;
-      position: fixed; /* Position the menu at the bottom */
-      bottom: 0; /* Stick to the bottom of the viewport */
-      left: 0; /* Align to the left */
+      position: fixed;
+      bottom: 0;
+      left: 0;
       align-items: center;
-      padding: 10px; /* Add padding for visual space */
-      box-sizing: border-box; /* Include padding in the width */
+      padding: 10px;
+      box-sizing: border-box;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       border-top: 2px solid #ffae00;
@@ -202,10 +201,10 @@
     }
 
     /* Optional: Add some spacing between buttons */
-    .menu-button + .menu-button { /* Target adjacent buttons */
-      margin-left: 10px; 
+    .menu-button + .menu-button {
+      margin-left: 10px;
     }
-    
+
     .earn-button {
       display: flex;
       align-items: center;
@@ -224,13 +223,12 @@
       height: 24px;
       margin-right: 10px;
     }
-    
+
     .button svg {
       width: 24px;
       height: 24px;
       margin-right: 10px;
     }
-
 
     .menu-button:hover {
       background-color: #f0f0f0;
@@ -241,44 +239,136 @@
       position: absolute;
       top: 37%;
       left: 50%;
-      transform: translate(-50%, -50%); /* Adjust vertical position */
+      transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
-      color: #800080; /* Purple color */
-      opacity: 1; /* Initially visible */
-      transition: transform 0.3s ease, opacity 0.5s ease; /* Smooth transitions */
+      color: #800080;
+      opacity: 1;
+      transition: transform 0.3s ease, opacity 0.5s ease;
     }
 
     .click-text.fly-up {
-      transform: translate(-50%, -150%); /* Fly up */
-      opacity: 0; /* Fade out */
+      transform: translate(-50%, -150%);
+      opacity: 0;
     }
 
     .counter img {
       margin-right: 10px;
     }
+
+    .profit-per-hour {
+      font-size: 20px;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mining-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+    }
+
+    .mining-card h3 {
+      margin-top: 0;
+    }
+
+    .mining-card .card-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mining-card .card-info span {
+      font-weight: bold;
+    }
+
+    .mining-card .card-info .card-level {
+      font-size: 14px;
+      color: #800080; /* Purple color */
+    }
+
+    .mining-card .card-info .card-price {
+      color: #800080; /* Purple color */
+    }
+
+    .mining-card .buy-button {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
+      color: #000;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 5px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mining-card .buy-button:hover {
+      background-color: #4b0082;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .mining-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      margin-left: 10px;
+    }
+
+    .mining-button {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
+      color: #000;
+      padding: 10px 20px;
+      align-items: center;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 10px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mining-button:hover {
+      background-color: #4b0082;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
   </style>
 </head>
-  <body>
-
+<body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <div class="title">LobsterCoin</div>
+  <div class="title-container">
+    <div class="title">LobsterCoin</div>
+    <button class="menu-button" onclick="openMiningPopup()"><svg style="height: 24px; weight: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>Mining</button>
+  </div>
 
   <div class="container">
-    
     <div class="counter">
-  	   <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35"> <p>   </p>
-  	   <span id="clickCount">0</span>
+      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35">
+      <span id="clickCount">0</span>
     </div>
+    <div class="profit-per-hour">Profit per Hour: <span id="profitPerHour">0</span></div>
     <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
     <div class="coin"></div>
-    
-    <div class="click-text" id="clickText"></div> 
+    <div class="click-text" id="clickText"></div>
+
     <div class="menu-container">
       <button class="menu-button" onclick="openPopup()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
-      Boosts</button>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
+        Boosts
+      </button>
       <button class="menu-button" onclick="earnClick()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
         Earn
@@ -287,10 +377,8 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
         About
       </button>
+    </div>
   </div>
-  </div>
-
-  
 
   <div class="popup" id="popup">
     <button class="close-button" onclick="closePopup()">×</button>
@@ -299,7 +387,7 @@
       <span>Click Multiplier +1</span>
       <span class="upgrade-cost" id="upgradeCost1">Cost: 500 clicks</span>
     </div>
-    <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount"> 
+    <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount">
     <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
   </div>
 
@@ -311,11 +399,110 @@
     <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
   </div>
 
+  <div class="popup" id="miningPopup">
+    <button class="close-button" onclick="closeMiningPopup()">×</button>
+    <h2>Mining</h2>
+    <div class="mining-container">
+      <div class="mining-card">
+        <h3>SEO</h3>
+        <div class="card-info">
+          <span>Profit/hour: +30 clicks</span>
+          <span class="card-price" id="seoPrice">Price: 500 clicks</span>
+          <span class="card-level" id="seoLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('seo')">Buy</button>
+      </div>
+      <div class="mining-card">
+        <h3>Influencers</h3>
+        <div class="card-info">
+          <span>Profit/hour: +60 clicks</span>
+          <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
+          <span class="card-level" id="influencerLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('influencer')">Buy</button>
+      </div>
+    </div>
+    <div class="mining-container">
+      <div class="mining-card">
+        <h3>Miners</h3>
+        <div class="card-info">
+          <span>Profit/hour: +100 clicks</span>
+          <span class="card-price" id="minerPrice">Price: 800 clicks</span>
+          <span class="card-level" id="minerLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('miner')">Buy</button>
+      </div>
+      <div class="mining-card">
+        <h3>Stacking</h3>
+        <div class="card-info">
+          <span>Profit/hour: +300 clicks</span>
+          <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
+          <span class="card-level" id="stackingLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('stacking')">Buy</button>
+      </div>
+    </div>
+    <div class="mining-container">
+      <div class="mining-card">
+        <h3>BTC Pairs</h3>
+        <div class="card-info">
+          <span>Profit/hour: +300 clicks</span>
+          <span class="card-price" id="btcPrice">Price: 1000 clicks</span>
+          <span class="card-level" id="btcLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('btc')">Buy</button>
+      </div>
+      <div class="mining-card">
+        <h3>ETH Pairs</h3>
+        <div class="card-info">
+          <span>Profit/hour: +400 clicks</span>
+          <span class="card-price" id="ethPrice">Price: 1100 clicks</span>
+          <span class="card-level" id="ethLevel">Level: 0</span>
+        </div>
+        <button class="buy-button" onclick="buyCard('eth')">Buy</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let clickCount = 0;
     let clickMultiplier = 1;
-    let upgradeCosts = [500, 1500, 5000]; 
+    let upgradeCosts = [500, 1500, 5000];
     let upgradeLevel = [0, 0, 0];
+
+    // Mining card data
+    const miningCards = {
+      seo: {
+        profitPerHour: 30,
+        price: 500,
+        level: 0
+      },
+      influencer: {
+        profitPerHour: 60,
+        price: 600,
+        level: 0
+      },
+      miner: {
+        profitPerHour: 100,
+        price: 800,
+        level: 0
+      },
+      stacking: {
+        profitPerHour: 300,
+        price: 1000,
+        level: 0
+      },
+      btc: {
+        profitPerHour: 300,
+        price: 1000,
+        level: 0
+      },
+      eth: {
+        profitPerHour: 400,
+        price: 1100,
+        level: 0
+      }
+    };
 
     // Load data from localStorage
     if (localStorage.getItem('clickCount')) {
@@ -329,6 +516,12 @@
     }
     if (localStorage.getItem('upgradeCosts')) {
       upgradeCosts = JSON.parse(localStorage.getItem('upgradeCosts'));
+    }
+    // Load mining card levels from localStorage
+    for (const cardType in miningCards) {
+      if (localStorage.getItem(`miningCardLevel${cardType}`)) {
+        miningCards[cardType].level = parseInt(localStorage.getItem(`miningCardLevel${cardType}`));
+      }
     }
 
     // Update click count display
@@ -346,13 +539,13 @@
     function clickCoin() {
       clickCount += clickMultiplier;
       updateClickCount();
-      showClickText(clickMultiplier); // Show the click text
+      showClickText(clickMultiplier);
     }
 
     // Function to open the popup
     function openPopup() {
       document.getElementById('popup').style.display = 'block';
-      updateUpgradeCosts(); // Update costs when popup opens
+      updateUpgradeCosts();
     }
 
     // Function to close the popup
@@ -363,7 +556,7 @@
     // Function to handle click upgrade
     function upgradeClick() {
       let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
-      let upgradeIndex = 0; // Start with the first upgrade
+      let upgradeIndex = 0;
 
       while (upgradeIndex < upgradeCosts.length) {
         if (clickCount >= upgradeCosts[upgradeIndex] * upgradeAmount) {
@@ -381,7 +574,7 @@
     // Function to update upgrade costs
     function updateUpgradeCosts() {
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200); 
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200);
         document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + upgradeCosts[i] + ' clicks';
       }
     }
@@ -402,9 +595,10 @@
     }
 
     // Function to open the YouTube channel
+    // Function to open the YouTube channel
     function openYouTube() {
       window.open("https://youtube.com/@kvikontent");
-      closeEarnPopup(); 
+      closeEarnPopup(); // Close the popup after opening the link
     }
 
     // Function to subscribe to the Telegram channel
@@ -413,7 +607,7 @@
       clickCount += 1000;
       updateClickCount();
       alert("You earned 1,000 clicks! Thanks for subscribing!");
-      closeEarnPopup(); 
+      closeEarnPopup(); // Close the popup after opening the link
     }
 
     // Replace Telegram Premium with a 'Buy Premium' button
@@ -430,11 +624,69 @@
     function showClickText(clicks) {
       let clickText = document.getElementById('clickText');
       clickText.textContent = `+${clicks}`;
-      clickText.classList.remove('fly-up'); 
+      clickText.classList.remove('fly-up');
 
       setTimeout(() => {
         clickText.classList.add('fly-up');
       }, 100);
+    }
+
+    // Function to open the Mining popup
+    function openMiningPopup() {
+      document.getElementById('miningPopup').style.display = 'block';
+      updateMiningCardPrices(); // Update card prices when popup opens
+    }
+
+    // Function to close the Mining popup
+    function closeMiningPopup() {
+      document.getElementById('miningPopup').style.display = 'none';
+    }
+
+    // Function to update mining card prices
+    function updateMiningCardPrices() {
+      for (const cardType in miningCards) {
+        let price = miningCards[cardType].price * (1 + 0.25 * miningCards[cardType].level);
+        document.getElementById(`${cardType}Price`).textContent = `Price: ${price} clicks`;
+      }
+    }
+
+    // Function to buy a mining card
+    function buyCard(cardType) {
+      if (clickCount >= miningCards[cardType].price) {
+        clickCount -= miningCards[cardType].price;
+        miningCards[cardType].level++;
+        updateClickCount();
+        updateMiningCardPrices();
+        updateMiningCardLevels();
+        alert(`You purchased a ${cardType} card!`);
+      } else {
+        alert("You don't have enough clicks to purchase this card!");
+      }
+    }
+
+    // Function to update mining card levels in the UI and localStorage
+    function updateMiningCardLevels() {
+      for (const cardType in miningCards) {
+        document.getElementById(`${cardType}Level`).textContent = `Level: ${miningCards[cardType].level}`;
+        localStorage.setItem(`miningCardLevel${cardType}`, miningCards[cardType].level);
+      }
+    }
+
+    // Function to calculate and update profit per hour
+    function updateProfitPerHour() {
+      let totalProfit = 0;
+      for (const cardType in miningCards) {
+        totalProfit += miningCards[cardType].profitPerHour * miningCards[cardType].level;
+      }
+      document.getElementById('profitPerHour').textContent = totalProfit;
+    }
+
+    // Function to add "earn per hour" to click count every second
+    function addEarnPerHour() {
+      let profitPerHour = parseInt(document.getElementById('profitPerHour').textContent);
+      let earnEvery20Seconds = Math.round(profitPerHour / 1800);
+      clickCount += earnEvery20Seconds;
+      updateClickCount();
     }
 
     // Add event listener to the coin for mobile
@@ -443,6 +695,10 @@
 
     // Initialize the game
     updateClickCount();
+    updateProfitPerHour();
+
+    // Update click count every 20 seconds for "earn per hour"
+    setInterval(addEarnPerHour, 1000); // Call addEarnPerHour every 20000 milliseconds (20 seconds)
   </script>
 </body>
 </html>
