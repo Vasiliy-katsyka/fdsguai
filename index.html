@@ -162,17 +162,6 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .title {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      margin-top: 20px;
-      text-align: left; /* Align title to the left */
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
     .menu-container {
       background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
       width: 100%;
@@ -319,13 +308,6 @@
       justify-content: space-between;
       margin-bottom: 20px;
     }
-    .title-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 90%;
-      margin-left: 10px;
-    }
 
     .mining-button {
       background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
@@ -346,12 +328,75 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
+    .settings-button {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa8b62mkAq4MojXucoZzKWMMSvV1ssekhM1Q&s) center center/cover no-repeat;
+      border: none;
+      border-radius: 50%;
+      padding: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin-right: 10px; 
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex; /* Align items within the button */
+      align-items: center; /* Center vertically */
+      justify-content: center; /* Center horizontally */
+    }
+
+    .settings-button:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .settings-button svg {
+      width: 20px; /* Adjust size as needed */
+      height: 20px; /* Adjust size as needed */
+    }
+
+    /* Title container styles */
+    .title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+    }
+
+    /* Title styles */
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      text-align: left; /* Align title to the left */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Settings popup styles */
+    .settings-popup {
+      /* ... Existing popup styles ... */
+    }
+
+    .settings-popup .menu-button {
+      /* ... Existing menu-button styles ... */
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .settings-popup .legal-info {
+      /* ... Existing popup styles ... */
+      overflow-y: auto; /* Allow scrolling for longer text */
+      max-height: 300px; /* Limit popup height */
+    }
   </style>
 </head>
 <body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <div class="title-container">
+    <button class="settings-button" onclick="openSettingsPopup()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
+    </button>
     <div class="title">LobsterCoin</div>
     <button class="menu-button" onclick="openMiningPopup()"><svg style="height: 24px; weight: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>Mining</button>
   </div>
@@ -465,6 +510,23 @@
       </div>
     </div>
   </div>
+
+  <div class="popup settings-popup" id="settingsPopup">
+    <button class="close-button" onclick="closeSettingsPopup()">×</button>
+    <h2>Settings</h2>
+    <button class="menu-button" onclick="confirmClearData()">Clear Data</button>
+    <button class="menu-button" onclick="openLegalInfoPopup()">Legal Info</button>
+  </div>
+
+  <div class="popup" id="legalInfoPopup">
+    <button class="close-button" onclick="closeLegalInfoPopup()">×</button>
+    <h2>Legal Information</h2>
+    <div class="legal-info">
+      <!-- Add your legal information text here -->
+      <p>By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
+    </div>
+  </div>
+
 
   <script>
     let clickCount = 0;
@@ -596,7 +658,53 @@
       document.getElementById('earnPopup').style.display = 'none';
     }
 
-    // Function to open the YouTube channel
+    function openSettingsPopup() {
+      document.getElementById('settingsPopup').style.display = 'block';
+    }
+
+    // Function to close the settings popup
+    function closeSettingsPopup() {
+      document.getElementById('settingsPopup').style.display = 'none';
+    }
+
+    // Function to confirm data clearing
+    function confirmClearData() {
+      if (confirm("Do you really want to completely delete your data?")) {
+        if (confirm("Are you 100% sure?")) {
+          // Clear localStorage *before* updating the counter
+          localStorage.clear();
+
+          // Reset game variables
+          clickCount = 0; 
+          clickMultiplier = 1;
+          upgradeLevel = [0, 0, 0]; 
+          upgradeCosts = [500, 1500, 5000];
+
+          // Reset mining card levels
+          for (const cardType in miningCards) {
+            miningCards[cardType].level = 0;
+          }
+
+          // Update the display and save to localStorage
+          updateClickCount();
+          updateUpgradeCosts();
+          updateMiningCardPrices();
+          updateMiningCardLevels();
+          alert("Data cleared successfully!");
+        }
+      }
+    }
+
+    // Function to open the legal info popup
+    function openLegalInfoPopup() {
+      document.getElementById('legalInfoPopup').style.display = 'block';
+    }
+
+    // Function to close the legal info popup
+    function closeLegalInfoPopup() {
+      document.getElementById('legalInfoPopup').style.display = 'none';
+    }
+
     // Function to open the YouTube channel
     function openYouTube() {
       window.open("https://youtube.com/@kvikontent");
@@ -651,7 +759,7 @@
     function updateMiningCardPrices() {
       for (const cardType in miningCards) {
         let price = miningCards[cardType].price * (1 + 0.25 * miningCards[cardType].level);
-        document.getElementById(`${cardType}Price`).textContent = `Price: ${price} clicks`;
+        document.getElementById(`${cardType}Price`).textContent = `${price} clicks`;
       }
     }
 
