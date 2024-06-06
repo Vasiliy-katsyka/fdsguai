@@ -264,6 +264,7 @@
       margin-left: 10px;
       margin-right: 10px;
       border-radius: 15px;
+      width: 120px;
       background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
     }
 
@@ -272,6 +273,8 @@
       background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-size: 20px;
+      margin-buttom: 1px;
     }
 
     .mining-card .card-info {
@@ -281,8 +284,9 @@
 
     .mining-card .card-info span {
       font-weight: bold;
-      display: block; /* Make each span a separate line */
-      margin-bottom: 5px; /* Add spacing between lines */
+      font-size: 13px;
+      margin-buttom: 5px;
+      display: block; /* Make each span a separate line */ /* Add spacing between lines */
     }
 
     .mining-card .card-info .card-level {
@@ -777,7 +781,7 @@
     function updateMiningCardPrices() {
       for (const cardType in miningCards) {
         let price = miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level);
-        document.getElementById(`${cardType}Price`).textContent = `${price} clicks`;
+        document.getElementById(`${cardType}Price`).textContent = `$${price} clicks`;
       }
     }
 
