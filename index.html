@@ -752,9 +752,13 @@
       }
     }
 
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     // Update click count display
     function updateClickCount() {
-      document.getElementById('clickCount').textContent = clickCount;
+      document.getElementById('clickCount').textContent = numberWithCommas(clickCount); // Format clickCount
       document.getElementById('clicksPerTap').textContent = clickMultiplier;
       // Save data to localStorage
       localStorage.setItem('clickCount', clickCount);
@@ -906,7 +910,7 @@
     function updateUpgradeCosts() {
       for (let i = 0; i < upgradeCosts.length; i++) {
         upgradeCosts[i] = 500 + (upgradeLevel[i] * 200);
-        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + upgradeCosts[i] + ' clicks';
+        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
       }
     }
 
@@ -1025,8 +1029,8 @@
     // Function to update mining card prices
     function updateMiningCardPrices() {
       for (const cardType in miningCards) {
-        let price = miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level);
-        document.getElementById(`${cardType}Price`).textContent = `$${price} clicks`;
+        let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); // Round price
+        document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`; // Format price
       }
     }
 
@@ -1058,7 +1062,7 @@
       for (const cardType in miningCards) {
         totalProfit += miningCards[cardType].profitPerHour * miningCards[cardType].level;
       }
-      document.getElementById('profitPerHour').textContent = totalProfit;
+      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); // Format profitPerHour
     }
 
     // Function to add "earn per hour" to click count
