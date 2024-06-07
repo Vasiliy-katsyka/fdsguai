@@ -140,6 +140,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      font-size: 30px;
       background-color: transparent;
       border: none;
       cursor: pointer;
@@ -433,88 +434,76 @@
       -webkit-text-fill-color: transparent;
     }
 
-.wheel-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 80%;
-  margin: 20px auto;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
+    .airdrop-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url(https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279137.jpg?size=626&ext=jpg&ga=GA1.1.1141335507.1717632000&semt=ais_user) center center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      z-index: 100; /* Ensure it's on top of other popups */
+      display: none; /* Initially hidden */
+    }
 
-.wheel {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  border: 5px solid blue;
-  position: relative;
-  background: url(https://i.pinimg.com/originals/f1/3f/b3/f13fb34cc03956b16ad356f8122b9621.jpg) center center/cover no-repeat;
-  cursor: pointer;
-  /* Added to fix the layout */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .airdrop-popup .logo {
+      width: 200px;
+      height: 200px;
+      margin-top: 50px;
+      background: linear-gradient(to right, #FFD700, #FFC300, #FFAA00, #FFA500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 0 60px yellow; /* Yellow gradient shadow */
+      margin-buttom: 90px;
+    }
 
-.wheel-segment {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
-  transform-origin: 50% 100%;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  /* Rotate the segments */
-  transform: rotate(0deg);
-}
+    .airdrop-popup .logo img {
+      width: 100%;
+      height: auto;
+    }
 
-.wheel-segment:nth-child(1) {
-  transform: rotate(0deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(2) {
-  transform: rotate(45deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(3) {
-  transform: rotate(90deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(4) {
-  transform: rotate(135deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(5) {
-  transform: rotate(180deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(6) {
-  transform: rotate(225deg) translate(0, -50%);
-}
-.wheel-segment:nth-child(7) {
-  transform: rotate(270deg) translate(0, -50%);
-}
+    .airdrop-popup h2 {
+      font-size: 48px;
+      margin-top: 20px;
+    }
 
-.wheel-dot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: red;
-}
+    .airdrop-popup .airdrop-list {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      margin-top: 20px;
+    }
 
-.wheel-spin-button {
-  /* ... existing menu-button styles ... */
-  margin-top: 20px;
-}
+    .airdrop-popup .airdrop-item {
+      display: flex;
+      align-items: left;
+      margin-top: 10px;
+    }
+
+    .airdrop-popup .check-mark {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #333;
+      border: 2px solid yellow;
+    }
+
+    .airdrop-popup .check-mark.green {
+      background-color: green;
+    }
+
+    .airdrop-popup .airdrop-item span {
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
@@ -550,12 +539,40 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
         About
       </button>
-      <button class="bottom-button" onclick="openWheelPopup()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>tire</title><path d="M19.66 9.64L19.3 8.7L21.16 8C20.24 5.88 18.6 4.18 16.54 3.14L15.74 4.92L14.82 4.5L15.62 2.7C14.5 2.26 13.28 2 12 2C10.94 2 9.92 2.22 8.96 2.5L9.64 4.34L8.7 4.7L8 2.84C5.88 3.76 4.18 5.4 3.14 7.46L4.92 8.26L4.5 9.18L2.7 8.38C2.26 9.5 2 10.72 2 12C2 13.06 2.22 14.08 2.5 15.04L4.34 14.36L4.7 15.3L2.84 16C3.76 18.12 5.4 19.82 7.46 20.86L8.26 19.08L9.18 19.5L8.38 21.3C9.5 21.74 10.72 22 12 22C13.06 22 14.08 21.78 15.04 21.5L14.36 19.66L15.3 19.3L16 21.16C18.12 20.24 19.82 18.6 20.86 16.54L19.08 15.74L19.5 14.82L21.3 15.62C21.74 14.5 22 13.28 22 12C22 10.94 21.78 9.92 21.5 8.96L19.66 9.64M14.3 17.54C11.24 18.8 7.72 17.36 6.46 14.3S6.64 7.72 9.7 6.46 16.28 6.64 17.54 9.7C18.82 12.76 17.36 16.28 14.3 17.54Z" /></svg>
-        Wheel
-      </button>
       <button class="bottom-button" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>Mining</button>
+      <button class="bottom-button" onclick="openAirdrop()">
+        <svg>
+          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="30" height="30" /> 
+        </svg>
+        Airdrop
+      </button>
     </div>
+
+  <div class="airdrop-popup" id="airdropPopup">
+  	<button class="close-button" onclick="closeAirdropPopup()">×</button>
+    <div class="logo">
+      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
+    </div>
+    <h2>Get ready, Airdrop is coming soon!</h2>
+    <div class="airdrop-list">
+      <div class="airdrop-item">
+        <div class="check-mark green"></div>
+        <span>Inviting auditory</span>
+      </div>
+      <div class="airdrop-item">
+        <div class="check-mark"></div>
+        <span>Inviting partners</span>
+      </div>
+      <div class="airdrop-item">
+        <div class="check-mark"></div>
+        <span>Key partnerships are coming</span>
+      </div>
+      <div class="airdrop-item">
+        <div class="check-mark"></div>
+        <span>Airdrop task list</span>
+      </div>
+    </div>
+  </div>
 
     <div class="popup" id="popup">
       <button class="close-button" onclick="closePopup()">×</button>
@@ -762,6 +779,18 @@
     // Function to close the popup
     function closePopup() {
       document.getElementById('popup').style.display = 'none';
+    }
+    
+    function closeAirdropPopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    function openAirdrop() {
+      document.getElementById('airdropPopup').style.display = 'flex';
+    }
+
+    function closeAirdropPopup() {
+      document.getElementById('airdropPopup').style.display = 'none';
     }
 
     // Function to handle click upgrade
