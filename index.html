@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -663,6 +664,9 @@
       <h2>Settings</h2>
       <button class="menu-button" onclick="confirmClearData()">Clear Data</button>
       <button class="menu-button" onclick="openLegalInfoPopup()">Legal Info</button>
+      <input type="text" id="promoCode" placeholder="Enter promo code">
+   	  <button class="menu-button" onclick="applyPromoCode()">Apply Promo Code</button>
+
     </div>
 
     <div class="popup" id="legalInfoPopup">
@@ -671,25 +675,6 @@
       <div class="legal-info">
         <p>By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
       </div>
-    </div>
-
-    <div class="popup wheel-popup" id="wheelPopup">
-      <button class="close-button" onclick="closeWheelPopup()">×</button>
-      <h2>Wheel of Fortune</h2>
-      <div class="wheel-container">
-        <div class="wheel" id="wheel">
-          <div class="wheel-dot"></div>
-          <div class="wheel-segment" id="segment1">1k clicks</div>
-          <div class="wheel-segment" id="segment2">1M clicks</div>
-          <div class="wheel-segment" id="segment3">20k clicks</div>
-          <div class="wheel-segment" id="segment4">10k clicks</div>
-          <div class="wheel-segment" id="segment5">1B clicks</div>
-          <div class="wheel-segment" id="segment6">Booster +1k clicks/tap</div>
-          <div class="wheel-segment" id="segment7">Booster +10 clicks/tap</div>
-        </div>
-        <button class="wheel-spin-button menu-button" onclick="spinWheel()">Spin</button>
-      </div>
-      <p class="wheel-price" id="wheelPrice">Spin Price: 100 clicks</p>
     </div>
   </div>
   <script>
@@ -752,6 +737,17 @@
       }
     }
 
+    function applyPromoCode() {
+      let promoCode = document.getElementById('promoCode').value;
+      if (promoCode === "developer-tester") {
+        clickCount += 500000000; // Add 500 million clicks
+        updateClickCount();
+        alert("Promo code applied! You've received 500 million clicks!");
+      } else {
+        alert("Invalid promo code.");
+      }
+    }
+
     function numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -797,6 +793,10 @@
       document.getElementById('airdropPopup').style.display = 'none';
     }
 
+    let youtubeBonusClaimed = localStorage.getItem('youtubeBonusClaimed') === 'true';
+    let telegramBonusClaimed = localStorage.getItem('telegramBonusClaimed') === 'true';
+    let premiumBonusClaimed = localStorage.getItem('premiumBonusClaimed') === 'true';
+
     // Function to handle click upgrade
     function upgradeClick() {
       let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
@@ -812,97 +812,6 @@
           break;
         }
         upgradeIndex++;
-      }
-    }
-
-    let wheelSpinPrice = 100;
-    let wheelSpinning = false;
-    let wheelSegments = [
-      { prize: 1000, chance: 40 },
-      { prize: 1000000, chance: 5 },
-      { prize: 20000, chance: 30 },
-      { prize: 10000, chance: 40 },
-      { prize: 1000000000, chance: 5 },
-      { prize: 'booster1k', chance: 10 },
-      { prize: 'booster10', chance: 30 }
-    ];
-    // Wheel Segments IDs for easy reference
-    const segmentIds = ["segment1", "segment2", "segment3", "segment4", "segment5", "segment6", "segment7"];
-
-    // Load wheel spin price from localStorage
-    if (localStorage.getItem('wheelSpinPrice')) {
-      wheelSpinPrice = parseInt(localStorage.getItem('wheelSpinPrice'));
-    }
-
-    // Function to open the wheel popup
-    function openWheelPopup() {
-      document.getElementById('wheelPopup').style.display = 'block';
-      document.getElementById('wheelPrice').textContent = `Spin Price: ${wheelSpinPrice} clicks`;
-    }
-
-    // Function to close the wheel popup
-    function closeWheelPopup() {
-      document.getElementById('wheelPopup').style.display = 'none';
-    }
-
-    // Function to spin the wheel
-    function spinWheel() {
-      if (wheelSpinning) return;
-
-      if (clickCount >= wheelSpinPrice) {
-        clickCount -= wheelSpinPrice;
-        updateClickCount();
-        wheelSpinning = true;
-        wheelSpinPrice += 100; // Increase price after each spin
-
-        // Save updated price to localStorage
-        localStorage.setItem('wheelSpinPrice', wheelSpinPrice);
-
-        const wheel = document.getElementById('wheel');
-        let degree = Math.floor(Math.random() * 360); // Random degree for rotation
-        const segments = wheelSegments.length;
-
-        // Calculate degree for prize with chance based on wheel segments
-        let prizeIndex = 0;
-        let accumulatedChance = 0;
-        for (let i = 0; i < wheelSegments.length; i++) {
-          accumulatedChance += wheelSegments[i].chance;
-          if (Math.random() * 100 <= accumulatedChance) {
-            prizeIndex = i;
-            break;
-          }
-        }
-
-        let prize = wheelSegments[prizeIndex].prize;
-        let segmentAngle = 360 / segments;
-        let finalDegree = (segmentAngle * prizeIndex + segmentAngle / 2) + degree; // Degree to stop the wheel on the selected prize
-
-        // Add a 1080 degrees rotation to make the wheel spin longer
-        finalDegree += 1080;
-
-        wheel.style.transition = 'transform 5s ease-out';
-        wheel.style.transform = `rotate(${finalDegree}deg)`;
-
-        // Update the counter or apply booster after the wheel stops
-        setTimeout(() => {
-          wheel.style.transition = 'none';
-          wheelSpinning = false;
-
-          // Update counter or apply booster
-          if (prize === 'booster1k') {
-            clickMultiplier += 1000;
-            alert('You won a booster! +1000 clicks per tap on coin!');
-          } else if (prize === 'booster10') {
-            clickMultiplier += 10;
-            alert('You won a booster! +10 clicks per tap on coin!');
-          } else {
-            clickCount += prize;
-            alert(`You won ${prize} clicks!`);
-          }
-          updateClickCount();
-        }, 5000);
-      } else {
-        alert("You don't have enough clicks to spin the wheel!");
       }
     }
 
@@ -978,20 +887,38 @@
 
     // Function to open the YouTube channel
     function openYouTube() {
+      if (youtubeBonusClaimed) {
+        alert("You've already claimed this bonus!");
+        return; // Exit the function if the bonus is already claimed
+      }
       window.open("https://youtube.com/@kvikontent");
       clickCount += 5000;
       updateClickCount();
       alert("You earned 5,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
+      youtubeBonusClaimed = true;
+      localStorage.setItem('youtubeBonusClaimed', 'true');
+      // Disable the button
+      document.querySelector('[onclick="openYouTube()"]').disabled = true;
+      document.querySelector('[onclick="openYouTube()"]').style.backgroundColor = '#ccc'; // Change background color
     }
 
     // Function to subscribe to the Telegram channel
     function subscribeTelegram() {
+      if (telegramBonusClaimed) {
+        alert("You've already claimed this bonus!");
+        return; // Exit the function if the bonus is already claimed
+      }
       window.open("https://t.me/freemusic2023");
       clickCount += 1000;
       updateClickCount();
       alert("You earned 1,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
+      telegramBonusClaimed = true;
+      localStorage.setItem('telegramBonusClaimed', 'true');
+      // Disable the button
+      document.querySelector('[onclick="subscribeTelegram()"]').disabled = true;
+      document.querySelector('[onclick="subscribeTelegram()"]').style.backgroundColor = '#ccc'; // Change background color
     }
 
     // Replace Telegram Premium with a 'Buy Premium' button
