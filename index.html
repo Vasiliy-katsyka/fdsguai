@@ -989,13 +989,20 @@
       for (const cardType in miningCards) {
         totalProfit += miningCards[cardType].profitPerHour * miningCards[cardType].level;
       }
-      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); // Format profitPerHour
+      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
     }
 
     // Function to add "earn per hour" to click count
     function addEarnPerHour() {
-      let profitPerHour = parseInt(document.getElementById('profitPerHour').textContent);
-      let earnEverySecond = Math.round(profitPerHour / 3600); // Earn clicks every second
+      // Directly fetch the profit value from the element
+      let profitPerHour = parseInt(document.getElementById('profitPerHour').textContent.replace(",", "")); // Remove commas from the textContent
+
+      let earnEverySecond = Math.round(profitPerHour / 3600); 
+
+      // Logging the calculations
+      console.log("Current Profit per Hour:", profitPerHour);
+      console.log("Clicks to add per second:", earnEverySecond);
+
       clickCount += earnEverySecond;
       updateClickCount();
     }
