@@ -547,10 +547,34 @@
     .airdrop-popup .airdrop-item span {
       font-size: 20px;
     }
+    
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top-color: #ffae00;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <div class="popup" id="loadingPopup" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h2 style="background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
+      <div class="spinner"></div>
+    </div>
+    <p style="position: absolute; bottom: 20px;">v1.53</p>
+  </div>
 
   <div class="title-container">
     <button class="settings-button" onclick="openSettingsPopup()">
@@ -794,6 +818,13 @@
         alert("Invalid promo code.");
       }
     }
+
+    document.getElementById('loadingPopup').style.display = 'flex'; 
+
+    // Hide loading screen after 4 seconds
+    setTimeout(() => {
+      document.getElementById('loadingPopup').style.display = 'none';
+    }, 4000);
 
     function numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
