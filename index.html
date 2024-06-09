@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -588,7 +584,7 @@
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p style="position: absolute; bottom: 20px;">v1.54</p>
+    <p style="position: absolute; bottom: 20px;">v1.52</p>
   </div>
 
   <div class="title-container">
@@ -682,7 +678,7 @@
         <div class="mining-card">
           <h3>SEO</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+30 clicks</a></span>
+            <span id="seoProfit">Profit/hour: <a class="gold-text">+30 clicks</a></span>
             <span class="card-price" id="seoPrice">Price: 500 clicks</span>
             <span class="card-level" id="seoLevel">Level: 0</span>
           </div>
@@ -691,7 +687,7 @@
         <div class="mining-card">
           <h3>Influencers</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+60 clicks</a></span>
+            <span id="influencerProfit">Profit/hour: <a class="gold-text">+60 clicks</a></span>
             <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
             <span class="card-level" id="influencerLevel">Level: 0</span>
           </div>
@@ -702,7 +698,7 @@
         <div class="mining-card">
           <h3>Miners</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+100 clicks</a></span>
+            <span id="minerProfit">Profit/hour: <a class="gold-text">+100 clicks</a></span>
             <span class="card-price" id="minerPrice">Price: 800 clicks</span>
             <span class="card-level" id="minerLevel">Level: 0</span>
           </div>
@@ -711,7 +707,7 @@
         <div class="mining-card">
           <h3>Stacking</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+300 clicks</a></span>
+            <span id="stackingProfit">Profit/hour: <a class="gold-text">+300 clicks</a></span>
             <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
             <span class="card-level" id="stackingLevel">Level: 0</span>
           </div>
@@ -722,7 +718,7 @@
         <div class="mining-card">
           <h3>BTC Pairs</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+900 clicks</a></span>
+            <span id="btcProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
             <span class="card-price" id="btcPrice">Price: 8000 clicks</span>
             <span class="card-level" id="btcLevel">Level: 0</span>
           </div>
@@ -731,7 +727,7 @@
         <div class="mining-card">
           <h3>ETH Pairs</h3>
           <div class="card-info">
-            <span>Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+            <span id="ethProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
             <span class="card-price" id="ethPrice">Price: 10000 clicks</span>
             <span class="card-level" id="ethLevel">Level: 0</span>
           </div>
@@ -826,9 +822,14 @@
         alert("Promo code applied! You've received 500 million clicks!");
       }
       else if (promoCode === "SUMMER24") {
-        clickCount += 10000; // Add 500 million clicks
+        clickCount += 10000;
         updateClickCount();
         alert("Promo code applied! You've received 10K clicks!");
+      } 
+      else if (promoCode === "VASILIY939") {
+        clickCount += 50000; 
+        updateClickCount();
+        alert("Promo code applied! You've received 50K clicks!");
       } else {
         alert("Invalid promo code.");
       }
@@ -837,10 +838,11 @@
     document.getElementById('loadingPopup').style.display = 'flex'; 
 
     // Hide loading screen after 4 seconds
+    let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
     setTimeout(() => {
       document.getElementById('loadingPopup').style.display = 'none';
-    }, 4000);
-
+    }, randomDelay);
+    
     function numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -1049,8 +1051,12 @@
     // Function to update mining card prices
     function updateMiningCardPrices() {
       for (const cardType in miningCards) {
-        let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); // Round price
-        document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`; // Format price
+        let profitIncrease = miningCards[cardType].profitPerHour * 0.35;
+        miningCards[cardType].profitPerHour += profitIncrease; 
+        miningCards[cardType].profitPerHour = Math.round(miningCards[cardType].profitPerHour); 
+        let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); 
+        document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`;
+        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(miningCards[cardType].profitPerHour)} clicks`;
       }
     }
 
@@ -1060,7 +1066,7 @@
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
         updateClickCount();
-        updateMiningCardPrices();
+        updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
         alert(`You purchased a ${cardType} card!`);
       } else {
