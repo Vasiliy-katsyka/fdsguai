@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -649,6 +650,10 @@
       width: 100%; 
       height: 70%; /* Adjust the height for the game area */
     }
+    
+    .fakeLobster {
+      background-color: gray;
+    }
   </style>
 </head>
 <body>
@@ -864,6 +869,8 @@
     let lobsterSize = 100; 
     let timeLeft = 30;
     let gameRunning = false;
+    let fakeLobsterCount = 0;
+	let fakeLobsterPenalty = 0.7; 
 
     // Mining card data
     const miningCards = {
@@ -1216,20 +1223,32 @@
     // Function to create a new lobster
     function createLobster() {
       let lobster = document.createElement('div');
-      lobster.classList.add('lobster');
-      lobster.style.width = lobsterSize + 'px';
-      lobster.style.height = lobsterSize + 'px';
-      lobster.style.left = Math.random() * (window.innerWidth - lobsterSize) + 'px';
-      lobster.style.top = Math.random() * (window.innerHeight - lobsterSize) + 'px';
-      lobsterContainer.appendChild(lobster);
-      lobsters.push(lobster);
+      
+      if (Math.random() < 0.5) { // Adjust the probability as needed
+    	lobster.classList.add('fakeLobster'); // Add a CSS class for fake lobsters
+    	fakeLobsterCount++;
+ 	  } else {
+      	lobster.classList.add('lobster');
+      	lobster.style.width = lobsterSize + 'px';
+      	lobster.style.height = lobsterSize + 'px';
+      	lobster.style.left = Math.random() * (window.innerWidth - lobsterSize) + 'px';
+      	lobster.style.top = Math.random() * (window.innerHeight - lobsterSize) + 'px';
+      	lobsterContainer.appendChild(lobster);
+      	lobsters.push(lobster);
+      }
 
       // Add click event listener to the lobster
       lobster.addEventListener('click', function() {
-        lobsterClicks += clicksPerLobster;
-        updateLobsterClicks();
-        lobsterContainer.removeChild(lobster);
-        lobsters.splice(lobsters.indexOf(lobster), 1);
+      	if (lobster.classList.contains('fakeLobster')) {
+      	  lobsterClicks -= Math.round(lobsterClicks * fakeLobsterPenalty); // Subtract penalty
+      	  updateLobsterClicks();
+      	  fakeLobsterCount--;
+    	} else {
+          lobsterClicks += clicksPerLobster;
+          updateLobsterClicks();
+          lobsterContainer.removeChild(lobster);
+          lobsters.splice(lobsters.indexOf(lobster), 1);
+        }
       });
     }
 
@@ -1256,6 +1275,11 @@
       clicksPerLobster += 50;
       lobsterSize += 10; 
       for (let i = 0; i < lobsterCount; i++) {
+        createLobster(); 
+      }
+      
+      let fakeLobstersToCreate = Math.floor(Math.random() * (lobsterCount + 1)); 
+      for (let i = 0; i < fakeLobstersToCreate; i++) {
         createLobster(); 
       }
     }
