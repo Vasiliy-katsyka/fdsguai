@@ -4,6 +4,8 @@ Lopster coin is open-source crypto clicker game based Telegram platform.
 
 ## Features
 
+| Feature | Is supported |
+| ------- | ------------ |
 | Earn | ✅ |
 | Have fun | ✅ |
 | User-friendly | ✅ |
