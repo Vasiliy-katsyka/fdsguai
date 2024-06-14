@@ -1269,7 +1269,7 @@
       const referralLink = generateReferralLink();
       navigator.clipboard.writeText(referralLink)
         .then(() => {
-          alert('Referral link copied to clipboard!');
+          console.log("COpied");
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
