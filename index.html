@@ -1258,7 +1258,6 @@
     // Function to generate a referral link
     function generateReferralLink() {
       const telegramUserID = Telegram.WebApp.initDataUnsafe.user.id; 
-      alert("Your id: " + telegramUserID);
       return `https://t.me/lobster_coin_bot/lobstercoin?friend=${telegramUserID}`;
     }
 
@@ -1267,7 +1266,6 @@
 
     // Modify existing button with ID "refButton"
     function refButtonClick() {
-      alert("Button clicked");
       const referralLink = generateReferralLink();
       navigator.clipboard.writeText(referralLink)
         .then(() => {
