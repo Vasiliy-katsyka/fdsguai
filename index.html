@@ -771,7 +771,7 @@
       <h2>Earn Clicks</h2>
       <button class="earn-button" onclick="openYouTube()">Subscribe YouTube | +5k</button>
       <button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button>
-      <button class="earn-button" onclick="refButtonClick">Invite Friend | +20k</button>
+      <button class="earn-button" id="refButton" onclick="refButtonClick()">Invite Friend | +20k</button>
       <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
     </div>
 
@@ -1258,11 +1258,16 @@
     // Function to generate a referral link
     function generateReferralLink() {
       const telegramUserID = Telegram.WebApp.initDataUnsafe.user.id; 
+      alert("Your id: " + telegramUserID);
       return `https://t.me/lobster_coin_bot/lobstercoin?friend=${telegramUserID}`;
     }
 
+    const refButton = document.getElementById('refButton'); 
+    refButton.addEventListener('click', refButtonClick); 
+
     // Modify existing button with ID "refButton"
     function refButtonClick() {
+      alert("Button clicked");
       const referralLink = generateReferralLink();
       navigator.clipboard.writeText(referralLink)
         .then(() => {
