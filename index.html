@@ -771,6 +771,7 @@
       <h2>Earn Clicks</h2>
       <button class="earn-button" onclick="openYouTube()">Subscribe YouTube | +5k</button>
       <button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button>
+      <button class="earn-button" id="refButton">Invite Friend | +20k</button>
       <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
     </div>
 
@@ -1210,6 +1211,64 @@
       clickCount += earnEverySecond;
       updateClickCount();
     }
+    
+    // Get Telegram user ID from query parameters
+    function getTelegramUserID() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('friend');
+    }
+
+    // Function to handle referral clicks
+    function handleReferralClick() {
+      const telegramUserID = getTelegramUserID();
+      if (telegramUserID) {
+        // Send a request to your server to update the referred user's clicks
+        fetch('https://d9e3-88-93-184-116.ngrok-free.app/api/referrals', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            telegramUserID: telegramUserID
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            // Referral successful, add clicks to the referred user's account
+            clickCount += 20000; 
+            updateClickCount();
+            alert('Referral bonus applied! +20,000 clicks');
+          } else {
+            // Handle referral error
+            alert('Referral bonus application failed. Please try again later.');
+          }
+        })
+        .catch(error => {
+          // Handle network error
+          alert('Network error: Unable to connect to the referral server.');
+        });
+      }
+    }
+
+    // Check if the page was opened via a referral link
+    window.addEventListener('load', () => {
+      handleReferralClick();
+    });
+
+    // Function to generate a referral link
+    function generateReferralLink() {
+      const telegramUserID = Telegram.WebApp.initDataUnsafe.user.id; 
+      return `https://t.me/lobster_coin_bot/lobstercoin?friend=${telegramUserID}`;
+    }
+
+    // Modify existing button with ID "refButton"
+    const refButton = document.getElementById('refButton'); // Get the existing button 
+    refButton.addEventListener('click', () => {
+      const referralLink = generateReferralLink();
+      Telegram.WebApp.Helpers.shareToTelegram({
+        text: `Join LobsterCoin and earn free clicks! Use my referral link: ${referralLink}`
+      });
+    });
     
     function updateLobsterClicks() {
       document.getElementById('lobsterClicks').textContent = lobsterClicks;
