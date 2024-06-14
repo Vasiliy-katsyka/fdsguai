@@ -771,7 +771,7 @@
       <h2>Earn Clicks</h2>
       <button class="earn-button" onclick="openYouTube()">Subscribe YouTube | +5k</button>
       <button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button>
-      <button class="earn-button" id="refButton">Invite Friend | +20k</button>
+      <button class="earn-button" onclick="refButtonClick">Invite Friend | +20k</button>
       <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
     </div>
 
@@ -1262,13 +1262,17 @@
     }
 
     // Modify existing button with ID "refButton"
-    const refButton = document.getElementById('refButton'); // Get the existing button 
-    refButton.addEventListener('click', () => {
+    function refButtonClick() {
       const referralLink = generateReferralLink();
-      Telegram.WebApp.Helpers.shareToTelegram({
-        text: `Join LobsterCoin and earn free clicks! Use my referral link: ${referralLink}`
-      });
-    });
+      navigator.clipboard.writeText(referralLink)
+        .then(() => {
+          alert('Referral link copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Failed to copy: ', err);
+          alert('Failed to copy link. Please try again.');
+        }); 
+    }
     
     function updateLobsterClicks() {
       document.getElementById('lobsterClicks').textContent = lobsterClicks;
