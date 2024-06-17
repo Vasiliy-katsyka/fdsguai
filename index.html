@@ -1222,6 +1222,7 @@
     function handleReferralClick() {
       const telegramUserID = getTelegramUserID();
       if (telegramUserID) {
+	clickCount += 20000;
         // Send a request to your server to update the referred user's clicks
         fetch('https://d9e3-88-93-184-116.ngrok-free.app/api/referrals', {
           method: 'POST', 
