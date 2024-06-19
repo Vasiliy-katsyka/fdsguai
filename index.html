@@ -59,11 +59,12 @@
       opacity: 100%;
       cursor: pointer;
       margin: 0 auto;
-      margin-top: 60px;
+      margin-top: 30px;
       background: #ffcc00 url(https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true) center center/cover no-repeat;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       position: relative;
       margin-bottom: 10px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .counter {
@@ -658,6 +659,39 @@
     .fakeLobster {
       background-color: gray;
     }
+    
+    .limit-bar {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      position: fixed;
+      bottom: 100px; /* Adjust position as needed */
+      left: 0;
+      width: 95%;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 2px solid #ffae00;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-size: 16px; /* Adjust font size as needed */
+      color: #fff; /* Adjust color as needed */
+    }
+
+    .progress-bar {
+      width: 80%;
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 10px; /* Adjust spacing as needed */
+    }
+
+    .progress-fill {
+      background-color: #ffae00;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -715,6 +749,14 @@
         Airdrop
       </button>
     </div>
+
+  <div class="limit-bar" id="limitBar">
+    <span id="limitValue">100</span>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span id="limitTimer">00:00</span>
+  </div>
 
   <div class="lobster-catch-popup" id="lobsterCatchPopup">
     <button class="close-button" onclick="closeLobsterCatchPopup()">×</button>
@@ -875,7 +917,12 @@
     let timeLeft = 30;
     let gameRunning = false;
     let fakeLobsterCount = 0;
-	let fakeLobsterPenalty = 0.7; 
+   	let fakeLobsterPenalty = 0.7; 
+   	let clicksRemaining = 100; 
+    let clicksPerMinuteLimit = 100; 
+    let limitBoostLevel = 0;
+    let limitBoostPrice = 1000;
+    let isClicking = false;
 
     // Mining card data
     const miningCards = {
@@ -930,6 +977,31 @@
         miningCards[cardType].level = parseInt(localStorage.getItem(`miningCardLevel${cardType}`));
       }
     }
+    
+    if (localStorage.getItem('clicksRemaining')) {
+      clicksRemaining = parseInt(localStorage.getItem('clicksRemaining'));
+    }
+    if (localStorage.getItem('clicksPerMinuteLimit')) {
+      clicksPerMinuteLimit = parseInt(localStorage.getItem('clicksPerMinuteLimit'));
+    }
+    if (localStorage.getItem('limitBoostLevel')) {
+      limitBoostLevel = parseInt(localStorage.getItem('limitBoostLevel'));
+    }
+    if (localStorage.getItem('limitBoostPrice')) {
+      limitBoostPrice = parseInt(localStorage.getItem('limitBoostPrice'));
+    }
+
+    function updateLimitBar() {
+      document.getElementById('limitValue').textContent = clicksRemaining;
+      let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100;
+      document.getElementById('progressFill').style.width = percentage + '%';
+    }
+
+    function updateLimitTimer() {
+      let minutes = Math.floor(timeLeft / 60);
+      let seconds = timeLeft % 60;
+      document.getElementById('limitTimer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
@@ -977,11 +1049,61 @@
 
     // Function to handle coin click
     function clickCoin() {
-      clickCount += clickMultiplier;
-      updateClickCount();
-      showClickText(clickMultiplier);
+      if (clicksRemaining > 0) {
+        clickCount += clickMultiplier;
+        updateClickCount();
+        showClickText(clickMultiplier);
+        clicksRemaining--;
+        updateLimitBar();
+        if (clicksRemaining === 0) {
+          timeLeft = 5; // 2 minutes
+          updateLimitTimer();
+          setInterval(function() {
+            timeLeft--;
+            updateLimitTimer();
+            if (timeLeft === 0) {
+              clicksRemaining = clicksPerMinuteLimit;
+              updateLimitBar();
+            }
+          }, 1000);
+        }
+      }
     }
 
+
+    function upgradeLimit() {
+      if (clickCount >= limitBoostPrice) {
+        clickCount -= limitBoostPrice;
+        clicksPerMinuteLimit += 100; 
+        limitBoostLevel++;
+        limitBoostPrice = Math.round(limitBoostPrice * 1.5); // Increase price by 150%
+        updateClickCount();
+        updateLimitBar();
+        alert(`Limit boosted! You can now click ${clicksPerMinuteLimit} times per minute.`);
+        // Save the boosted limit and price in localStorage
+        localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit);
+        localStorage.setItem('limitBoostLevel', limitBoostLevel);
+        localStorage.setItem('limitBoostPrice', limitBoostPrice);
+      } else {
+        alert("You don't have enough clicks to upgrade the limit!");
+      }
+    }
+
+    function updateLimitBar() {
+    document.getElementById('limitValue').textContent = clicksRemaining;
+  let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100; 
+  document.getElementById('progressFill').style.width = percentage + '%';
+}
+
+    // Add the new limit boost button to the boosts popup
+    document.getElementById('popup').innerHTML += `
+      <div class="upgrade">
+        <span>Click Limit +100</span>
+        <span class="upgrade-cost" id="upgradeCostLimit">Cost: ${limitBoostPrice} clicks</span>
+      </div>
+      <button class="button" onclick="upgradeLimit()">Upgrade Limit</button>
+    `;
+    
     // Function to open the popup
     function openPopup() {
       document.getElementById('popup').style.display = 'block';
@@ -1462,27 +1584,44 @@
 
     // Add event listener to the coin for mobile
     const coin = document.querySelector('.coin');
-    coin.addEventListener('click', clickCoin);
+    const clickText = document.getElementById('clickText');
+    coin.addEventListener('touchstart', (event) => {
+      if (!isClicking) {
+        isClicking = true;
+        clickCount += clickMultiplier;
+        updateClickCount();
+
+        // Get touch coordinates
+        let touchX = event.touches[0].clientX;
+        let touchY = event.touches[0].clientY;
+
+        // Position the click text
+        clickText.style.left = touchX + 'px'; // Adjust for coin's position if needed
+        clickText.style.top = touchY + 'px'; // Adjust for coin's position if needed
+        clickText.textContent = `+${clickMultiplier}`;
+        clickText.classList.remove('fly-up');
+
+        clicksRemaining--;
+        updateLimitBar();
+
+        setTimeout(() => {
+          isClicking = false;
+          clickText.classList.add('fly-up');
+        }, 100); 
+      }
+    });
+
+    coin.addEventListener('touchend', () => {
+      isClicking = false;
+    });
 
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
+    updateLimitBar();
 
     // Update click count every 20 seconds for "earn per hour"
     setInterval(addEarnPerHour, 1000); // Call addEarnPerHour every 20000 milliseconds (20 seconds)
-//1
-//2
-//3
-//4
-//5
-//6
-//7
-//8
-//9
-//10
-//11
-//12
-// Now this code has 1488 lines, "Pashalko"
   </script>
 </body>
 </html>
