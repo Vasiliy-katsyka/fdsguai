@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -1049,13 +1050,13 @@
 
     // Function to handle coin click
     function clickCoin() {
-      if (clicksRemaining > 0) {
+      if (clicksRemaining > 0) { // Check clicksRemaining before decrementing
         clickCount += clickMultiplier;
         updateClickCount();
         showClickText(clickMultiplier);
-        clicksRemaining--;
+        clicksRemaining--; // Decrement clicksRemaining *after* checking
         updateLimitBar();
-        if (clicksRemaining === 0) {
+        if (clicksRemaining === 0) { 
           timeLeft = 5; // 2 minutes
           updateLimitTimer();
           setInterval(function() {
@@ -1067,7 +1068,7 @@
             }
           }, 1000);
         }
-      }
+      } 
     }
 
 
