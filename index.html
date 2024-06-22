@@ -519,6 +519,22 @@
       display: none; /* Initially hidden */
     }
 
+    .airdrop-popup .logo-1 {
+      width: 200px;
+      height: 200px;
+      margin-top: 50px;
+      background: linear-gradient(to right, #FFD700, #FFC300, #FFAA00, #FFA500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 0 60px yellow; /* Yellow gradient shadow */
+      margin-buttom: 90px;
+      margin-left: 27%;
+    }
+    
     .airdrop-popup .logo {
       width: 200px;
       height: 200px;
@@ -535,6 +551,11 @@
     }
 
     .airdrop-popup .logo img {
+      width: 100%;
+      height: auto;
+    }
+    
+    .airdrop-popup .logo-1 img {
       width: 100%;
       height: auto;
     }
@@ -818,14 +839,17 @@
       <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
     </div>
 
-    <div class="popup" id="earnPopup">
+    <div class="airdrop-popup" id="earnPopup">
       <button class="close-button" onclick="closeEarnPopup()">×</button>
+      <div class="logo-1">
+        <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
+      </div>
       <h2>Earn Clicks</h2>
-      <button class="earn-button" onclick="openYouTube()">Subscribe YouTube | +5k</button>
-      <button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button>
-      <button class="earn-button" id="refButton" onclick="refButtonClick()">Invite Friend | +20k</button>
-      <button class="earn-button" onclick="openLobsterCatchPopup()">Game | +10k</button>
-      <button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium | +10k</button>
+      <div class="airdrop-item"><button class="earn-button" onclick="openYouTube()">Subscribe YouTube  | +5k</button></div>
+      <div class="airdrop-item"><button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button></div>
+      <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()">Invite Friend      | +20k</button></div>
+      <div class="airdrop-item"><button class="earn-button" onclick="openLobsterCatchPopup()">Game               | +10k</button></div>
+      <div class="airdrop-item"><button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium   | +10k</button></div>
     </div>
 
     <div class="popup" id="miningPopup">
@@ -1137,19 +1161,11 @@
     }
 
     function updateLimitBar() {
-    document.getElementById('limitValue').textContent = clicksRemaining;
-  let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100; 
-  document.getElementById('progressFill').style.width = percentage + '%';
-}
+      document.getElementById('limitValue').textContent = clicksRemaining;
+      let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100; 
+      document.getElementById('progressFill').style.width = percentage + '%';
+    }
 
-    // Add the new limit boost button to the boosts popup
-    document.getElementById('popup').innerHTML += `
-      <div class="upgrade">
-        <span>Click Limit +100</span>
-        <span class="upgrade-cost" id="upgradeCostLimit">Cost: ${limitBoostPrice} clicks</span>
-      </div>
-      <button class="button" onclick="upgradeLimit()">Upgrade Limit</button>
-    `;
     
     // Function to open the popup
     function openPopup() {
