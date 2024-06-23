@@ -1050,7 +1050,11 @@
         clickCount += 50000; 
         updateClickCount();
         alert("Promo code applied! You've received 50K clicks!");
-      } else {
+      } else if (promoCode === "IDI_NAHUI") {
+        clickCount += 50000; 
+        updateClickCount();
+        alert("Promo code applied! You've received 50K clicks!"); 
+       } else {
         alert("Invalid promo code.");
       }
     }
