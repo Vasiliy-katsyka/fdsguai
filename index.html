@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -244,6 +245,23 @@
       justify-content: center;
     }
 
+    .earnedPopup {
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      width: 100%;
+      height: 300px;
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border-top: 2px solid #ffae00;
+      justify-content: center;
+    }
+
     .bottom-button {
       display: flex;
       flex-direction: column; /* Stack icon above text */
@@ -409,9 +427,19 @@
     }
 
     .mining-container {
-      display: flex;
       justify-content: space-between;
+      display: grid; /* Use grid layout */
+      grid-template-columns: repeat(2, 1fr); /* Two columns */
+      grid-gap: 10px; /* Spacing between cards */
       margin-bottom: 20px;
+      overflow-y: auto; /* Allow vertical scrolling */
+      width: 100%; /* Ensure container takes full width */
+    }
+    
+    .mining-card-wrapper {
+      display: flex;
+      flex-direction: column; /* Stack cards vertically */
+      width: 100%;
     }
 
     .mining-button {
@@ -802,6 +830,13 @@
     </div>
   </div>
 
+  <div class="earnedPopup">
+    <button class="close-button" onclick="closeAirdropPopup()">×</button>
+    <h1>You've earned</h1>
+    <span id="earnedValue">100</span>
+    <button class="getEarning">Thank you, Binance</button>
+  </div>
+
   <div class="airdrop-popup" id="airdropPopup">
   	<button class="close-button" onclick="closeAirdropPopup()">×</button>
     <div class="logo">
@@ -855,64 +890,207 @@
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
       <h2>Mining</h2>
-      <div class="mining-container">
-        <div class="mining-card">
-          <h3>SEO</h3>
-          <div class="card-info">
-            <span id="seoProfit">Profit/hour: <a class="gold-text">+30 clicks</a></span>
-            <span class="card-price" id="seoPrice">Price: 500 clicks</span>
-            <span class="card-level" id="seoLevel">Level: 0</span>
-          </div>
-          <button class="buy-button" onclick="buyCard('seo')">Buy</button>
-        </div>
-        <div class="mining-card">
-          <h3>Influencers</h3>
-          <div class="card-info">
-            <span id="influencerProfit">Profit/hour: <a class="gold-text">+60 clicks</a></span>
-            <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
-            <span class="card-level" id="influencerLevel">Level: 0</span>
-          </div>
-          <button class="buy-button" onclick="buyCard('influencer')">Buy</button>
-        </div>
+      <div class="mining-tabs">
+        <button class="mining-button active" onclick="showMiningTab('markets')">Markets</button>
+        <button class="mining-button" onclick="showMiningTab('team')">Team</button>
+        <button class="mining-button" onclick="showMiningTab('legal')">Legal</button>
+        <button class="mining-button" onclick="showMiningTab('specials')">Specials</button>
       </div>
-      <div class="mining-container">
-        <div class="mining-card">
-          <h3>Miners</h3>
-          <div class="card-info">
-            <span id="minerProfit">Profit/hour: <a class="gold-text">+100 clicks</a></span>
-            <span class="card-price" id="minerPrice">Price: 800 clicks</span>
-            <span class="card-level" id="minerLevel">Level: 0</span>
+      <div class="mining-card-wrapper" id="miningCardWrapper">
+        <!-- Markets Tab Cards -->
+        <div class="mining-container" id="marketsTab" style="display: none">
+          <div class="mining-card">
+            <h3>Stacking</h3>
+            <div class="card-info">
+              <span id="stackingProfit">Profit/hour: <a class="gold-text">+300 clicks</a></span>
+              <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
+              <span class="card-level" id="stackingLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('stacking')">Buy</button>
           </div>
-          <button class="buy-button" onclick="buyCard('miner')">Buy</button>
+          <div class="mining-card">
+            <h3>BTC Pairs</h3>
+            <div class="card-info">
+              <span id="btcProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
+              <span class="card-price" id="btcPrice">Price: 8000 clicks</span>
+              <span class="card-level" id="btcLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('btc')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>ETH Pairs</h3>
+            <div class="card-info">
+              <span id="ethProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+              <span class="card-price" id="ethPrice">Price: 10000 clicks</span>
+              <span class="card-level" id="ethLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('eth')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>TON Pairs</h3>
+            <div class="card-info">
+              <span id="tonProfit">Profit/hour: <a class="gold-text">+500 clicks</a></span>
+              <span class="card-price" id="tonPrice">Price: 2000 clicks</span>
+              <span class="card-level" id="tonLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('TON Pairs')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>NOT Pairs</h3>
+            <div class="card-info">
+              <span id="notProfit">Profit/hour: <a class="gold-text">+600 clicks</a></span>
+              <span class="card-price" id="notPrice">Price: 3000 clicks</span>
+              <span class="card-level" id="notLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('NOT Pairs')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>GameFI Tokens</h3>
+            <div class="card-info">
+              <span id="gamefiProfit">Profit/hour: <a class="gold-text">+700 clicks</a></span>
+              <span class="card-price" id="gamefiPrice">Price: 4000 clicks</span>
+              <span class="card-level" id="gamefiLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('GameFI Tokens')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>Meme Coins</h3>
+            <div class="card-info">
+              <span id="memeProfit">Profit/hour: <a class="gold-text">+800 clicks</a></span>
+              <span class="card-price" id="memePrice">Price: 5000 clicks</span>
+              <span class="card-level" id="memeLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('Meme Coins')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>Shit Coins</h3>
+            <div class="card-info">
+              <span id="shitProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
+              <span class="card-price" id="shitPrice">Price: 6000 clicks</span>
+              <span class="card-level" id="shitLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('Shit Coins')">Buy</button>
+          </div>
         </div>
-        <div class="mining-card">
-          <h3>Stacking</h3>
-          <div class="card-info">
-            <span id="stackingProfit">Profit/hour: <a class="gold-text">+300 clicks</a></span>
-            <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
-            <span class="card-level" id="stackingLevel">Level: 0</span>
+
+        <!-- Team Tab Cards -->
+        <div class="mining-container" id="teamTab" style="display: none">
+          <div class="mining-card">
+            <h3>SEO</h3>
+            <div class="card-info">
+              <span id="seoProfit">Profit/hour: <a class="gold-text">+30 clicks</a></span>
+              <span class="card-price" id="seoPrice">Price: 500 clicks</span>
+              <span class="card-level" id="seoLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('seo')">Buy</button>
           </div>
-          <button class="buy-button" onclick="buyCard('stacking')">Buy</button>
+          <div class="mining-card">
+            <h3>Influencers</h3>
+            <div class="card-info">
+              <span id="influencerProfit">Profit/hour: <a class="gold-text">+60 clicks</a></span>
+              <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
+              <span class="card-level" id="influencerLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('influencer')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>Miners</h3>
+            <div class="card-info">
+              <span id="minerProfit">Profit/hour: <a class="gold-text">+100 clicks</a></span>
+              <span class="card-price" id="minerPrice">Price: 800 clicks</span>
+              <span class="card-level" id="minerLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('miner')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>IT Team</h3>
+            <div class="card-info">
+              <span id="itTeamProfit">Profit/hour: <a class="gold-text">+150 clicks</a></span>
+              <span class="card-price" id="itTeamPrice">Price: 700 clicks</span>
+              <span class="card-level" id="itTeamLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('IT Team')">Buy</button>
+          </div>
         </div>
-      </div>
-      <div class="mining-container">
-        <div class="mining-card">
-          <h3>BTC Pairs</h3>
-          <div class="card-info">
-            <span id="btcProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
-            <span class="card-price" id="btcPrice">Price: 8000 clicks</span>
-            <span class="card-level" id="btcLevel">Level: 0</span>
+
+        <!-- Legal Tab Cards -->
+        <div class="mining-container" id="legalTab" style="display: none">
+          <div class="mining-card">
+            <h3>License USA</h3>
+            <div class="card-info">
+              <span id="usaProfit">Profit/hour: <a class="gold-text">+2000 clicks</a></span>
+              <span class="card-price" id="usaPrice">Price: 12000 clicks</span>
+              <span class="card-level" id="usaLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('License USA')">Buy</button>
           </div>
-          <button class="buy-button" onclick="buyCard('btc')">Buy</button>
+          <div class="mining-card">
+            <h3>Licence UAE</h3>
+            <div class="card-info">
+              <span id="uaeProfit">Profit/hour: <a class="gold-text">+2500 clicks</a></span>
+              <span class="card-price" id="uaePrice">Price: 15000 clicks</span>
+              <span class="card-level" id="uaeLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('Licence UAE')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>Licence Europe</h3>
+            <div class="card-info">
+              <span id="europeProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
+              <span class="card-price" id="europePrice">Price: 18000 clicks</span>
+              <span class="card-level" id="europeLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('Licence Europe')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>Licence Australia</h3>
+            <div class="card-info">
+              <span id="australiaProfit">Profit/hour: <a class="gold-text">+3500 clicks</a></span>
+              <span class="card-price" id="australiaPrice">Price: 21000 clicks</span>
+              <span class="card-level" id="australiaLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('Licence Australia')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>License Japan</h3>
+            <div class="card-info">
+              <span id="japanProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
+              <span class="card-price" id="japanPrice">Price: 24000 clicks</span>
+              <span class="card-level" id="japanLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('License Japan')">Buy</button>
+          </div>
+          <div class="mining-card">
+            <h3>License Nigeria</h3>
+            <div class="card-info">
+              <span id="nigeriaProfit">Profit/hour: <a class="gold-text">+4500 clicks</a></span>
+              <span class="card-price" id="nigeriaPrice">Price: 27000 clicks</span>
+              <span class="card-level" id="nigeriaLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('License Nigeria')">Buy</button>
+          </div>
         </div>
-        <div class="mining-card">
-          <h3>ETH Pairs</h3>
-          <div class="card-info">
-            <span id="ethProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-            <span class="card-price" id="ethPrice">Price: 10000 clicks</span>
-            <span class="card-level" id="ethLevel">Level: 0</span>
+
+        <!-- Specials Tab Cards -->
+        <div class="mining-container" id="specialsTab" style="display: none">
+          <div class="mining-card">
+            <h3>Birthday</h3>
+            <div class="card-info">
+              <span id="brProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+              <span class="card-price" id="brPrice">Price: 10000 clicks</span>
+              <span class="card-level" id="brLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('br')">Buy</button>
           </div>
-          <button class="buy-button" onclick="buyCard('eth')">Buy</button>
+          <div class="mining-card">
+            <h3>We have 6 users!</h3>
+            <div class="card-info">
+              <span id="us6Profit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+              <span class="card-price" id="us6Price">Price: 10000 clicks</span>
+              <span class="card-level" id="us6Level">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('us6')">Buy</button>
+          </div>
         </div>
       </div>
     </div>
@@ -932,6 +1110,7 @@
       <h2>Legal Information</h2>
       <div class="legal-info">
         <p>By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
+        <button class="menu-button" href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms Of Service</button>
       </div>
     </div>
   </div>
@@ -973,18 +1152,88 @@
         level: 0
       },
       stacking: {
-        profitPerHour: 300,
+        profitPerHour: 405, // Updated profit for Stacking
         price: 1000,
         level: 0
       },
       btc: {
-        profitPerHour: 900,
+        profitPerHour: 1215, // Updated profit for BTC Pairs
         price: 8000,
         level: 0
       },
       eth: {
+        profitPerHour: 1350, // Updated profit for ETH Pairs
+        price: 10000,
+        level: 0
+      },
+      ton: { // Added TON Pairs
+        profitPerHour: 500, 
+        price: 2000,
+        level: 0
+      },
+      not: { // Added NOT Pairs
+        profitPerHour: 600,
+        price: 3000,
+        level: 0
+      },
+      gamefi: { // Added GameFI Tokens
+        profitPerHour: 700, 
+        price: 4000,
+        level: 0
+      },
+      meme: { // Added Meme Coins
+        profitPerHour: 800, 
+        price: 5000,
+        level: 0
+      },
+      shit: { // Added Shit Coins
+        profitPerHour: 900, 
+        price: 6000,
+        level: 0
+      },
+      itTeam: {
+        profitPerHour: 150,
+        price: 700,
+        level: 0
+      },
+      br: {
         profitPerHour: 1000,
         price: 10000,
+        level: 0
+      },
+      us6: {
+        profitPerHour: 1000,
+        price: 10000,
+        level: 0
+      },
+      licenseUsa: { // Added License USA
+        profitPerHour: 2000, 
+        price: 12000,
+        level: 0
+      },
+      licenceUae: { // Added Licence UAE
+        profitPerHour: 2500, 
+        price: 15000,
+        level: 0
+      },
+      licenceEurope: { // Added Licence Europe
+        profitPerHour: 3000, 
+        price: 18000,
+        level: 0
+      },
+      licenceAustralia: { // Added Licence Australia
+        profitPerHour: 3500, 
+        price: 21000,
+        level: 0
+      },
+      licenseJapan: { // Added License Japan
+        profitPerHour: 4000, 
+        price: 24000,
+        level: 0
+      },
+      licenseNigeria: { // Added License Nigeria
+        profitPerHour: 4500, 
+        price: 27000,
         level: 0
       }
     };
@@ -1084,12 +1333,15 @@
 
     // Function to handle coin click
     function clickCoin() {
-      if (clicksRemaining > 0) { // Check clicksRemaining before decrementing
-        clickCount += clickMultiplier;
-        updateClickCount();
-        showClickText(clickMultiplier);
-        clicksRemaining--; // Decrement clicksRemaining *after* checking
+      if (clicksRemaining > 0) { 
+        clicksRemaining--; // Decrement clicksRemaining *before* checking
         updateLimitBar();
+
+        clickCount += clickMultiplier; // Increment clickCount *after* checking
+        updateClickCount();
+
+        showClickText(clickMultiplier);
+
         if (clicksRemaining === 0) { 
           timeLeft = 5; // 2 minutes
           updateLimitTimer();
@@ -1214,6 +1466,20 @@
         }
         upgradeIndex++;
       }
+    }
+    
+    function showMiningTab(tabName) {
+      document.getElementById('marketsTab').style.display = 'none';
+      document.getElementById('teamTab').style.display = 'none';
+      document.getElementById('legalTab').style.display = 'none';
+      document.getElementById('specialsTab').style.display = 'none';
+
+      document.getElementById(`${tabName}Tab`).style.display = 'grid'; 
+
+      // Update the active button
+      const miningButtons = document.querySelectorAll('.mining-button');
+      miningButtons.forEach(button => button.classList.remove('active'));
+      document.querySelector(`.mining-button[onclick="showMiningTab('${tabName}')"]`).classList.add('active');
     }
 
     // Function to update upgrade costs
@@ -1641,7 +1907,13 @@
     }
 
     let elapsedTime = new Date().getTime() - lastUpdateTime;
-    addEarnPerHour(elapsedTime);
+    
+    //document.addEventListener('DOMContentLoaded', function() {
+    //	document.getElementById("earnedPopup").style.display = "block";
+      //  earned = elapsedTime * (profitPerHour / 3600); // calcuate profit
+        //document.getElementById("earnedValue").textContent = numberWithCommas(earned);
+        //clickCount += earned;
+    //}
 
     // Update click count every second
 	setInterval(addEarnPerHour, 1000);
