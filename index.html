@@ -1638,6 +1638,7 @@
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
         updateClickCount();
+        updateProfitPerHour();
         updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
         alert(`You purchased a ${cardType} card!`);
