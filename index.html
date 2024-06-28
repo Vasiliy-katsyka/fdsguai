@@ -15,6 +15,7 @@
 
     gtag('config', 'G-5KYTW46GZ5');
   </script>
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -1312,7 +1313,23 @@
 
     document.getElementById('loadingPopup').style.display = 'flex'; 
    
-    const blockId = "353"; // Replace with your actual block ID
+	// Initialize Adsgram SDK
+    const AdController = window.Adsgram.init({ blockId: "353" }); // Replace "353" with your actual block ID
+
+    // Function to show an ad
+    function showAd() {
+      AdController.show() // Call show() directly on the AdController
+        .then(result => {
+          if (result.done) {
+            clickCount += 2000; // Add 2k clicks
+            updateClickCount();
+            alert("You earned 2,000 clicks! Thanks for watching the ad.");
+          }
+        })
+        .catch(result => {
+          console.error("Ad show error:", result.description);
+        });
+    }
 
     // Hide loading screen after 4 seconds
     let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
