@@ -15,6 +15,7 @@
 
     gtag('config', 'G-5KYTW46GZ5');
   </script>
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -885,6 +886,7 @@
       <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()">Invite Friend      | +20k</button></div>
       <div class="airdrop-item"><button class="earn-button" onclick="openLobsterCatchPopup()">Game               | +10k</button></div>
       <div class="airdrop-item"><button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium   | +10k</button></div>
+      <div class="airdrop-item"><button class="earn-button" onclick="showAd()">Watch Ad   | +2k</button></div>
     </div>
 
     <div class="popup" id="miningPopup">
@@ -1133,6 +1135,7 @@
     let limitBoostLevel = 0;
     let limitBoostPrice = 1000;
     let isClicking = false;
+    
 
     // Mining card data
     const miningCards = {
@@ -1309,6 +1312,29 @@
     }
 
     document.getElementById('loadingPopup').style.display = 'flex'; 
+   
+    const blockId = "353"; // Replace with your actual block ID
+
+    // Initialize Adsgram SDK
+    const AdController = window.Adsgram.init({ blockId: blockId });
+
+    // Function to show an ad
+    function showAd() {
+      AdController.show()
+      console.log("Showing ad...");
+        .then(result => {
+          if (result.done) {
+            // User watched the ad till the end
+            clickCount += 2000; // Add 2k clicks
+            updateClickCount();
+            alert("You earned 2,000 clicks! Thanks for watching the ad.");
+          }
+        })
+        .catch(result => {
+          // User skipped the ad or an error occurred
+          console.error("Ad show error:", result.description);
+        });
+    }
 
     // Hide loading screen after 4 seconds
     let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
