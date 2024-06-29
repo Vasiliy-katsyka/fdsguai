@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +15,35 @@
   </script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <style>
+    .custom-alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: none; /* Initially hidden */
+      z-index: 100; /* Make sure it's on top */
+    }
+
+    .custom-alert h2 {
+      font-size: 20px;
+      margin-top: 0;
+      color: white; /* White text */
+    }
+
+    .custom-alert button {
+      background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
     body {
       font-family: sans-serif;
       display: flex;
@@ -806,6 +833,10 @@
       </button>
     </div>
 
+  <div class="custom-alert" id="customAlert">
+    <h2></h2> <button onclick="closeAlert()">OK</button>
+  </div>
+
   <div class="limit-bar" id="limitBar">
     <span id="limitValue">100</span>
     <div class="progress-bar">
@@ -1291,23 +1322,23 @@
       if (promoCode === "developer-tester") {
         clickCount += 500000000; // Add 500 million clicks
         updateClickCount();
-        alert("Promo code applied! You've received 500 million clicks!");
+        print("Promo code applied! You've received 500 million clicks!");
       }
       else if (promoCode === "SUMMER24") {
         clickCount += 10000;
         updateClickCount();
-        alert("Promo code applied! You've received 10K clicks!");
+        print("Promo code applied! You've received 10K clicks!");
       } 
       else if (promoCode === "VASILIY939") {
         clickCount += 50000; 
         updateClickCount();
-        alert("Promo code applied! You've received 50K clicks!");
+        print("Promo code applied! You've received 50K clicks!");
       } else if (promoCode === "IDI_NAHUI") {
         clickCount += 50000; 
         updateClickCount();
-        alert("Promo code applied! You've received 50K clicks!"); 
+        print("Promo code applied! You've received 50K clicks!"); 
       } else {
-        alert("Invalid promo code.");
+        print("Invalid promo code.");
       }
     }
 
@@ -1323,7 +1354,7 @@
           if (result.done) {
             clickCount += 2000; // Add 2k clicks
             updateClickCount();
-            alert("You earned 2,000 clicks! Thanks for watching the ad.");
+            print("You earned 2,000 clicks! Thanks for watching the ad.");
           }
         })
         .catch(result => {
@@ -1427,13 +1458,13 @@
         limitBoostPrice = Math.round(limitBoostPrice * 1.5); // Increase price by 150%
         updateClickCount();
         updateLimitBar();
-        alert(`Limit boosted! You can now click ${clicksPerMinuteLimit} times per minute.`);
+        print(`Limit boosted! You can now click ${clicksPerMinuteLimit} times per minute.`);
         // Save the boosted limit and price in localStorage
         localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit);
         localStorage.setItem('limitBoostLevel', limitBoostLevel);
         localStorage.setItem('limitBoostPrice', limitBoostPrice);
       } else {
-        alert("You don't have enough clicks to upgrade the limit!");
+        print("You don't have enough clicks to upgrade the limit!");
       }
     }
 
@@ -1513,7 +1544,7 @@
 
     // Function for "Mining" button
     function miningClick() {
-      alert("Mining feature is under development!");
+      print("Mining feature is under development!");
     }
 
     // Function to open the earn popup
@@ -1558,7 +1589,7 @@
           updateUpgradeCosts();
           updateMiningCardPrices();
           updateMiningCardLevels();
-          alert("Data cleared successfully!");
+          print("Data cleared successfully!");
         }
       }
     }
@@ -1576,13 +1607,13 @@
     // Function to open the YouTube channel
     function openYouTube() {
       if (youtubeBonusClaimed) {
-        alert("You've already claimed this bonus!");
+        print("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://youtube.com/@kvikontent");
       clickCount += 5000;
       updateClickCount();
-      alert("You earned 5,000 clicks! Thanks for subscribing!");
+      print("You earned 5,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       youtubeBonusClaimed = true;
       localStorage.setItem('youtubeBonusClaimed', 'true');
@@ -1594,13 +1625,13 @@
     // Function to subscribe to the Telegram channel
     function subscribeTelegram() {
       if (telegramBonusClaimed) {
-        alert("You've already claimed this bonus!");
+        print("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://t.me/freemusic2023");
       clickCount += 1000;
       updateClickCount();
-      alert("You earned 1,000 clicks! Thanks for subscribing!");
+      print("You earned 1,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       telegramBonusClaimed = true;
       localStorage.setItem('telegramBonusClaimed', 'true');
@@ -1611,7 +1642,7 @@
 
     // Replace Telegram Premium with a 'Buy Premium' button
     function buyPremium() {
-      alert("Not implemented yet");
+      print("Not implemented yet");
     }
 
     // Function for "About" button
@@ -1663,9 +1694,9 @@
         updateClickCount(); // Update click count to trigger profit per hour update
         updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
-        alert(`You purchased a ${cardType} card!`);
+        print(`You purchased a ${cardType} card!`);
       } else {
-        alert("You don't have enough clicks to purchase this card!");
+        print("You don't have enough clicks to purchase this card!");
       }
     }
 
@@ -1722,15 +1753,15 @@
             // Referral successful, add clicks to the referred user's account
             clickCount += 20000; 
             updateClickCount();
-            alert('Referral bonus applied! +20,000 clicks');
+            print('Referral bonus applied! +20,000 clicks');
           } else {
             // Handle referral error
-            alert('Referral bonus application failed. Please try again later.');
+            print('Referral bonus application failed. Please try again later.');
           }
         })
         .catch(error => {
           // Handle network error
-          alert('Network error: Unable to connect to the referral server.');
+          print('Network error: Unable to connect to the referral server.');
         });
       }
     }
@@ -1758,7 +1789,7 @@
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
-          alert('Failed to copy link. Please try again.');
+          print('Failed to copy link. Please try again.');
         }); 
     }
     
@@ -1833,6 +1864,16 @@
       for (let i = 0; i < fakeLobstersToCreate; i++) {
         createLobster(); 
       }
+    }
+
+    function print(alertText) {
+      document.getElementById('customAlert').querySelector('h2').textContent = alertText;
+      document.getElementById('customAlert').style.display = 'block';
+    }
+
+    // Function to close the alert
+    function closeAlert() {
+      document.getElementById('customAlert').style.display = 'none';
     }
 
     // Function to start the game
