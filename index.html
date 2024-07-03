@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -270,45 +271,36 @@
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       border-top: 2px solid #ffae00;
-      justify-content: center;
-    }
-
-    .earnedPopup {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
-      width: 100%;
-      height: 300px;
-      display: none;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      align-items: center;
-      padding: 10px;
-      box-sizing: border-box;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      border-top: 2px solid #ffae00;
-      justify-content: center;
+      justify-content: space-around; /* Distribute buttons evenly */
     }
 
     .bottom-button {
       display: flex;
       flex-direction: column; /* Stack icon above text */
       align-items: center;
-      padding: 5px;  /* Reduced padding */
-      border-radius: 10px;
+      padding: 10px;  /* Reduced padding */
+      border-radius: 15px;
       cursor: pointer;
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQey1AD0yVXPo45q1sXCHOlrwSsgvCKpa78PQ&s) center center/cover no-repeat;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin: 5px;
+      margin: 0 5px; /* Reduced margin */
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
-      font-size: 10px; /* Smaller font size */
-      width: 60px; /* Reduced width */
+      font-size: 12px; /* Smaller font size */
+      width: 70px; /* Reduced width */
+      color: white; /* Set button text to white */
     }
 
     .bottom-button svg {
-      width: 30px;
-      height: 30px;
+      width: 24px;
+      height: 24px;
       margin-bottom: 5px; /* Add space between icon and text */
+      filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5)); /* Add a drop shadow to icons */
+    }
+
+    .bottom-button:hover {
+      background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .menu-button {
@@ -790,7 +782,7 @@
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p style="position: absolute; bottom: 20px;">v1.59</p>
+    <p style="position: absolute; bottom: 20px;">v1.61</p>
   </div>
 
   <div class="title-container">
@@ -860,13 +852,6 @@
       <button onclick="restartGame()">Restart</button>
       <button onclick="closeLobsterCatchPopup()">Quit</button>
     </div>
-  </div>
-
-  <div class="earnedPopup">
-    <button class="close-button" onclick="closeAirdropPopup()">×</button>
-    <h1>You've earned</h1>
-    <span id="earnedValue">100</span>
-    <button class="getEarning">Thank you, Binance</button>
   </div>
 
   <div class="airdrop-popup" id="airdropPopup">
@@ -1319,7 +1304,7 @@
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
-      if (promoCode === "developer_tester") {
+      if (promoCode === "developer-tester") {
         clickCount += 500000000; // Add 500 million clicks
         updateClickCount();
         print("Promo code applied! You've received 500 million clicks!");
@@ -1335,6 +1320,10 @@
         print("Promo code applied! You've received 50K clicks!");
       } else if (promoCode === "IDI_NAHUI") {
         clickCount += 50000; 
+        updateClickCount();
+        print("Promo code applied! You've received 50K clicks!"); 
+      } else if (promoCode === "qwertyui") {
+        clickCount += 30900987; 
         updateClickCount();
         print("Promo code applied! You've received 50K clicks!"); 
       } else {
@@ -1369,7 +1358,20 @@
     }, randomDelay);
     
     function numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; // Add more units
+      let i = 0;
+      while (x >= 1000 && i < units.length - 1) {
+        x /= 1000;
+        i++;
+      }
+      
+      if (x < 1) {
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers less than 1
+      } else if (x < 1000 > 1) {
+        return Math.round(x) + units[i]; // No decimal places for numbers between 1 and 1000
+      } else {
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1000 or greater
+      }
     }
 
     // Update click count display
@@ -1394,8 +1396,10 @@
 
         showClickText(clickMultiplier);
 
-        if (clicksRemaining === 0) { 
-          timeLeft = 5; // 2 minutes
+        if (clicksRemaining <= 0) { 
+          clicksRemaining = clicksPerMinuteLimit; // Reset the limit immediately
+          updateLimitBar();
+          timeLeft = 60; // 2 minutes
           updateLimitTimer();
           setInterval(function() {
             timeLeft--;
@@ -1537,7 +1541,7 @@
     // Function to update upgrade costs
     function updateUpgradeCosts() {
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 200);
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000);
         document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
       }
     }
