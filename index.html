@@ -1207,7 +1207,7 @@
     let limitBoostLevel = 0;
     let limitBoostPrice = 1000;
     let isClicking = false;
-	let showOfflineEarningsPopupFlag = false; 
+ 
 
     // Mining card data
     const miningCards = {
@@ -1332,31 +1332,7 @@
         miningCards[cardType].level = parseInt(localStorage.getItem(`miningCardLevel${cardType}`));
       }
     }
-    
-    if (localStorage.getItem('clicksRemaining')) {
-      clicksRemaining = parseInt(localStorage.getItem('clicksRemaining'));
-    }
-    if (localStorage.getItem('clicksPerMinuteLimit')) {
-      clicksPerMinuteLimit = parseInt(localStorage.getItem('clicksPerMinuteLimit'));
-    }
-    if (localStorage.getItem('limitBoostLevel')) {
-      limitBoostLevel = parseInt(localStorage.getItem('limitBoostLevel'));
-    }
-    if (localStorage.getItem('limitBoostPrice')) {
-      limitBoostPrice = parseInt(localStorage.getItem('limitBoostPrice'));
-    }
 
-    function updateLimitBar() {
-      document.getElementById('limitValue').textContent = clicksRemaining;
-      let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100;
-      document.getElementById('progressFill').style.width = percentage + '%';
-    }
-
-    function updateLimitTimer() {
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-      document.getElementById('limitTimer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
@@ -1443,30 +1419,9 @@
 
     // Function to handle coin click
     function clickCoin() {
-      if (clicksRemaining > 0) { 
-        clicksRemaining--; // Decrement clicksRemaining *before* checking
-        updateLimitBar();
-
-        clickCount += clickMultiplier; // Increment clickCount *after* checking
-        updateClickCount();
-
-        showClickText(clickMultiplier);
-
-        if (clicksRemaining <= 0) { 
-          clicksRemaining = clicksPerMinuteLimit; // Reset the limit immediately
-          updateLimitBar();
-          timeLeft = 60; // 2 minutes
-          updateLimitTimer();
-          setInterval(function() {
-            timeLeft--;
-            updateLimitTimer();
-            if (timeLeft === 0) {
-              clicksRemaining = clicksPerMinuteLimit;
-              updateLimitBar();
-            }
-          }, 1000);
-        }
-      } 
+      clickCount += clickMultiplier; // Increment clickCount *after* checking
+      updateClickCount();
+      showClickText(clickMultiplier);
     }
 
 
@@ -1509,31 +1464,6 @@
         document.getElementById("league").style.color = "#F002FF";
       }
     }
-
-    function upgradeLimit() {
-      if (clickCount >= limitBoostPrice) {
-        clickCount -= limitBoostPrice;
-        clicksPerMinuteLimit += 100; 
-        limitBoostLevel++;
-        limitBoostPrice = Math.round(limitBoostPrice * 1.5); // Increase price by 150%
-        updateClickCount();
-        updateLimitBar();
-        print(`Limit boosted! You can now click ${clicksPerMinuteLimit} times per minute.`);
-        // Save the boosted limit and price in localStorage
-        localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit);
-        localStorage.setItem('limitBoostLevel', limitBoostLevel);
-        localStorage.setItem('limitBoostPrice', limitBoostPrice);
-      } else {
-        print("You don't have enough clicks to upgrade the limit!");
-      }
-    }
-
-    function updateLimitBar() {
-      document.getElementById('limitValue').textContent = clicksRemaining;
-      let percentage = (clicksRemaining / clicksPerMinuteLimit) * 100; 
-      document.getElementById('progressFill').style.width = percentage + '%';
-    }
-
     
     // Function to open the popup
     function openPopup() {
@@ -1811,7 +1741,6 @@
         showOfflineEarningsPopup(offlineEarnings);
         showOfflineEarningsPopupFlag = false; // Reset the flag *after* showing the popup
       }
-      setTimeout(addEarnPerHour, 5000);
     }
     
     // Get Telegram user ID from query parameters
@@ -2191,15 +2120,17 @@
       isClicking = false;
     });
 
+	let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
-    updateLimitBar();
     updateLeague();
     loadClickCount(); // Call this function to load clickCount from localStorage
     addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI update
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
+    
+    setInterval(addEarnPerHour, 1000); 
   </script>
 </body>
 </html>
