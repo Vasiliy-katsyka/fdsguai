@@ -904,8 +904,15 @@
       <div class="airdrop-item"><button class="earn-button" onclick="subscribeTelegram()">Subscribe Telegram | +1k</button></div>
       <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()">Invite Friend      | +20k</button></div>
       <div class="airdrop-item"><button class="earn-button" onclick="openLobsterCatchPopup()">Game               | +10k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="checkTelegramPremium()">Telegram Premium   | +10k</button></div>
+      <div class="airdrop-item"><button class="earn-button" onclick="openDailyRewardsPopup()">Daily Reward   | +10k</button></div>
       <div class="airdrop-item"><button class="earn-button" onclick="showAd()">Watch Ad   | +2k</button></div>
+    </div>
+
+    <div class="popup" id="dailyRewardsPopup">
+      <button class="close-button" onclick="closeDailyRewardsPopup()">×</button>
+      <h2>Daily Rewards</h2>
+      <div id="dailyRewardContainer"></div>
+      <button id="claimDailyRewardButton" class="button" onclick="claimDailyReward()" disabled>Claim Reward</button>
     </div>
 
     <div class="popup" id="miningPopup">
@@ -1973,6 +1980,80 @@
     
     updateProfitPerHour();
 
+    let dailyRewardIndex = 0;
+    const fibonacciRewards = [1000, 2000, 5000, 25000, 50000, 80000, 130000, 210000, 1000000, 5000000]; // 10 days of Fibonacci
+    let lastRewardClaimTime = localStorage.getItem('lastRewardClaimTime') ? parseInt(localStorage.getItem('lastRewardClaimTime')) : 0;
+
+    // Function to update daily reward UI
+    function updateDailyRewardUI() {
+      const dailyRewardContainer = document.getElementById('dailyRewardContainer');
+      dailyRewardContainer.innerHTML = ''; // Clear previous content
+
+      const currentDayReward = fibonacciRewards[dailyRewardIndex];
+      const rewardMessage = `+${numberWithCommas(currentDayReward)} clicks!`;
+      const rewardElement = document.createElement('p');
+      rewardElement.textContent = rewardMessage;
+      dailyRewardContainer.appendChild(rewardElement);
+
+      // Check if the reward is claimable
+      if (isRewardClaimable()) {
+        document.getElementById('claimDailyRewardButton').disabled = false;
+      } else {
+        document.getElementById('claimDailyRewardButton').disabled = true;
+      }
+    }
+
+    // Function to check if the reward is claimable
+    function isRewardClaimable() {
+      const now = new Date().getTime();
+      const timeDifference = now - lastRewardClaimTime;
+      const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+
+      // Calculate GMT+0 time for 9:00 AM
+      const gmtTime = new Date();
+      gmtTime.setUTCHours(9, 0, 0, 0); // Set to 9:00 AM GMT+0
+
+      // Check if it's past 9:00 AM GMT+0 and a day has passed
+      return (timeDifference >= oneDay && now >= gmtTime.getTime()); 
+    }
+
+    function claimDailyReward() {
+      const currentDayReward = fibonacciRewards[dailyRewardIndex];
+
+      // Add the reward to clickCount
+      clickCount += currentDayReward; 
+      updateClickCount();
+
+      // Update last claim time
+      lastRewardClaimTime = new Date().getTime();
+      localStorage.setItem('lastRewardClaimTime', lastRewardClaimTime);
+
+      // Move to the next reward index
+      dailyRewardIndex = (dailyRewardIndex + 1) % fibonacciRewards.length;
+
+      // Reset to the beginning of the Fibonacci sequence on day 11
+      if (dailyRewardIndex === 0) {
+        dailyRewardIndex = 0; // Reset to the first reward
+      }
+
+      // Update UI
+      updateDailyRewardUI();
+      updateProfitPerHour(); // Update profit per hour after multiplier change
+      print('Daily reward claimed!');
+    }
+
+    // Function to open the Daily Rewards popup
+    function openDailyRewardsPopup() {
+      closeEarnPopup();
+      document.getElementById('dailyRewardsPopup').style.display = 'block';
+      updateDailyRewardUI();
+    }
+
+    // Function to close the Daily Rewards popup
+    function closeDailyRewardsPopup() {
+      document.getElementById('dailyRewardsPopup').style.display = 'none';
+    }
+
     // Store the last time the page was updated in localStorage
     let lastUpdateTime = new Date().getTime();
     if (localStorage.getItem('lastUpdateTime')) {
@@ -2031,7 +2112,9 @@
     updateLeague();
 
     // Update click count every 20 seconds for "earn per hour"
-    setInterval(addEarnPerHour, 1000); // Call addEarnPerHour every 20000 milliseconds (20 seconds)
+    setInterval(addEarnPerHour, 1000); 
+    updateDailyRewardUI(); // Initial UI update
+    setInterval(updateDailyRewardUI, 3600000); // Update every hour
   </script>
 </body>
 </html>
