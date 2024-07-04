@@ -85,8 +85,8 @@
     }
 
     .coin {
-      width: 270px;
-      height: 270px;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
       opacity: 100%;
       cursor: pointer;
@@ -554,10 +554,10 @@
 
     .airdrop-popup {
       position: fixed;
-      top: 0;
+      top: -60px;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 120%;
       background: url(https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279137.jpg?size=626&ext=jpg&ga=GA1.1.1141335507.1717632000&semt=ais_user) center center/cover no-repeat;
       display: flex;
       flex-direction: column;
@@ -877,14 +877,6 @@
 
   <div class="custom-alert" id="customAlert">
     <h2></h2> <button onclick="closeAlert()">OK</button>
-  </div>
-
-  <div class="limit-bar" id="limitBar">
-    <span id="limitValue">100</span>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <span id="limitTimer">00:00</span>
   </div>
 
   <div class="lobster-catch-popup" id="lobsterCatchPopup">
@@ -1441,9 +1433,9 @@
     // Update click count display
     function updateClickCount() {
       document.getElementById('clickCount').textContent = numberWithCommas(clickCount); // Format clickCount
-      document.getElementById('clicksPerTap').textContent = clickMultiplier;
+      document.getElementById('clicksPerTap').textContent = numberWithCommas(clickMultiplier)
       // Save data to localStorage
-      localStorage.setItem('clickCount', clickCount);
+      localStorage.setItem('clickCount', Number(clickCount)); 
       localStorage.setItem('clickMultiplier', clickMultiplier);
       localStorage.setItem('upgradeLevel', JSON.stringify(upgradeLevel));
       localStorage.setItem('upgradeCosts', JSON.stringify(upgradeCosts));
@@ -1670,7 +1662,7 @@
     // Function to close the offline earnings popup
     function closeOfflineEarningsPopup() {
       document.getElementById('offlineEarningsPopup').style.display = 'none';
-      showOfflineEarningsPopupFlag = true; // Set flag to show the popup again next time
+      showOfflineEarningsPopupFlag = true; // Set flag to true *after* the popup is closed
     }
     // Function to open the legal info popup
     function openLegalInfoPopup() {
@@ -1813,9 +1805,11 @@
       // Update lastUpdateTime in localStorage
       lastUpdateTime = new Date().getTime();
       localStorage.setItem('lastUpdateTime', lastUpdateTime);
+
+      // Only show the popup if the flag is true
       if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
         showOfflineEarningsPopup(offlineEarnings);
-        showOfflineEarningsPopupFlag = false; // Reset the flag after showing
+        showOfflineEarningsPopupFlag = false; // Reset the flag *after* showing the popup
       }
       setTimeout(addEarnPerHour, 5000);
     }
@@ -2128,6 +2122,19 @@
       updateDailyRewardUI();
     }
 
+    function loadClickCount() {
+      let storedClickCount = localStorage.getItem('clickCount');
+      if (storedClickCount) { // Check if the value exists
+        clickCount = Number(storedClickCount);  // Use Number to ensure a number
+        if (isNaN(clickCount)) { // Handle the case where storedClickCount is invalid
+          clickCount = 0; 
+        }
+      } else {
+        clickCount = 0; // Initialize to 0 if nothing is stored
+      }
+      updateClickCount(); // Update the display after loading
+    }
+
     // Function to close the Daily Rewards popup
     function closeDailyRewardsPopup() {
       document.getElementById('dailyRewardsPopup').style.display = 'none';
@@ -2136,7 +2143,7 @@
     // Store the last time the page was updated in localStorage
     let lastUpdateTime = new Date().getTime();
     if (localStorage.getItem('lastUpdateTime')) {
-      lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime'));
+      lastUpdateTime = Number(localStorage.getItem('lastUpdateTime'));
     }
 
     let elapsedTime = new Date().getTime() - lastUpdateTime;
@@ -2189,6 +2196,7 @@
     updateProfitPerHour();
     updateLimitBar();
     updateLeague();
+    loadClickCount(); // Call this function to load clickCount from localStorage
     addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI update
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
