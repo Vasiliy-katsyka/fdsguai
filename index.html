@@ -658,6 +658,53 @@
       100% { transform: rotate(360deg); }
     }
     
+    .offline-earnings-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none; /* Initially hidden */
+      z-index: 10;
+      color: white;
+    }
+
+    .offline-earnings-popup h2 {
+      margin-top: 0;
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .offline-earnings-popup .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #800080;
+    }
+
+    .offline-earnings-popup .close-button:hover {
+      color: red;
+    }
+
+    .offline-earnings-popup .earnings-message {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    .offline-earnings-popup .earnings-amount {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
     .lobster-catch-popup {
       position: fixed;
       top: 0; /* Set top to 0 for full-screen */
@@ -915,6 +962,13 @@
       <button id="claimDailyRewardButton" class="button" onclick="claimDailyReward()" disabled>Claim Reward</button>
     </div>
 
+    <div class="offline-earnings-popup" id="offlineEarningsPopup">
+      <button class="close-button" onclick="closeOfflineEarningsPopup()">×</button>
+      <h2>Offline Earnings</h2>
+      <p class="earnings-message">You earned some clicks while you were away!</p>
+      <p class="earnings-amount" id="offlineEarningsAmount">0</p>
+    </div>
+
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
       <h2>Mining</h2>
@@ -1161,7 +1215,7 @@
     let limitBoostLevel = 0;
     let limitBoostPrice = 1000;
     let isClicking = false;
-    
+	let showOfflineEarningsPopupFlag = false; 
 
     // Mining card data
     const miningCards = {
@@ -1608,6 +1662,16 @@
       }
     }
 
+    function showOfflineEarningsPopup(offlineEarnings) {
+      document.getElementById('offlineEarningsAmount').textContent = numberWithCommas(offlineEarnings);
+      document.getElementById('offlineEarningsPopup').style.display = 'block';
+    }
+
+    // Function to close the offline earnings popup
+    function closeOfflineEarningsPopup() {
+      document.getElementById('offlineEarningsPopup').style.display = 'none';
+      showOfflineEarningsPopupFlag = true; // Set flag to show the popup again next time
+    }
     // Function to open the legal info popup
     function openLegalInfoPopup() {
       document.getElementById('legalInfoPopup').style.display = 'block';
@@ -1735,10 +1799,25 @@
 
     // Function to add "earn per hour" to click count
     function addEarnPerHour() {
+      // Get profit per hour from localStorage
       let profitPerHour = parseInt(localStorage.getItem('profitPerHour')); 
-      let earnEverySecond = Math.round(profitPerHour / 3600); 
-      clickCount += earnEverySecond;
+
+      // Calculate time since last update
+      let elapsedTime = new Date().getTime() - lastUpdateTime;
+      let offlineEarnings = Math.round((profitPerHour / 3600) * (elapsedTime / 1000)); // Calculate clicks earned offline
+
+      // Add offline earnings to clickCount
+      clickCount += offlineEarnings;
       updateClickCount();
+
+      // Update lastUpdateTime in localStorage
+      lastUpdateTime = new Date().getTime();
+      localStorage.setItem('lastUpdateTime', lastUpdateTime);
+      if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
+        showOfflineEarningsPopup(offlineEarnings);
+        showOfflineEarningsPopupFlag = false; // Reset the flag after showing
+      }
+      setTimeout(addEarnPerHour, 5000);
     }
     
     // Get Telegram user ID from query parameters
@@ -2110,9 +2189,7 @@
     updateProfitPerHour();
     updateLimitBar();
     updateLeague();
-
-    // Update click count every 20 seconds for "earn per hour"
-    setInterval(addEarnPerHour, 1000); 
+    addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI update
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
   </script>
