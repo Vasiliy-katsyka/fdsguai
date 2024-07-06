@@ -1205,6 +1205,7 @@
     let limitBoostLevel = 0;
     let limitBoostPrice = 1000;
     let isClicking = false;
+    var WebApp = window.Telegram.WebApp;
  
 
     // Mining card data
@@ -1337,27 +1338,27 @@
       if (promoCode === "developer-tester") {
         clickCount += 500000000; // Add 500 million clicks
         updateClickCount();
-        print("Promo code applied! You've received 500 million clicks!");
+        WebApp.showAlert("Promo code applied! You've received 500 million clicks!");
       }
       else if (promoCode === "SUMMER24") {
         clickCount += 10000;
         updateClickCount();
-        print("Promo code applied! You've received 10K clicks!");
+        WebApp.showAlert("Promo code applied! You've received 10K clicks!");
       } 
       else if (promoCode === "VASILIY939") {
         clickCount += 50000; 
         updateClickCount();
-        print("Promo code applied! You've received 50K clicks!");
+        WebApp.showAlert("Promo code applied! You've received 50K clicks!");
       } else if (promoCode === "IDI_NAHUI") {
         clickCount += 50000; 
         updateClickCount();
-        print("Promo code applied! You've received 50K clicks!"); 
+        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
       } else if (promoCode === "qwertyui") {
         clickCount += 30900987; 
         updateClickCount();
-        print("Promo code applied! You've received 50K clicks!"); 
+        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
       } else {
-        print("Invalid promo code.");
+        WebApp.showAlert("Invalid promo code.");
       }
     }
 
@@ -1373,7 +1374,7 @@
           if (result.done) {
             clickCount += 2000; // Add 2k clicks
             updateClickCount();
-            print("You earned 2,000 clicks! Thanks for watching the ad.");
+            WebApp.showAlert("You earned 2,000 clicks! Thanks for watching the ad.");
           }
         })
         .catch(result => {
@@ -1532,7 +1533,7 @@
 
     // Function for "Mining" button
     function miningClick() {
-      print("Mining feature is under development!");
+      WebApp.showAlert("Mining feature is under development!");
     }
 
     // Function to open the earn popup
@@ -1577,7 +1578,7 @@
           updateUpgradeCosts();
           updateMiningCardPrices();
           updateMiningCardLevels();
-          print("Data cleared successfully!");
+          WebApp.showAlert("Data cleared successfully!");
         }
       }
     }
@@ -1605,13 +1606,13 @@
     // Function to open the YouTube channel
     function openYouTube() {
       if (youtubeBonusClaimed) {
-        print("You've already claimed this bonus!");
+        WebApp.showAlert("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://youtube.com/@kvikontent");
       clickCount += 5000;
       updateClickCount();
-      print("You earned 5,000 clicks! Thanks for subscribing!");
+      WebApp.showAlert("You earned 5,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       youtubeBonusClaimed = true;
       localStorage.setItem('youtubeBonusClaimed', 'true');
@@ -1623,13 +1624,13 @@
     // Function to subscribe to the Telegram channel
     function subscribeTelegram() {
       if (telegramBonusClaimed) {
-        print("You've already claimed this bonus!");
+        WebApp.showAlert("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://t.me/freemusic2023");
       clickCount += 1000;
       updateClickCount();
-      print("You earned 1,000 clicks! Thanks for subscribing!");
+      WebApp.showAlert("You earned 1,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       telegramBonusClaimed = true;
       localStorage.setItem('telegramBonusClaimed', 'true');
@@ -1640,7 +1641,7 @@
 
     // Replace Telegram Premium with a 'Buy Premium' button
     function buyPremium() {
-      print("Not implemented yet");
+      WebApp.showAlert("Not implemented yet");
     }
 
     // Function for "About" button
@@ -1692,9 +1693,9 @@
         updateClickCount(); // Update click count to trigger profit per hour update
         updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
-        print(`You purchased a ${cardType} card!`);
+        WebApp.showAlert(`You purchased a ${cardType} card!`);
       } else {
-        print("You don't have enough clicks to purchase this card!");
+        WebApp.showAlert("You don't have enough clicks to purchase this card!");
       }
     }
 
@@ -1767,15 +1768,15 @@
             // Referral successful, add clicks to the referred user's account
             clickCount += 20000; 
             updateClickCount();
-            print('Referral bonus applied! +20,000 clicks');
+            WebApp.showAlert('Referral bonus applied! +20,000 clicks');
           } else {
             // Handle referral error
-            print('Referral bonus application failed. Please try again later.');
+            WebApp.showAlert('Referral bonus application failed. Please try again later.');
           }
         })
         .catch(error => {
           // Handle network error
-          print('Network error: Unable to connect to the referral server.');
+          WebApp.showAlert('Network error: Unable to connect to the referral server.');
         });
       }
     }
@@ -1803,7 +1804,7 @@
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
-          print('Failed to copy link. Please try again.');
+          WebApp.showAlert('Failed to copy link. Please try again.');
         }); 
     }
     
@@ -2039,7 +2040,7 @@
       // Update UI
       updateDailyRewardUI();
       updateProfitPerHour(); // Update profit per hour after multiplier change
-      print('Daily reward claimed!');
+      WebApp.showAlert('Daily reward claimed!');
     }
 
     // Function to open the Daily Rewards popup
@@ -2118,7 +2119,7 @@
       isClicking = false;
     });
 
-    let showOfflineEarningsPopupFlag = false;
+	let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
