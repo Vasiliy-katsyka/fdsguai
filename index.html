@@ -410,6 +410,7 @@
       width: 120px;
       height: 120px;
       background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
+      position: relative;
     }
 
     .mining-card h3 {
@@ -444,8 +445,9 @@
     }
 
     .mining-card .buy-button {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #fff;
       padding: 8px 16px;
       border: none;
       border-radius: 5px;
@@ -458,6 +460,49 @@
     .mining-card .buy-button:hover {
       background-color: #4b0082;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .timer-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      border-radius: 15px; /* Match card's border-radius */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none; /* Initially hidden */
+    }
+
+    .timer-overlay .timer-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .timer-overlay .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid black; /* Initial color */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .timer-overlay .spinner.yellow {
+      border-top-color: yellow; /* Yellow top border */
+    }
+
+    .timer-overlay .spinner.half-yellow {
+      border-top-color: yellow; /* Yellow top border */
+      border-bottom-color: black; /* Black bottom border */
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .mining-container {
@@ -477,8 +522,9 @@
     }
 
     .mining-button {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #fff;
       padding: 10px 20px;
       align-items: center;
       margin-top: 20px;
@@ -1005,6 +1051,10 @@
               <span class="card-level" id="stackingLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('stacking')">Buy</button>
+            <div class="timer-overlay" id="stackingTimerOverlay">
+              <span class="timer-text" id="stackingTimer">30</span>
+              <div class="spinner" id="stackingSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>BTC Pairs</h3>
@@ -1014,6 +1064,10 @@
               <span class="card-level" id="btcLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('btc')">Buy</button>
+            <div class="timer-overlay" id="btcTimerOverlay">
+              <span class="timer-text" id="btcTimer">30</span>
+              <div class="spinner" id="btcSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>ETH Pairs</h3>
@@ -1023,6 +1077,10 @@
               <span class="card-level" id="ethLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('eth')">Buy</button>
+            <div class="timer-overlay" id="ethTimerOverlay">
+              <span class="timer-text" id="ethTimer">30</span>
+              <div class="spinner" id="ethSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>TON Pairs</h3>
@@ -1032,6 +1090,10 @@
               <span class="card-level" id="tonLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('ton')">Buy</button>
+            <div class="timer-overlay" id="tonTimerOverlay">
+              <span class="timer-text" id="tonTimer">30</span>
+              <div class="spinner" id="tonSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>NOT Pairs</h3>
@@ -1041,6 +1103,10 @@
               <span class="card-level" id="notLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('not')">Buy</button>
+            <div class="timer-overlay" id="notTimerOverlay">
+              <span class="timer-text" id="notTimer">30</span>
+              <div class="spinner" id="notSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>GameFI Tokens</h3>
@@ -1050,6 +1116,10 @@
               <span class="card-level" id="gamefiLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('gamefi')">Buy</button>
+            <div class="timer-overlay" id="gamefiTimerOverlay">
+              <span class="timer-text" id="gamefiTimer">30</span>
+              <div class="spinner" id="gamefiSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Meme Coins</h3>
@@ -1059,6 +1129,10 @@
               <span class="card-level" id="memeLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('meme')">Buy</button>
+            <div class="timer-overlay" id="memeTimerOverlay">
+              <span class="timer-text" id="memeTimer">30</span>
+              <div class="spinner" id="memeSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Shit Coins</h3>
@@ -1068,6 +1142,10 @@
               <span class="card-level" id="shitLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('shit')">Buy</button>
+            <div class="timer-overlay" id="shitTimerOverlay">
+              <span class="timer-text" id="shitTimer">30</span>
+              <div class="spinner" id="shitSpinner"></div>
+            </div>
           </div>
         </div>
 
@@ -1081,6 +1159,10 @@
               <span class="card-level" id="seoLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('seo')">Buy</button>
+            <div class="timer-overlay" id="seoTimerOverlay">
+              <span class="timer-text" id="seoTimer">30</span>
+              <div class="spinner" id="seoSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Influencers</h3>
@@ -1090,6 +1172,10 @@
               <span class="card-level" id="influencerLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('influencer')">Buy</button>
+            <div class="timer-overlay" id="influencerTimerOverlay">
+              <span class="timer-text" id="influencerTimer">30</span>
+              <div class="spinner" id="influencerSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Miners</h3>
@@ -1099,6 +1185,10 @@
               <span class="card-level" id="minerLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('miner')">Buy</button>
+            <div class="timer-overlay" id="minerTimerOverlay">
+              <span class="timer-text" id="minerTimer">30</span>
+              <div class="spinner" id="minerSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>IT Team</h3>
@@ -1108,6 +1198,10 @@
               <span class="card-level" id="itTeamLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('itTeam')">Buy</button>
+            <div class="timer-overlay" id="itTeamTimerOverlay">
+              <span class="timer-text" id="itTeamTimer">30</span>
+              <div class="spinner" id="itTeamSpinner"></div>
+            </div>
           </div>
         </div>
 
@@ -1121,6 +1215,10 @@
               <span class="card-level" id="usaLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('usa')">Buy</button>
+            <div class="timer-overlay" id="usaTimerOverlay">
+              <span class="timer-text" id="usaTimer">30</span>
+              <div class="spinner" id="usaSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Licence UAE</h3>
@@ -1130,6 +1228,10 @@
               <span class="card-level" id="uaeLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('uae')">Buy</button>
+            <div class="timer-overlay" id="uaeTimerOverlay">
+              <span class="timer-text" id="uaeTimer">30</span>
+              <div class="spinner" id="uaeSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Licence Europe</h3>
@@ -1139,6 +1241,10 @@
               <span class="card-level" id="europeLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('europe')">Buy</button>
+            <div class="timer-overlay" id="europeTimerOverlay">
+              <span class="timer-text" id="europeTimer">30</span>
+              <div class="spinner" id="europeSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>Licence Australia</h3>
@@ -1148,6 +1254,10 @@
               <span class="card-level" id="australiaLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('australia')">Buy</button>
+            <div class="timer-overlay" id="australiaTimerOverlay">
+              <span class="timer-text" id="australiaTimer">30</span>
+              <div class="spinner" id="australiaSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>License Japan</h3>
@@ -1157,6 +1267,10 @@
               <span class="card-level" id="japanLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('japan')">Buy</button>
+            <div class="timer-overlay" id="japanTimerOverlay">
+              <span class="timer-text" id="japanTimer">30</span>
+              <div class="spinner" id="japanSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>License Nigeria</h3>
@@ -1166,6 +1280,10 @@
               <span class="card-level" id="nigeriaLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('nigeria')">Buy</button>
+            <div class="timer-overlay" id="nigeriaTimerOverlay">
+              <span class="timer-text" id="nigeriaTimer">30</span>
+              <div class="spinner" id="nigeriaSpinner"></div>
+            </div>
           </div>
         </div>
 
@@ -1179,6 +1297,10 @@
               <span class="card-level" id="brLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('br')">Buy</button>
+            <div class="timer-overlay" id="brTimerOverlay">
+              <span class="timer-text" id="brTimer">30</span>
+              <div class="spinner" id="brSpinner"></div>
+            </div>
           </div>
           <div class="mining-card">
             <h3>We have 6 users!</h3>
@@ -1188,6 +1310,10 @@
               <span class="card-level" id="us6Level">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('us6')">Buy</button>
+            <div class="timer-overlay" id="us6TimerOverlay">
+              <span class="timer-text" id="us6Timer">30</span>
+              <div class="spinner" id="us6Spinner"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1233,6 +1359,7 @@
     let isClicking = false;
     var WebApp = window.Telegram.WebApp;
  
+    let cardCooldown = {};
 
     // Mining card data
     const miningCards = {
@@ -1737,12 +1864,48 @@
         updateClickCount(); // Update click count to trigger profit per hour update
         updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
-        WebApp.showAlert(`You purchased a ${cardType} card!`);
+        cardCooldown[cardType] = 30; 
+        showCardCooldown(cardType);
+        startCooldownTimer(cardType);
+        WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
+      } else if (cardCooldown[cardType]) {
+        WebApp.showAlert("Please wait for the cooldown timer to expire.");
       } else {
         WebApp.showAlert("You don't have enough clicks to purchase this card!");
       }
     }
 
+    function showCardCooldown(cardType) {
+      document.getElementById(`${cardType}TimerOverlay`).style.display = 'flex';
+      document.getElementById(`${cardType}Timer`).textContent = cardCooldown[cardType];
+    }
+
+    function hideCardCooldown(cardType) {
+      document.getElementById(`${cardType}TimerOverlay`).style.display = 'none';
+    }
+
+    function startCooldownTimer(cardType) {
+      let timer = setInterval(() => {
+        cardCooldown[cardType]--;
+        document.getElementById(`${cardType}Timer`).textContent = cardCooldown[cardType];
+
+        // Update spinner
+        let spinner = document.getElementById(`${cardType}Spinner`);
+        if (cardCooldown[cardType] === 0) {
+          clearInterval(timer);
+          hideCardCooldown(cardType);
+          cardCooldown[cardType] = false;
+          spinner.classList.remove('yellow', 'half-yellow'); 
+          spinner.classList.add('black');
+        } else if (cardCooldown[cardType] <= 15) {
+          spinner.classList.remove('yellow');
+          spinner.classList.add('half-yellow');
+        } else {
+          spinner.classList.remove('half-yellow');
+          spinner.classList.add('yellow');
+        }
+      }, 1000); // Update every second
+    }
 
     // Function to update mining card levels in the UI and localStorage
     function updateMiningCardLevels() {
