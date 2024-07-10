@@ -16,6 +16,7 @@
     gtag('config', 'G-5KYTW46GZ5');
   </script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <style>
     .custom-alert {
       position: fixed;
@@ -889,6 +890,30 @@
       width: 0%;
       transition: width 0.3s ease;
     }
+    
+    .airdrop-popup button {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+        
+    #ton-connect button {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -966,28 +991,28 @@
   </div>
 
   <div class="airdrop-popup" id="airdropPopup">
-  	<button class="close-button" onclick="closeAirdropPopup()">×</button>
+    <button class="close-button" onclick="closeAirdropPopup()">×</button>
     <div class="logo">
       <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
     </div>
-    <h2>Get ready, Airdrop is coming soon!</h2>
-    <div class="airdrop-list">
-      <div class="airdrop-item">
-        <div class="check-mark green"></div>
-        <span>Inviting auditory</span>
-      </div>
-      <div class="airdrop-item">
-        <div class="check-mark"></div>
-        <span>Inviting partners</span>
-      </div>
-      <div class="airdrop-item">
-        <div class="check-mark"></div>
-        <span>Key partnerships are coming</span>
-      </div>
-      <div class="airdrop-item">
-        <div class="check-mark"></div>
-        <span>Airdrop task list</span>
-      </div>
+    <div class="airdrop-content">
+      <h2>Airdrop!</h2>
+      <p>Get your share of LOB tokens.</p>
+
+      <!-- TONConnect Button -->
+      <div id="ton-connect"></div> 
+      <script>
+        // Initialize TONConnect UI when the popup opens
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+          manifestUrl: 'https://vasiliy-katsyka.github.io/fdsguai/tonconnect-manifest.json',
+          buttonRootId: 'ton-connect'
+        });
+        tonConnectUI.uiOptions = {
+          twaReturnUrl: 'https://t.me/lobster_coin_bot/lobstercoin'
+        };
+      </script>
+
+      <button id="claimAirdropButton" onclick="claimAirdrop()" disabled>Claim Airdrop</button>
     </div>
   </div>
 
@@ -1633,15 +1658,6 @@
     function closeAirdropPopup() {
       document.getElementById('popup').style.display = 'none';
     }
-
-    function openAirdrop() {
-      document.getElementById('airdropPopup').style.display = 'flex';
-    }
-
-    function closeAirdropPopup() {
-      document.getElementById('airdropPopup').style.display = 'none';
-    }
-
     let youtubeBonusClaimed = localStorage.getItem('youtubeBonusClaimed') === 'true';
     let telegramBonusClaimed = localStorage.getItem('telegramBonusClaimed') === 'true';
     let premiumBonusClaimed = localStorage.getItem('premiumBonusClaimed') === 'true';
@@ -2259,6 +2275,78 @@
       updateDailyRewardUI();
     }
 
+    let connectedWallet = null;
+
+    // Load wallet from localStorage on page load
+    if (localStorage.getItem('connectedWallet')) {
+      connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
+      // Enable the claim button if wallet is loaded
+      document.getElementById('claimAirdropButton').disabled = false; 
+    }
+
+    // Function to connect to a TON wallet
+    async function connectToWallet() {
+      try {
+        connectedWallet = await tonConnectUI.connectWallet();
+        console.log("Connected wallet:", connectedWallet);
+        WebApp.showAlert("Wallet connected successfully!");
+        // Save the connected wallet to localStorage
+        localStorage.setItem('connectedWallet', JSON.stringify(connectedWallet));
+
+        // Enable the claim button
+        document.getElementById('claimAirdropButton').disabled = false;
+      } catch (error) {
+        console.error("Error connecting to wallet:", error);
+        WebApp.showAlert("Error connecting to wallet. Please try again.");
+      }
+    }
+
+    // Function to claim the airdrop
+    async function claimAirdrop() {
+      if (!connectedWallet) {
+        WebApp.showAlert("Please connect your TON wallet first.");
+        return;
+      }
+
+      const amount = Math.floor(clickCount / 1000); // Calculate LOB amount
+      if (amount <= 0) {
+        WebApp.showAlert("You don't have enough clicks to claim the airdrop.");
+        return;
+      }
+
+      try {
+        // Send the airdrop using the TON SDK
+        // ... (Your TON SDK code for sending the transaction) ... 
+        const response = await ton.sendTransaction({
+          from: '<YOUR_WALLET_ADDRESS>', // Your wallet address
+          to: connectedWallet.address, // Connected wallet's address
+          value: ton.utils.toNano(amount), // LOB amount to send (in nano-grams)
+          bounce: false
+        });
+        console.log("Transaction sent:", response);
+        WebApp.showAlert(`Airdrop sent! You received ${amount} LOB`);
+
+        // You might want to disable the claim button after a successful send
+        document.getElementById('claimAirdropButton').disabled = true; 
+      } catch (error) {
+        console.error("Error sending airdrop:", error);
+        WebApp.showAlert("Error sending airdrop. Please try again.");
+      }
+    }
+
+    // Function to open the Airdrop popup
+    function openAirdrop() {
+      document.getElementById('airdropPopup').style.display = 'block';
+
+      // Reset the claim button state
+      document.getElementById('claimAirdropButton').disabled = !connectedWallet;
+    }
+
+    // Function to close the Airdrop popup
+    function closeAirdropPopup() {
+      document.getElementById('airdropPopup').style.display = 'none';
+    }
+    
     function loadClickCount() {
       let storedClickCount = localStorage.getItem('clickCount');
       if (storedClickCount) { // Check if the value exists
