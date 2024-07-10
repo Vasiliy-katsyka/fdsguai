@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -669,6 +670,7 @@
       border-radius: 50%;
       box-shadow: 0 0 60px yellow; /* Yellow gradient shadow */
       margin-buttom: 90px;
+      margin-left: 33%;
     }
 
     .airdrop-popup .logo img {
@@ -906,7 +908,8 @@
     #ton-connect button {
       background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
       backdrop-filter: blur(5px); /* Apply blur effect */
-      color: #000;
+      margin-left: 33%;
+      color: #fff;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -1011,8 +1014,6 @@
           twaReturnUrl: 'https://t.me/lobster_coin_bot/lobstercoin'
         };
       </script>
-
-      <button id="claimAirdropButton" onclick="claimAirdrop()" disabled>Claim Airdrop</button>
     </div>
   </div>
 
@@ -2416,7 +2417,7 @@
       isClicking = false;
     });
 
-	let showOfflineEarningsPopupFlag = false;
+    let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
