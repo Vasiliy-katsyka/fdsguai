@@ -892,27 +892,17 @@
       width: 0%;
       transition: width 0.3s ease;
     }
-    
+        
     .airdrop-popup button {
       background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
       backdrop-filter: blur(5px); /* Apply blur effect */
-      color: #000;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-        
-    #ton-connect button {
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      margin-left: 33%;
       color: #fff;
+      justify-content: center;
+      align-items: center;
+      margin-left: 32%;
       padding: 10px 20px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
       margin-top: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -995,9 +985,7 @@
 
   <div class="airdrop-popup" id="airdropPopup">
     <button class="close-button" onclick="closeAirdropPopup()">×</button>
-    <div class="logo">
-      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
-    </div>
+    <img src="https://cdn.midjourney.com/6a5f34ab-267b-49af-97c5-1f3c56043c7e/0_2.png" alt="Lobster Swimming in Money" width="100%" height="auto">
     <div class="airdrop-content">
       <h2>Airdrop!</h2>
       <p>Get your share of LOB tokens.</p>
@@ -2417,7 +2405,7 @@
       isClicking = false;
     });
 
-    let showOfflineEarningsPopupFlag = false;
+	let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
