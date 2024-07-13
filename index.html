@@ -2388,9 +2388,8 @@
     const coin = document.querySelector('.coin');
     const clickText = document.getElementById('clickText');
     coin.addEventListener('touchstart', (event) => {
-      if (!isClicking) { // Only trigger if not already clicking
-        isClicking = true; 
-
+      if (!isClicking) {
+        isClicking = true;
         clickCount += clickMultiplier;
         updateClickCount();
 
@@ -2399,25 +2398,26 @@
         let touchY = event.touches[0].clientY;
 
         // Position the click text
-        clickText.style.left = touchX + 'px';
-        clickText.style.top = touchY + 'px';
+        clickText.style.left = touchX + 'px'; // Adjust for coin's position if needed
+        clickText.style.top = touchY + 'px'; // Adjust for coin's position if needed
         clickText.textContent = `+${clickMultiplier}`;
         clickText.classList.remove('fly-up');
 
         clicksRemaining--;
         updateLimitBar();
 
-        // Initiate the fly-up animation
         setTimeout(() => {
+          isClicking = false;
           clickText.classList.add('fly-up');
-          isClicking = false; // Reset the flag after the animation starts
         }, 100); 
       }
-    }); 
+    });
 
-    // No need for a separate 'touchend' event in this case
+    coin.addEventListener('touchend', () => {
+      isClicking = false;
+    });
 
-	let showOfflineEarningsPopupFlag = false;
+    let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
