@@ -417,10 +417,11 @@
 
     .mining-card h3 {
       margin-top: 0;
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      /*background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 20px;
+      -webkit-text-fill-color: transparent;*/
+      color: white;
+      font-size: 13px;
       margin-buttom: 1px;
     }
 
@@ -1292,11 +1293,11 @@
         <!-- Specials Tab Cards -->
         <div class="mining-container" id="specialsTab" style="display: none">
           <div class="mining-card">
-            <h3>Birthday</h3>
+            <h3>Ed Sheeran</h3>
             <div class="card-info">
-              <span id="brProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="brPrice">Price: 10000 clicks</span>
-              <span class="card-level" id="brLevel">Level: 0</span>
+              <span id="edProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
+              <span class="card-price" id="edPrice">Price: 15000 clicks</span>
+              <span class="card-level" id="edLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('br')">Buy</button>
             <div class="timer-overlay" id="brTimerOverlay">
@@ -1305,11 +1306,37 @@
             </div>
           </div>
           <div class="mining-card">
-            <h3>We have 6 users!</h3>
+            <h3>We have 30 users!</h3>
             <div class="card-info">
               <span id="us6Profit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
               <span class="card-price" id="us6Price">Price: 10000 clicks</span>
               <span class="card-level" id="us6Level">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('us6')">Buy</button>
+            <div class="timer-overlay" id="us6TimerOverlay">
+              <span class="timer-text" id="us6Timer">30</span>
+              <div class="spinner" id="us6Spinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
+            <h3>Elon Musk</h3>
+            <div class="card-info">
+              <span id="elonProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+              <span class="card-price" id="elonPrice">Price: 10000 clicks</span>
+              <span class="card-level" id="elonLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('us6')">Buy</button>
+            <div class="timer-overlay" id="us6TimerOverlay">
+              <span class="timer-text" id="us6Timer">30</span>
+              <div class="spinner" id="us6Spinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
+            <h3>Dubai Office</h3>
+            <div class="card-info">
+              <span id="dubaiProfit">Profit/hour: <a class="gold-text">+5000 clicks</a></span>
+              <span class="card-price" id="dubaiPrice">Price: 23000 clicks</span>
+              <span class="card-level" id="dubaiLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('us6')">Buy</button>
             <div class="timer-overlay" id="us6TimerOverlay">
@@ -1449,14 +1476,24 @@
         price: 700,
         level: 0
       },
-      br: {
-        profitPerHour: 1000,
-        price: 10000,
+      ed: {
+        profitPerHour: 3000,
+        price: 15000,
         level: 0
       },
       us6: {
         profitPerHour: 1000,
         price: 10000,
+        level: 0
+      },
+      elon: {
+        profitPerHour: 1000,
+        price: 10000,
+        level: 0
+      },
+      dubai: {
+        profitPerHour: 5000,
+        price: 23000,
         level: 0
       },
       usa: { // Added License USA
