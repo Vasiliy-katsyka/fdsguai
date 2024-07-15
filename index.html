@@ -942,7 +942,7 @@
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p style="position: absolute; bottom: 20px;">v1.63</p>
+    <p style="position: absolute; bottom: 20px;">v1.61</p>
   </div>
 
   <div class="title-container">
@@ -1234,14 +1234,14 @@
             <img src="https://cdn.midjourney.com/d86dc31d-13b0-4a2c-be36-d4716f6e8ad9/0_1.png" alt="Card image" />
             <h3>Hacking Team</h3>
             <div class="card-info">
-              <span id="hackTeamProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="hackTeamPrice">Price: 1000 clicks</span>
-              <span class="card-level" id="hackTeamLevel">Level: 0</span>
+              <span id="hackProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
+              <span class="card-price" id="hackPrice">Price: 1000 clicks</span>
+              <span class="card-level" id="hackLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('hack')">Buy</button>
-            <div class="timer-overlay" id="hackTeamTimerOverlay">
-              <span class="timer-text" id="hackTeamTimer">30</span>
-              <div class="spinner" id="itTeamSpinner"></div>
+            <div class="timer-overlay" id="hackTimerOverlay">
+              <span class="timer-text" id="hackTimer">30</span>
+              <div class="spinner" id="hackSpinner"></div>
             </div>
           </div>
         </div>
@@ -1563,14 +1563,14 @@
         price: 23000,
         level: 0
       },
-      usa: { // Added License USA
-        profitPerHour: 2000, 
-        price: 12000,
-        level: 0
-      },
       city: {
         profitPerHour: 3000,
         price: 1000000,
+        level: 0
+      },
+      usa: { // Added License USA
+        profitPerHour: 2000, 
+        price: 12000,
         level: 0
       },
       uae: { // Added Licence UAE
