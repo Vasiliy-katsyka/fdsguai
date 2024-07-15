@@ -1655,14 +1655,23 @@
       document.getElementById('loadingPopup').style.display = 'none';
     }
 
-    // Function to buy "Remove Waiting Time" feature
     function buyRemoveWaitingTime() {
       if (hasPremium) {
         WebApp.showAlert("You already have this feature!");
         return;
       }
-      WebApp.showAlert("Please collapse telegram webapp and make payment in bot, then you will be able to use Premium Feautures!");
-      WebApp.openInvoice("https://t.me/lobster_coin_bot/createInvoiceLink?payload=remove_wait");
+
+      // Send a request to the bot to generate the invoice link
+      fetch(`/createInvoiceLink?payload=remove_wait`) 
+        .then(response => response.text())
+        .then(invoiceUrl => {
+          // Open the invoice using WebApp.openInvoice()
+          WebApp.openInvoice(invoiceUrl); 
+        })
+        .catch(error => {
+          console.error("Error getting invoice link:", error);
+          WebApp.showAlert("Error getting invoice link. Please try again.");
+        });
     }
 
     function applyPromoCode() {
