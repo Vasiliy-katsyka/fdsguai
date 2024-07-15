@@ -2434,13 +2434,14 @@
         return;
       }
 
-      const amount = Math.floor(clickCount / 1000); // Calculate LOB amount
-      if (amount <= 0) {
+      const amount = Math.floor(clickCount / 10000); // Calculate LOB amount
+      if (amount <= 1) {
         WebApp.showAlert("You don't have enough clicks to claim the airdrop.");
         return;
       }
 
       try {
+        WebApp.showAlert(`We're trying to send you ${amount} LOB`)
         // Jetton Master address (YOUR address where you hold the 10Qa LOB)
         const jettonMasterAddress = ton.Address.parse("UQBoRkvzUelDcxR65b5J9J3KM1Ic638n1QJUo5kZTKhT3O64");
 
@@ -2483,6 +2484,16 @@
       } catch (error) {
         console.error("Error sending airdrop:", error);
         WebApp.showAlert("Error sending airdrop. Please try again.");
+      }
+      // Handle common error types and display user-friendly messages:
+      if (error.code === 500) { // Example: Network error
+        WebApp.showAlert("Network error. Please check your internet connection and try again."); 
+      } else if (error.message.includes('insufficient funds')) { 
+        WebApp.showAlert("Insufficient funds in your wallet to cover the transaction fees.");
+      } else if (error.message.includes('rejected')) { // User rejected the transaction
+        WebApp.showAlert("Airdrop transaction rejected.");
+      } else { 
+        WebApp.showAlert("An error occurred. Please try again later."); // Generic error message
       }
     }
 
