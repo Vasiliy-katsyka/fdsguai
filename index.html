@@ -921,6 +921,21 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
     
+    .airdrop-popup .claim-button {
+      background-color: #08c;
+      border-radius: 20px;
+      color: white;
+      font-size: 15px;
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
     [data-tc-wallet-item="true"] {
       justify-content: center;
       align-items: center;
@@ -1451,6 +1466,7 @@
           twaReturnUrl: 'https://t.me/lobster_coin_bot/lobstercoin'
         };
       </script>
+      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
     </div>
   </div>
   <script>
@@ -2425,19 +2441,45 @@
       }
 
       try {
-        // Send the airdrop using the TON SDK
-        // ... (Your TON SDK code for sending the transaction) ... 
-        const response = await ton.sendTransaction({
-          from: '<YOUR_WALLET_ADDRESS>', // Your wallet address
-          to: connectedWallet.address, // Connected wallet's address
-          value: ton.utils.toNano(amount), // LOB amount to send (in nano-grams)
-          bounce: false
+        // Jetton Master address (YOUR address where you hold the 10Qa LOB)
+        const jettonMasterAddress = ton.Address.parse("UQBoRkvzUelDcxR65b5J9J3KM1Ic638n1QJUo5kZTKhT3O64");
+
+        // Derive Jetton Wallet address of the connected wallet
+        const jettonWalletContract = await tonConnectUI.getJettonWalletAddress(
+          jettonMasterAddress,
+          connectedWallet.address
+        );
+        console.log("Jetton wallet address:", jettonWalletContract);
+
+        // Construct the Jetton Transfer body
+        const body = ton.boc.beginCell()
+          .storeUint(0xf8a7ea5, 32)                  // Jetton transfer op code
+          .storeUint(0, 64)                          // query_id:uint64
+          .storeCoins(amount * 10**9)                 // amount:(VarUInteger 16) - LOB amount (9 decimals)
+          .storeAddress(ton.Address.parse(connectedWallet.address)) // destination:MsgAddress
+          .storeAddress(ton.Address.parse(jettonWalletContract))    // response_destination:MsgAddress
+          .storeUint(0, 1)                           // custom_payload:(Maybe ^Cell)
+          .storeCoins(ton.utils.toNano(0.05))                  // forward_ton_amount:(VarUInteger 16)
+          .storeUint(0,1)                            // forward_payload:(Either Cell ^Cell)
+          .endCell();
+
+        // Send the transaction
+        const response = await tonConnectUI.sendTransaction({
+          validUntil: Math.floor(Date.now() / 1000) + 360,
+          messages: [
+            {
+              address: jettonWalletContract,            // sender jetton wallet
+              amount: ton.utils.toNano(0.05).toString(),          // for commission fees
+              payload: body.toBoc().toString("base64") // payload with jetton transfer body
+            }
+          ]
         });
         console.log("Transaction sent:", response);
         WebApp.showAlert(`Airdrop sent! You received ${amount} LOB`);
 
-        // You might want to disable the claim button after a successful send
+        // Disable the claim button after successful send
         document.getElementById('claimAirdropButton').disabled = true; 
+
       } catch (error) {
         console.error("Error sending airdrop:", error);
         WebApp.showAlert("Error sending airdrop. Please try again.");
