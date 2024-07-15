@@ -1415,6 +1415,7 @@
       <h2>Settings</h2>
       <button class="menu-button" onclick="confirmClearData()">Clear Data</button>
       <button class="menu-button" onclick="openLegalInfoPopup()">Legal Info</button>
+      <button class="menu-button" onclick="buyRemoveWaitingTime()">Remove Waiting Time (5 Stars)</button>
       <input type="text" id="promoCode" placeholder="Enter promo code">
    	  <button class="menu-button" onclick="applyPromoCode()">Apply Promo Code</button>
 
@@ -1472,6 +1473,8 @@
     let limitBoostLevel = 0;
     let limitBoostPrice = 1000;
     let isClicking = false;
+    const providerToken = ""; // Replace with your provider token
+    let hasPremium = false; // Flag to track if the user has purchased premium
     var WebApp = window.Telegram.WebApp;
  
     let cardCooldown = {};
@@ -1620,6 +1623,47 @@
       }
     }
 
+    // Load premium status from localStorage
+    if (localStorage.getItem('hasPremium') === 'true') {
+      hasPremium = true;
+    }
+
+    // Function to handle invoice payment
+    function handleInvoiceStatus(data) {
+      console.log("Invoice status:", data);
+      if (data.status === 'paid') {
+        hasPremium = true;
+        localStorage.setItem('hasPremium', 'true');
+        WebApp.showAlert("Thank you for your support! Waiting time removed.");
+        applyPremiumBenefits(); // Apply premium benefits
+      } else if (data.status === 'cancelled') {
+        WebApp.showAlert("Payment cancelled.");
+      } else if (data.status === 'failed') {
+        WebApp.showAlert("Payment failed. Please try again.");
+      }
+    }
+
+    // Function to apply premium benefits
+    function applyPremiumBenefits() {
+      // 1. Remove card cooldowns
+      for (const cardType in cardCooldown) {
+        cardCooldown[cardType] = 0;
+        hideCardCooldown(cardType);
+      }
+
+      // 2. Remove loading screen immediately
+      document.getElementById('loadingPopup').style.display = 'none';
+    }
+
+    // Function to buy "Remove Waiting Time" feature
+    function buyRemoveWaitingTime() {
+      if (hasPremium) {
+        WebApp.showAlert("You already have this feature!");
+        return;
+      }
+      WebApp.showAlert("Please collapse telegram webapp and make payment in bot, then you will be able to use Premium Feautures!");
+      WebApp.openInvoice("https://t.me/lobster_coin_bot/createInvoiceLink?payload=remove_wait");
+    }
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
@@ -2537,6 +2581,9 @@
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
     
     setInterval(addEarnPerHour, 1000); 
+    
+    // Add event listener for invoice closed event
+    WebApp.onEvent('invoiceClosed', handleInvoiceStatus);
   </script>
 </body>
 </html>
