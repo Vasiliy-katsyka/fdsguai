@@ -942,6 +942,81 @@
       margin-top: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
+
+    .league-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: none; /* Initially hidden */
+      z-index: 100; /* Make sure it's on top */
+      text-align: center;
+    }
+
+    .league-popup h2 {
+      font-size: 24px;
+      margin-top: 40%;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .league-popup .trophy-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .league-popup .trophy {
+      width: 150px;
+      height: 150px;
+      margin: 0 10px;
+    }
+
+    .league-popup .trophy img {
+      width: 100%;
+      height: auto;
+    }
+
+    .league-popup .from {
+      color: white;
+      font-size: 18px;
+    }
+
+    .league-popup .info {
+      color: white;
+      font-size: 13px;
+    }
+
+    .league-popup .close-button {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      font-size: 30px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #800080;
+    }
+
+    .league-popup .close-button:hover {
+      color: red;
+    }
+
+    .league-popup .arrow-button {
+      background-color: transparent;
+      border: none;
+      font-size: 30px;
+      cursor: pointer;
+      color: white;
+      padding: 0 10px;
+    }
   </style>
 </head>
 <body>
@@ -971,7 +1046,7 @@
     </div>
     <div class="profit-per-hour">Profit per Hour: <span id="profitPerHour">0</span></div>
     <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
-    <div class="league">League: <span id="league">Bronze</span></div>
+    <div class="league">League: <span id="league">Bronze</span>  ></div>
     <div class="coin"></div>
     <div class="click-text" id="clickText"></div>
 
@@ -1354,7 +1429,7 @@
             <div class="card-info">
               <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
               <span class="card-price" id="olPrice">Price: 15000 clicks</span>
-              <span class="card-level" id="olLevel">Level: 0</span>
+              <span class="card-level" id="olevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('ol')">Buy</button>
             <div class="timer-overlay" id="olTimerOverlay">
@@ -1479,6 +1554,19 @@
       </script>
       <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
     </div>
+  </div>
+  <div class="league-popup" id="leaguePopup">
+    <button class="close-button" onclick="closeLeaguePopup()">×</button>
+    <h2 id="leagueName"></h2>
+    <div class="trophy-container">
+      <button class="arrow-button" onclick="previousLeague()"><</button>
+      <div class="trophy">
+        <img id="leagueTrophy" src="" alt="League Trophy">
+      </div>
+      <button class="arrow-button" onclick="nextLeague()">></button>
+    </div>
+    <p class="from">From <span id="leagueRequirement"></span></p>
+    <p class="info">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
   </div>
   <script>
     let clickCount = 0;
@@ -1843,6 +1931,69 @@
         document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
       }
     }
+
+    const leagues = [
+      { name: "Wood League", requirement: 0, trophy: "https://cdn.midjourney.com/173b4ac0-d0e1-432d-b621-295095c07227/0_1.png", color: "#8B4513" },
+      { name: "Bronze League", requirement: 1, trophy: "https://cdn.midjourney.com/daa02f5f-ae53-4ae9-a4a7-73f531a12893/0_1.png", color: "#B86552" },
+      { name: "Silver League", requirement: 5000, trophy: "https://cdn.midjourney.com/921341d7-30ae-436c-b0ba-57a904b8bd09/0_2.png", color: "#A9A9A9" },
+      { name: "Gold League", requirement: 10000, trophy: "https://cdn.midjourney.com/fa1d6157-b464-4286-bbe1-02160da9812f/0_0.png", color: "#F98605" },
+      { name: "Platinum League", requirement: 50000, trophy: "https://cdn.midjourney.com/67af7021-c03e-493e-913f-3de14f02d4a6/0_1.png", color: "#ADCDC1" },
+      { name: "Diamond League", requirement: 100000, trophy: "https://cdn.midjourney.com/b218a3a0-650c-40cd-9836-b06875cd7e88/0_2.png", color: "#00CDFF" },
+      { name: "Epic League", requirement: 500000, trophy: "https://cdn.midjourney.com/5849a88c-e0cf-4681-b754-b9f9c65fce33/0_3.png", color: "#0CFF00" },
+      { name: "Legendary League", requirement: 1000000, trophy: "https://cdn.midjourney.com/b2bf7e3e-262d-4d03-8df0-92d9cd4f7eb1/0_2.png", color: "#FFFB00" },
+      { name: "Master League", requirement: 2000000, trophy: "https://cdn.midjourney.com/d4d6fc9d-fec6-4962-b15f-0e727ed0cfbd/0_2.png", color: "#00D4FF" },
+      { name: "Grandmaster League", requirement: 5000000, trophy: "https://cdn.midjourney.com/bdee3e9f-584f-4b42-a97f-bf968a892fbd/0_1.png", color: "#B06BFD" },
+      { name: "Lord League", requirement: 10000000, trophy: "https://cdn.midjourney.com/78d72f22-3b2c-42cf-9a0e-5fb2c1d6d531/0_1.png", color: "#F9C103" },
+      { name: "King League", requirement: 100000000, trophy: "https://cdn.midjourney.com/964ce61f-0f03-4762-ab00-b19c1064bd0a/0_2.png", color: "#FF5202" },
+      { name: "Absolutely Legend League", requirement: 1000000000, trophy: "https://cdn.midjourney.com/f7e01dc4-125f-4bf3-960e-7ce572105c5d/0_3.png", color: "#F002FF" }
+    ];
+    let currentLeagueIndex = 0;
+
+    // Update league display based on clickCount
+    function updateLeague() {
+      for (let i = leagues.length - 1; i >= 0; i--) { 
+        if (clickCount >= leagues[i].requirement) {
+          currentLeagueIndex = i;
+          document.getElementById("league").textContent = leagues[i].name;
+          document.getElementById("league").style.color = leagues[i].color; // Apply league color
+          break;
+        }
+      }
+    }
+
+    // Function to open the league popup
+    function openLeaguePopup() {
+      updateLeagueData();
+      document.getElementById('leaguePopup').style.display = 'block';
+    }
+
+    // Function to close the league popup
+    function closeLeaguePopup() {
+      document.getElementById('leaguePopup').style.display = 'none';
+    }
+
+    // Function to update the league data in the popup
+    function updateLeagueData() {
+      const league = leagues[currentLeagueIndex];
+      document.getElementById('leagueName').textContent = league.name;
+      document.getElementById('leagueTrophy').src = league.trophy;
+      document.getElementById('leagueRequirement').textContent = numberWithCommas(league.requirement);
+    }
+
+    // Function to navigate to the previous league
+    function previousLeague() {
+      currentLeagueIndex = Math.max(0, currentLeagueIndex - 1);
+      updateLeagueData();
+    }
+
+    // Function to navigate to the next league
+    function nextLeague() {
+      currentLeagueIndex = Math.min(leagues.length - 1, currentLeagueIndex + 1);
+      updateLeagueData();
+    }
+
+    // Add event listener to the league text to open the popup
+    document.getElementById('league').addEventListener('click', openLeaguePopup);
 
     // Function for "Mining" button
     function miningClick() {
