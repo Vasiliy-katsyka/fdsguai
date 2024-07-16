@@ -1349,6 +1349,20 @@
         <!-- Specials Tab Cards -->
         <div class="mining-container" id="specialsTab" style="display: none">
           <div class="mining-card">
+            <img src="https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" alt="Card image" />
+            <h3>Olympic Games</h3>
+            <div class="card-info">
+              <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
+              <span class="card-price" id="olPrice">Price: 15000 clicks</span>
+              <span class="card-level" id="olevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('ol')">Buy</button>
+            <div class="timer-overlay" id="olTimerOverlay">
+              <span class="timer-text" id="olTimer">30</span>
+              <div class="spinner" id="olSpinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
             <img src="https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" alt="Card image" />
             <h3>Ed Sheeran</h3>
             <div class="card-info">
@@ -1579,6 +1593,11 @@
       city: {
         profitPerHour: 3000,
         price: 1000000,
+        level: 0
+      },
+      ol: {
+        profitPerHour: 5000,
+        price: 15000,
         level: 0
       },
       usa: { // Added License USA
