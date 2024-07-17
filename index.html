@@ -2762,6 +2762,7 @@
 
     // Function to claim the airdrop
     async function claimAirdrop() {
+      connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
       if (!connectedWallet) {
         WebApp.showAlert("Please connect your TON wallet first.");
         return;
@@ -2907,7 +2908,7 @@
     updateLeague();
     loadClickCount(); // Call this function to load clickCount from localStorage
     addEarnPerHour(); 
-    updateDailyRewardUI(); // Initial UI update
+    updateDailyRewardUI(); // Initial UI updateACC
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
     
     setInterval(addEarnPerHour, 1000); 
