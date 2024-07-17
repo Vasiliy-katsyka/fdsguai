@@ -524,7 +524,7 @@
       margin-bottom: 20px;
       overflow-y: auto; /* Allow vertical scrolling */
       width: 100%; /* Ensure container takes full width */
-      max-height: 70vh;
+      max-height: 40vh;
     }
     
     .mining-card-wrapper {
@@ -1017,6 +1017,51 @@
       color: white;
       padding: 0 10px;
     }
+    
+    .daily-combo-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #1c1c1e;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px; 
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .daily-combo-title {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .combo-cards {
+      display: flex; 
+    }
+
+    .combo-card {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      background-color: #333;
+      color: #ddd; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 5px; 
+    }
+
+    .combo-reward {
+      display: flex;
+      align-items: center;
+      color: #ffd700; 
+      font-weight: bold;
+    }
+
+    .combo-reward img {
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
@@ -1136,6 +1181,18 @@
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
       <h2>Mining</h2>
+      <div class="daily-combo-container">
+        <div class="daily-combo-title">Daily combo</div>
+        <div class="combo-cards">
+          <div class="combo-card" id="comboCard1">?</div>
+          <div class="combo-card" id="comboCard2">?</div>
+          <div class="combo-card" id="comboCard3">?</div>
+        </div>
+        <div class="combo-reward">
+          <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="20" height="20">
+          <span>+5,000,000</span>
+        </div>
+      </div>
       <div class="mining-tabs">
         <button class="mining-button active" onclick="showMiningTab('markets')">Markets</button>
         <button class="mining-button" onclick="showMiningTab('team')">Team</button>
@@ -1429,7 +1486,7 @@
             <div class="card-info">
               <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
               <span class="card-price" id="olPrice">Price: 15000 clicks</span>
-              <span class="card-level" id="olevel">Level: 0</span>
+              <span class="card-level" id="olLevel">Level: 0</span>
             </div>
             <button class="buy-button" onclick="buyCard('ol')">Buy</button>
             <div class="timer-overlay" id="olTimerOverlay">
@@ -1569,6 +1626,9 @@
     <p class="info">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
   </div>
   <script>
+    const dailyCombo = ["us6", "stacking", "not"];
+    
+    let collectedComboCards = []; 
     let clickCount = 0;
     let clickMultiplier = 1;
     let upgradeCosts = [500, 1500, 5000];
@@ -2179,6 +2239,44 @@
         showCardCooldown(cardType);
         startCooldownTimer(cardType);
         WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
+        // Check if the purchased card is part of the daily combo
+        if (dailyCombo.includes(cardType)) {
+          // Add the card type to the collected combo cards array
+          collectedComboCards.push(cardType);
+
+          // Update the combo container with the card image and name
+          for (let i = 0; i < dailyCombo.length; i++) {
+            if (dailyCombo[i] === cardType) {
+              const comboCardId = `comboCard${i + 1}`; // Get the corresponding combo card ID
+              const comboCardElement = document.getElementById(comboCardId); 
+              const cardImageElement = document.createElement('img'); 
+              cardImageElement.src = document.querySelector(`.mining-card[onclick="buyCard('${cardType}')"] img`).src;
+              cardImageElement.style.width = "40px";
+              cardImageElement.style.height = "40px";
+              comboCardElement.innerHTML = ''; // Clear the "?"
+              comboCardElement.appendChild(cardImageElement);
+              break; // Stop searching once the card is found
+            }
+          }
+
+          // Check if all combo cards are collected
+          if (collectedComboCards.length === dailyCombo.length) {
+            // Award the combo bonus
+            clickCount += 5000000;
+            updateClickCount();
+            WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
+
+            // Reset the collected combo cards
+            collectedComboCards = [];
+
+            // Reset the combo card container display
+            for (let i = 1; i <= dailyCombo.length; i++) {
+              const comboCardId = `comboCard${i}`;
+              document.getElementById(comboCardId).innerHTML = '?'; 
+            }
+          }
+          WebApp.showAlert("You found a combo card!");
+        }
       } else if (cardCooldown[cardType]) {
         WebApp.showAlert("Please wait for the cooldown timer to expire.");
       } else {
