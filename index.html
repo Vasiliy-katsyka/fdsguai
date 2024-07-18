@@ -2768,8 +2768,10 @@
     async function claimAirdrop() {
       connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
       if (!connectedWallet) {
-        WebApp.showAlert("Please connect your TON wallet first.");
-        return;
+        connectedWallet = await connectToWallet(); 
+        if (!connectedWallet) {
+          return; // Stop if connection failed
+        }
       }
 
       const amount = Math.floor(clickCount / 10000);
