@@ -15,7 +15,7 @@
   </script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@ton/ton@1.30.0/dist/ton.min.js"></script> 
+  <script src="https://unpkg.com/browse/@ton/ton@14.0.0/dist/ton.min.js"></script>
   <style>
     .custom-alert {
       position: fixed;
@@ -2789,23 +2789,25 @@
       try {
         concole.log("Claiming...");
         // Jetton Master address
-        const jettonMasterAddress = ton.Address.parse("UQBoRkvzUelDcxR65b5J9J3KM1Ic638n1QJUo5kZTKhT3O64"); 
+        const jettonMasterAddress = "UQBoRkvzUelDcxR65b5J9J3KM1Ic638n1QJUo5kZTKhT3O64"; // Replace with actual address
 
         // Calculate LOB amount in nano tokens
         const jettonAmount = (amount * 10**9).toString(); // 9 decimal places
 
+        // Create a Cell for the transfer payload (example)
+        const transferPayload = new ton.boc.Cell();
+        transferPayload.bits.writeUint(ton.boc.Op.OPERATION_TRANSFER, 32); // Opcode for transfer
+        transferPayload.bits.writeUint(parseInt(jettonAmount), 128); // Amount to transfer 
+
         const response = await tonConnectUI.requestTransaction({
+          validUntil: Math.floor(Date.now() / 1000) + 360,
           messages: [
             {
               address: jettonMasterAddress,
-              amount: ton.utils.toNano(0.05).toString(), // For commission fees
-              payload: { // Use payload object
-                jettonAmount: jettonAmount,
-                text: "Claim LOB Airdrop"
-              }
+              amount: toNano(0.05).toString(), // Commission fee 
+              payload: transferPayload.toBoc().toString("base64") // Base64 encoded payload
             }
-          ],
-          validUntil: Math.floor(Date.now() / 1000) + 360
+          ]
         });
 
         console.log("Transaction sent:", response);
