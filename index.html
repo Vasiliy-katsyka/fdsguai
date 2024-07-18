@@ -2750,17 +2750,26 @@
       connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
     }
 
-    // Function to connect to a TON wallet
     async function connectToWallet() {
       try {
         connectedWallet = await tonConnectUI.connectWallet();
         console.log("Connected wallet:", connectedWallet);
         WebApp.showAlert("Wallet connected successfully!");
-        // Save the connected wallet to localStorage
-        localStorage.setItem('connectedWallet', JSON.stringify(connectedWallet));
+
+        // Robustly Save to localStorage:
+        if (connectedWallet) { 
+          localStorage.setItem('connectedWallet', JSON.stringify(connectedWallet));
+          console.log("Wallet saved to localStorage:", connectedWallet); // Add this for debugging
+        } else {
+          console.error("Wallet connection failed - not saving to localStorage.");
+        }
+
+        // Enable the Claim Airdrop button after successful connection
+        document.getElementById('claimAirdropButton').disabled = false;
+
       } catch (error) {
         console.error("Error connecting to wallet:", error);
-        WebApp.showAlert("Error connecting to wallet. Please try again.");
+        WebApp.showAlert("Error connecting to wallet: " + error.message);
       }
     }
 
@@ -2768,10 +2777,7 @@
     async function claimAirdrop() {
       connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
       if (!connectedWallet) {
-        connectedWallet = await connectToWallet(); 
-        if (!connectedWallet) {
-          return; // Stop if connection failed
-        }
+        WebApp.showAlert("Connect your wallet first.");
       }
 
       const amount = Math.floor(clickCount / 10000);
