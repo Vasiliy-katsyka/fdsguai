@@ -1,2931 +1,338 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>LobsterCoin</title>
-  <!-- Google tag (gtag.js) -->
-  <!-- Used to handle analytics -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5KYTW46GZ5"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-5KYTW46GZ5');
-  </script>
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-  <script src="https://unpkg.com/browse/@ton/ton@14.0.0/dist/ton.min.js"></script>
-  <style>
-    .custom-alert {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      display: none; /* Initially hidden */
-      z-index: 100; /* Make sure it's on top */
-    }
-
-    .custom-alert h2 {
-      font-size: 20px;
-      margin-top: 0;
-      color: white; /* White text */
-    }
-
-    .custom-alert button {
-      background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    
-    body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-      background: #000 url(https://cdn.midjourney.com/f4959eaa-d01a-4b63-a96c-c380c3aa4768/0_3.png) center center/cover no-repeat;
-    }
-
-    .container {
-      background: #ffffff url(https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
-      border-top: 2px solid #ffae00;
-      border-radius: 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      backdrop-filter: blur(99px);
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    @media (min-width: 768px) {
-      .container {
-        width: 70%;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .container {
-        width: 50%;
-      }
-    }
-
-    .coin {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      opacity: 100%;
-      cursor: pointer;
-      margin: 0 auto;
-      margin-top: 15px;
-      background: #ffcc00 url(https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/blue-cropped.png?raw=true) center center/cover no-repeat;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      position: relative;
-      margin-bottom: 10px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .counter {
-      font-size: 50px;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      color: white;
-      display: flex;
-      align-items: center;
-    }
-
-    .button {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
-      padding: 10px 20px;
-      align-items: center;
-      margin-top: 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin: 10px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .button:hover {
-      background-color: #4b0082;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .coin:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .row-info {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      height: 60px;
-      width: 60%;
-      color: #000;
-      align-items: center;
-      margin-top: 20px;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin: 10px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .popup {
-      position: fixed;
-      border: 2px solid #ffae00;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 10;
-      color: white;
-    }
-    
-    .lpopup {
-      position: fixed;
-      border: 2px solid #ffae00;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #000 url(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ center center/cover no-repeat;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 10;
-      color: white;
-    }
-
-    input[type="number"],
-    input[type="text"] {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
-      font-size: 13px;
-      padding: 10px 20px;
-      height: 12px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px; /* Adjust font size as needed */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin: 10px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    input[type="number"]:focus,
-    input[type="text"]:focus {
-      background-color: #f0f0f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Optional: Add placeholder text styles */
-    input[type="number"]::placeholder,
-    input[type="text"]::placeholder {
-      color: #800080; /* Adjust placeholder color as needed */
-    }
-
-    /* Optional: Customize the appearance of the number input spinner */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Optional: Customize the appearance of the number input spinner for Firefox */
-    input[type="number"] {
-      -moz-appearance: textfield;
-	}
-
-    .popup h2 {
-      margin-top: 0;
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .upgrade {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .upgrade-cost {
-      font-weight: bold;
-      color: #800080;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 30px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #800080;
-    }
-
-    .close-button:hover {
-      color: red;
-    }
-
-    .upgrade-input {
-      width: 50px;
-      text-align: center;
-      aria-label="Upgrade amount";
-    }
-
-    .clicks-per-tap {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: white;
-    }
-
-    .menu-container {
-      background: #ffffff url(https://cdn.midjourney.com/abd8ea87-bd69-4f12-a933-b22d1fa77c8c/0_3.png) center center/cover no-repeat;
-      width: 100%;
-      display: flex;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      align-items: center;
-      padding: 10px;
-      box-sizing: border-box;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      border-top: 2px solid #ffae00;
-      justify-content: space-around; /* Distribute buttons evenly */
-    }
-
-    .bottom-button {
-      display: flex;
-      flex-direction: column; /* Stack icon above text */
-      align-items: center;
-      padding: 10px;  /* Reduced padding */
-      border-radius: 15px;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin: 0 5px; /* Reduced margin */
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-      font-size: 12px; /* Smaller font size */
-      width: 70px; /* Reduced width */
-      color: white; /* Set button text to white */
-    }
-
-    .bottom-button svg {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 5px; /* Add space between icon and text */
-      filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5)); /* Add a drop shadow to icons */
-    }
-
-    .bottom-button:hover {
-      background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background on hover */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .menu-button {
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      border-radius: 14px;
-      cursor: pointer;
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQey1AD0yVXPo45q1sXCHOlrwSsgvCKpa78PQ&s) center center/cover no-repeat;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin: 5px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-      font-size: 13px;
-    }
-
-    /* Optional: Add some spacing between buttons */
-    .menu-button + .menu-button {
-      margin-left: 10px;
-    }
-
-    .earn-button {
-      display: flex;
-      flex-direction: row; /* Stack icon above text */
-      padding: 10px;  /* Reduced padding */
-      border-radius: 15px;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin: 0 5px; /* Reduced margin */
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-      font-size: 17px; /* Smaller font size */
-      width: 100%; /* Reduced width */
-      color: white; /* Set button text to white */
-      height: 40px;
-    }
-
-    .earn-button svg {
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      border-radius: 4px;
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-    }
-
-    .menu-button svg {
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-    }
-
-    .button svg {
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-    }
-
-    .menu-button:hover {
-      background-color: #f0f0f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .click-text {
-      position: absolute;
-      top: 37%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-      font-weight: bold;
-      color: #800080;
-      opacity: 1;
-      transition: transform 0.3s ease, opacity 0.5s ease;
-    }
-
-    .click-text.fly-up {
-      transform: translate(-50%, -150%);
-      opacity: 0;
-    }
-
-    .counter img {
-      margin-right: 10px;
-    }
-
-    .profit-per-hour {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: white;
-    }
-    
-	.league {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: white;
-    }
-
-    .mining-card {
-      border: 1px solid #000;
-      padding: 10px;
-      margin-bottom: 5px;
-      margin-left: 10px;
-      margin-right: 10px;
-      border-radius: 15px;
-      width: 120px;
-      height: 228px;
-      background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
-      position: relative;
-    }
-
-    .mining-card h3 {
-      margin-top: 0;
-      /*background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;*/
-      color: white;
-      font-size: 13px;
-      margin-buttom: 1px;
-    }
-
-	.mining-card img {
-      border: none;
-      height: 80px;
-      width: 80px;
-      border-radius: 14px;
-      margin-top: 5px;
-      margin-buttom: 10px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .mining-card .card-info {
-      display: block; /* Change to block for single-column layout */
-      text-align: left; /* Align text to the left */
-    }
-
-    .mining-card .card-info span {
-      font-weight: bold;
-      font-size: 13px;
-      margin-buttom: 5px;
-      display: block; /* Make each span a separate line */ /* Add spacing between lines */
-    }
-
-    .mining-card .card-info .card-level {
-      font-size: 13px;
-      color: #800080; /* Purple color */
-    }
-
-    .mining-card .card-info .card-price {
-      font-size: 13px;
-      color: #800080; /* Purple color */
-    }
-
-    .mining-card .buy-button {
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      color: #fff;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin: 5px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .mining-card .buy-button:hover {
-      background-color: #4b0082;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .timer-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-      border-radius: 15px; /* Match card's border-radius */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      display: none; /* Initially hidden */
-    }
-
-    .timer-overlay .timer-text {
-      font-size: 16px;
-      font-weight: bold;
-      color: white;
-      margin-right: 10px;
-    }
-
-    .timer-overlay .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid black; /* Initial color */
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    .timer-overlay .spinner.yellow {
-      border-top-color: yellow; /* Yellow top border */
-    }
-
-    .timer-overlay .spinner.half-yellow {
-      border-top-color: yellow; /* Yellow top border */
-      border-bottom-color: black; /* Black bottom border */
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .mining-container {
-      justify-content: space-between;
-      display: grid; /* Use grid layout */
-      grid-template-columns: repeat(2, 1fr); /* Two columns */
-      grid-gap: 10px; /* Spacing between cards */
-      margin-bottom: 20px;
-      overflow-y: auto; /* Allow vertical scrolling */
-      width: 100%; /* Ensure container takes full width */
-      max-height: 40vh;
-    }
-    
-    .mining-card-wrapper {
-      display: flex;
-      flex-direction: column; /* Stack cards vertically */
-      width: 100%;
-    }
-
-    .mining-button {
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      color: #fff;
-      padding: 10px 20px;
-      align-items: center;
-      margin-top: 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin: 10px;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .mining-button:hover {
-      background-color: #4b0082;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .settings-button {
-      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
-      border: none;
-      border-radius: 50%;
-      padding: 8px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      margin-right: 10px; 
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-      display: flex; /* Align items within the button */
-      align-items: center; /* Center vertically */
-      justify-content: center; /* Center horizontally */
-    }
-
-    .settings-button:hover {
-      background-color: #f0f0f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .settings-button svg {
-      width: 20px; /* Adjust size as needed */
-      height: 20px; /* Adjust size as needed */
-    }
-
-    /* Title container styles */
-    .title-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 90%;
-    }
-
-    /* Title styles */
-    .title {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      flex-direction: row;
-      margin-top: 20px;
-      text-align: left; /* Align title to the left */
-      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .x-text {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      margin-top: 20px;
-      text-align: left; /* Align title to the left */
-      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* Settings popup styles */
-    .settings-popup {
-      /* ... Existing popup styles ... */
-    }
-
-    .settings-popup .menu-button {
-      /* ... Existing menu-button styles ... */
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .settings-popup .legal-info {
-      /* ... Existing popup styles ... */
-      overflow-y: auto; /* Allow scrolling for longer text */
-      max-height: 300px; /* Limit popup height */
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .gold-text {
-       background: linear-gradient(to right, #FFD700, #FFC300, #FFAA00, #FFA500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .airdrop-popup {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: url(https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279137.jpg?size=626&ext=jpg&ga=GA1.1.1141335507.1717632000&semt=ais_user) center center/cover no-repeat;
-      display: flex;
-      flex-direction: column; /* Align items vertically */
-      align-items: center; /* Center horizontally */
-      justify-content: center; /* Center vertically */ 
-      color: white;
-      z-index: 100; /* Ensure it's on top of other popups */
-      display: none; /* Initially hidden */
-    }
-
-    .airdrop-popup .logo-1 {
-      width: 200px;
-      height: 200px;
-      margin-top: 50px;
-      background: linear-gradient(to right, #FFD700, #FFC300, #FFAA00, #FFA500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: 0 0 60px yellow; /* Yellow gradient shadow */
-      margin-buttom: 90px;
-      margin-left: auto; /* Add margin-left: auto */
-      margin-right: auto; /* Add margin-right: auto */
-    }
-    
-    .airdrop-popup .logo {
-      width: 200px;
-      height: 200px;
-      margin-top: 50px;
-      background: linear-gradient(to right, #FFD700, #FFC300, #FFAA00, #FFA500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: 0 0 60px yellow; /* Yellow gradient shadow */
-      margin-buttom: 90px;
-      margin-left: auto; /* Add margin-left: auto */
-      margin-right: auto; /* Add margin-right: auto */
-    }
-
-    .airdrop-popup .logo img {
-      width: 100%;
-      height: auto;
-    }
-    
-    .airdrop-popup .logo-1 img {
-      width: 100%;
-      height: auto;
-    }
-
-    .airdrop-popup h2 {
-      font-size: 48px;
-      margin-top: 20px;
-      text-align: center; 
-    }
-    
-    .airdrop-popup p {
-      text-align: center; 
-    }
-
-    .airdrop-popup .airdrop-list {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    .airdrop-popup .airdrop-item {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .airdrop-popup .check-mark {
-      margin-right: 10px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background-color: #333;
-      border: 2px solid yellow;
-    }
-
-    .airdrop-popup .check-mark.green {
-      background-color: green;
-    }
-
-    .airdrop-popup .airdrop-item span {
-      font-size: 20px;
-    }
-    
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid #000;
-      border-radius: 50%;
-      border-top-color: #ffae00;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .offline-earnings-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: none; /* Initially hidden */
-      z-index: 10;
-      color: white;
-    }
-
-    .offline-earnings-popup h2 {
-      margin-top: 0;
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .offline-earnings-popup .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 30px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #800080;
-    }
-
-    .offline-earnings-popup .close-button:hover {
-      color: red;
-    }
-
-    .offline-earnings-popup .earnings-message {
-      font-size: 20px;
-      margin-top: 20px;
-    }
-
-    .offline-earnings-popup .earnings-amount {
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    
-    .lobster-catch-popup {
-      position: fixed;
-      top: 0; /* Set top to 0 for full-screen */
-      left: 0; /* Set left to 0 for full-screen */
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      background-color: rgba(0, 0, 0, 0.8);
-      color: #ffae00; /* Gold text */
-      padding: 20px;
-      border-radius: 5px;
-      z-index: 10;
-      display: none;
-      overflow: auto; /* Allow scrolling if content exceeds height */
-      flex-direction: column;
-      align-items: center; /* Center content horizontally */
-      justify-content: center; /* Center content vertically */
-    }
-
-    .lobster-catch-popup .title {
-      background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 32px; /* Adjust size as needed */
-      margin-bottom: 20px; /* Adjust spacing as needed */
-    }
-
-    .lobster-catch-popup .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 30px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #800080;
-    }
-
-    .lobster-catch-popup .close-button:hover {
-      color: red;
-    }
-
-    .lobster-catch-popup .counter {
-      font-size: 24px; /* Adjust size as needed */
-      margin-bottom: 10px;
-    }
-
-    .lobster-catch-popup .timer {
-      font-size: 24px; /* Adjust size as needed */
-      margin-bottom: 10px;
-    }
-
-    .lobster-catch-popup .lobster {
-      width: 20px; /* Adjust size as needed */
-      height: 20px; /* Adjust size as needed */
-      position: absolute;
-      background-image: url(https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true);
-      background-size: cover;
-      cursor: pointer;
-    }
-
-    .lobster-catch-popup button {
-      background-color: #ffae00; /* Gold button */
-      color: black;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      margin: 10px;
-      cursor: pointer;
-    }
-
-    /* Adjust the Lobster Catch game content for better visibility on a full screen */
-    #lobsterContainer {
-      position: relative; /* Allow absolute positioning of lobsters */
-      width: 100%; 
-      height: 70%; /* Adjust the height for the game area */
-    }
-    
-    .fakeLobster {
-      background-color: gray;
-    }
-    
-    .limit-bar {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
-      position: fixed;
-      bottom: 100px; /* Adjust position as needed */
-      left: 0;
-      width: 95%;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 2px solid #ffae00;
-      border-radius: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      font-size: 16px; /* Adjust font size as needed */
-      color: #fff; /* Adjust color as needed */
-    }
-
-    .progress-bar {
-      width: 80%;
-      height: 10px;
-      background-color: #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 0 10px; /* Adjust spacing as needed */
-    }
-
-    .progress-fill {
-      background-color: #ffae00;
-      height: 100%;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TURTLES</title>
+    <style>
+        @font-face {
+          font-family: sheeran;
+          src: url(main-font.ttf);
+        }
         
-    .airdrop-popup #ton-connect button  {
-      justify-content: center;
-      align-items: center;
-      padding: 10px 20px;
-      width: 100%;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .airdrop-popup .claim-button {
-      background-color: #08c;
-      border-radius: 20px;
-      color: white;
-      font-size: 15px;
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      justify-content: center;
-      align-items: center;
-      padding: 10px 20px;
-      width: 100%;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    [data-tc-wallet-item="true"] {
-      justify-content: center;
-      align-items: center;
-      padding: 10px 20px;
-      width: 100%;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .league-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      display: none; /* Initially hidden */
-      z-index: 100; /* Make sure it's on top */
-      text-align: center;
-    }
-
-    .league-popup h2 {
-      font-size: 24px;
-      margin-top: 40%;
-      color: white;
-      margin-bottom: 20px;
-    }
-
-    .league-popup .trophy-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .league-popup .trophy {
-      width: 150px;
-      height: 150px;
-      margin: 0 10px;
-    }
-
-    .league-popup .trophy img {
-      width: 100%;
-      height: auto;
-    }
-
-    .league-popup .from {
-      color: white;
-      font-size: 18px;
-    }
-
-    .league-popup .info {
-      color: white;
-      font-size: 13px;
-    }
-
-    .league-popup .close-button {
-      position: absolute;
-      top: 40px;
-      right: 40px;
-      font-size: 30px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      color: #800080;
-    }
-
-    .league-popup .close-button:hover {
-      color: red;
-    }
-
-    .league-popup .arrow-button {
-      background-color: transparent;
-      border: none;
-      font-size: 30px;
-      cursor: pointer;
-      color: white;
-      padding: 0 10px;
-    }
-    
-    .daily-combo-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #1c1c1e;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px; 
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-
-    .daily-combo-title {
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .combo-cards {
-      display: flex; 
-    }
-
-    .combo-card {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-      background-color: #333;
-      color: #ddd; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-right: 5px; 
-    }
-
-    .combo-reward {
-      display: flex;
-      align-items: center;
-      color: #ffd700; 
-      font-weight: bold;
-    }
-
-    .combo-reward img {
-      margin-right: 5px;
-    }
-  </style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        #intro h1 {
+            font-size: 3em;
+            font-family: sheeran;
+            margin-bottom: 10px;
+        }
+        
+        #intro p {
+            margin-bottom: 20px;
+        }
+        
+        .button {
+            padding: 15px 30px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #000;
+        }
+        
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .profile .name {
+            font-weight: bold;
+        }
+        
+        .profile .username {
+            font-size: 0.8em;
+        }
+        
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1; /* Allow main content to grow */
+        }
+        
+        main img {
+            width: 300px;
+            height: auto;
+        }
+        
+        #balance {
+            font-size: 2em;
+            margin-top: 10px;
+        }
+        
+        footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #fff;
+            position: fixed; /* Fix footer to the bottom */
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .footer-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000;
+        }
+        
+        .footer-button svg {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        header h1 {
+            font-family: sheeran;
+        }
+        
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1); /* Black background for popup */
+            z-index: 100;
+        }
+        
+        #popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #fff;
+            cursor: pointer;
+        }    
+    </style>
 </head>
 <body>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <div class="lpopup" id="loadingPopup" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <h2 style="background: linear-gradient(to right, #FF00D8, #00FFF3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
-    <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
-      <div class="spinner"></div>
-    </div>
-    <p style="position: absolute; bottom: 20px;">v1.61</p>
-  </div>
+<div id="intro">
+    <h1>TURTLES</h1>
+    <p>Hey, <span id="userName"></span>! TURTLES is a project that allows you to earn $TRTL just for your time spent inside telegram! More you online - more income! Start earning by clicking on this button.</p>
+    <button id="startButton" class="button">Start</button>
+</div>
 
-  <div class="title-container">
-    <button class="settings-button" onclick="openSettingsPopup()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
-    </button>
-    <div class="title"><span class="x-text">Ed Sheeran x </span>LobsterCoin</div>
-  </div>
-
-  <div class="container">
-    <div class="counter">
-      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35">
-      <span id="clickCount">0</span>
-    </div>
-    <div class="profit-per-hour">Profit per Hour: <span id="profitPerHour">0</span></div>
-    <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
-    <div class="league">League: <span id="league">Bronze</span>  ></div>
-    <div class="coin"></div>
-    <div class="click-text" id="clickText"></div>
-
-    <div class="menu-container">
-      <button class="bottom-button" onclick="openPopup()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
-        Boosts
-      </button>
-      <button class="bottom-button" onclick="earnClick()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
-        Earn
-      </button>
-      <button class="bottom-button" onclick="aboutClick()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
-        About
-      </button>
-      <button class="bottom-button" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>Mining</button>
-      <button class="bottom-button" onclick="openAirdrop()">
-        <svg>
-          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="30" height="30" /> 
-        </svg>
-        Airdrop
-      </button>
-    </div>
-
-  <div class="custom-alert" id="customAlert">
-    <h2></h2> <button onclick="closeAlert()">OK</button>
-  </div>
-
-  <div class="lobster-catch-popup" id="lobsterCatchPopup">
-    <button class="close-button" onclick="closeLobsterCatchPopup()">×</button>
-    <div class="title">Lobster Catch</div>
-    <div class="counter">
-      Lobster Clicks: <span id="lobsterClicks">0</span>
-    </div>
-    <div class="timer">Time: <span id="timeLeft">30</span></div>
-    <div id="lobsterContainer"></div>
-
-    <div class="popup" id="gameEndPopup">
-      <h2>Game Over</h2>
-      <p>You caught <span id="finalClicks">0</span> lobsters!</p>
-      <button onclick="restartGame()">Restart</button>
-      <button onclick="closeLobsterCatchPopup()">Quit</button>
-    </div>
-  </div>
-
-    <div class="popup" id="popup">
-      <button class="close-button" onclick="closePopup()">×</button>
-      <h2>Upgrades</h2>
-      <div class="upgrade">
-        <span>Click Multiplier +1</span>
-        <span class="upgrade-cost" id="upgradeCost1">Cost: 500 clicks</span>
-      </div>
-      <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount">
-      <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
-    </div>
-
-    <div class="airdrop-popup" id="earnPopup">
-      <button class="close-button" onclick="closeEarnPopup()">×</button>
-      <div class="logo-1">
-        <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
-      </div>
-      <h2>Earn Clicks</h2>
-      <div class="airdrop-item"><button class="earn-button" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg>Subscribe YouTube  | +5k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg>Subscribe Telegram | +1k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>Subscribe X (Twitter) | +5k</button></div>
-      <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-cowboy-hat</title><path d="M20 22H4V20C4 17.8 7.6 16 12 16S20 17.8 20 20M8 9H16V10C16 12.2 14.2 14 12 14S8 12.2 8 10M19 4C18.4 4 18 4.4 18 5V6H16.5L15.1 3C15 2.8 14.9 2.6 14.7 2.5C14.2 2 13.4 1.9 12.7 2.2L12 2.4L11.3 2.1C10.6 1.8 9.8 1.9 9.3 2.4C9.1 2.6 9 2.8 8.9 3L7.5 6H6V5C6 4.4 5.6 4 5 4S4 4.4 4 5V6C4 7.1 4.9 8 6 8H18C19.1 8 20 7.1 20 6V5C20 4.5 19.6 4 19 4Z" /></svg>Invite Friend      | +20k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="openLobsterCatchPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>nintendo-game-boy</title><path d="M7 1C5.9 1 5 1.9 5 3V21C5 22.11 5.9 23 7 23H14C16.76 23 19 20.76 19 18V3C19 1.9 18.11 1 17 1H7M8 4H16V11H8V4M9 14H10V16H12V17H10V19H9V17H7V16H9V14M16 15C16.55 15 17 15.45 17 16C17 16.55 16.55 17 16 17C15.45 17 15 16.55 15 16C15 15.45 15.45 15 16 15M14 17C14.55 17 15 17.45 15 18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18C13 17.45 13.45 17 14 17Z" /></svg>Game               | +10k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg>Daily Reward   | +10k</button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg>Watch Ad   | +10k</button></div>
-    </div>
-
-    <div class="popup" id="dailyRewardsPopup">
-      <button class="close-button" onclick="closeDailyRewardsPopup()">×</button>
-      <h2>Daily Rewards</h2>
-      <div id="dailyRewardContainer"></div>
-      <button id="claimDailyRewardButton" class="button" onclick="claimDailyReward()" disabled>Claim Reward</button>
-    </div>
-
-    <div class="offline-earnings-popup" id="offlineEarningsPopup">
-      <button class="close-button" onclick="closeOfflineEarningsPopup()">×</button>
-      <h2>Offline Earnings</h2>
-      <p class="earnings-message">You earned some clicks while you were away!</p>
-      <p class="earnings-amount" id="offlineEarningsAmount">0</p>
-    </div>
-
-    <div class="popup" id="miningPopup">
-      <button class="close-button" onclick="closeMiningPopup()">×</button>
-      <h2>Mining</h2>
-      <div class="daily-combo-container">
-        <div class="daily-combo-title">Daily combo</div>
-        <div class="combo-cards">
-          <div class="combo-card" id="comboCard1">?</div>
-          <div class="combo-card" id="comboCard2">?</div>
-          <div class="combo-card" id="comboCard3">?</div>
+<div id="app" style="display:none;">
+    <header>
+        <div class="profile">
+            <img id="profilePicture" src="https://cdn.midjourney.com/992a1d4b-0ede-4ade-9206-2008826b47fe/0_0.png" alt="Profile Picture">
+            <div>
+                <div id="firstName" class="name"></div>
+                <div id="userNameHeader" class="username"></div>
+            </div>
         </div>
-        <div class="combo-reward">
-          <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="20" height="20">
-          <span>+5,000,000</span>
+        <h1>TURTLES</h1>
+    </header>
+
+    <main>
+        <img src="https://cdn.midjourney.com/992a1d4b-0ede-4ade-9206-2008826b47fe/0_0.png" alt="Logo" width="100" height="100"> <div id="balance">0 $TRTL</div>
+    </main>
+
+    <footer>
+        <div class="footer-button" data-section="home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>home</title><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+            Home
         </div>
-      </div>
-      <div class="mining-tabs">
-        <button class="mining-button active" onclick="showMiningTab('markets')">Markets</button>
-        <button class="mining-button" onclick="showMiningTab('team')">Team</button>
-        <button class="mining-button" onclick="showMiningTab('legal')">Legal</button>
-        <button class="mining-button" onclick="showMiningTab('specials')">Specials</button>
-      </div>
-      <div class="mining-card-wrapper" id="miningCardWrapper">
-        <!-- Markets Tab Cards -->
-        <div class="mining-container" id="marketsTab" style="display: none">
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/ca86efa0-5195-44c0-9d82-816b1b766d43/0_1.png" alt="Card image" />
-            <h3>Stacking</h3>
-            <div class="card-info">
-              <span id="stackingProfit">Profit/hour: <a class="gold-text">+300 clicks</a></span>
-              <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
-              <span class="card-level" id="stackingLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('stacking')">Buy</button>
-            <div class="timer-overlay" id="stackingTimerOverlay">
-              <span class="timer-text" id="stackingTimer">30</span>
-              <div class="spinner" id="stackingSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/4443868e-14af-488b-96a9-79e273a91a43/0_3.png" alt="Card image" />
-            <h3>BTC Pairs</h3>
-            <div class="card-info">
-              <span id="btcProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
-              <span class="card-price" id="btcPrice">Price: 8000 clicks</span>
-              <span class="card-level" id="btcLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('btc')">Buy</button>
-            <div class="timer-overlay" id="btcTimerOverlay">
-              <span class="timer-text" id="btcTimer">30</span>
-              <div class="spinner" id="btcSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/2a2b7d0c-9650-47d7-ac4c-3703a4778838/0_2.png" alt="Card image" />
-            <h3>ETH Pairs</h3>
-            <div class="card-info">
-              <span id="ethProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="ethPrice">Price: 10000 clicks</span>
-              <span class="card-level" id="ethLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('eth')">Buy</button>
-            <div class="timer-overlay" id="ethTimerOverlay">
-              <span class="timer-text" id="ethTimer">30</span>
-              <div class="spinner" id="ethSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://avatars.githubusercontent.com/u/131016009?s=280&v=4" alt="Card image" />
-            <h3>TON Pairs</h3>
-            <div class="card-info">
-              <span id="tonProfit">Profit/hour: <a class="gold-text">+500 clicks</a></span>
-              <span class="card-price" id="tonPrice">Price: 2000 clicks</span>
-              <span class="card-level" id="tonLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('ton')">Buy</button>
-            <div class="timer-overlay" id="tonTimerOverlay">
-              <span class="timer-text" id="tonTimer">30</span>
-              <div class="spinner" id="tonSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://s2.coinmarketcap.com/static/img/coins/200x200/28850.png" alt="Card image" />
-            <h3>NOT Pairs</h3>
-            <div class="card-info">
-              <span id="notProfit">Profit/hour: <a class="gold-text">+600 clicks</a></span>
-              <span class="card-price" id="notPrice">Price: 3000 clicks</span>
-              <span class="card-level" id="notLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('not')">Buy</button>
-            <div class="timer-overlay" id="notTimerOverlay">
-              <span class="timer-text" id="notTimer">30</span>
-              <div class="spinner" id="notSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/1eb021d4-7560-4338-81a7-ceff508d81c8/0_2.png" alt="Card image" />
-            <h3>GameFI Tokens</h3>
-            <div class="card-info">
-              <span id="gamefiProfit">Profit/hour: <a class="gold-text">+700 clicks</a></span>
-              <span class="card-price" id="gamefiPrice">Price: 4000 clicks</span>
-              <span class="card-level" id="gamefiLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('gamefi')">Buy</button>
-            <div class="timer-overlay" id="gamefiTimerOverlay">
-              <span class="timer-text" id="gamefiTimer">30</span>
-              <div class="spinner" id="gamefiSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/a46da306-830e-4397-ae07-ba13f97cbfa3/0_1.png" alt="Card image" />
-            <h3>Meme Coins</h3>
-            <div class="card-info">
-              <span id="memeProfit">Profit/hour: <a class="gold-text">+800 clicks</a></span>
-              <span class="card-price" id="memePrice">Price: 5000 clicks</span>
-              <span class="card-level" id="memeLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('meme')">Buy</button>
-            <div class="timer-overlay" id="memeTimerOverlay">
-              <span class="timer-text" id="memeTimer">30</span>
-              <div class="spinner" id="memeSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/713596bf-7d82-4adc-bbb5-d1bb36c85414/0_0.png" alt="Card image" />
-            <h3>Shit Coins</h3>
-            <div class="card-info">
-              <span id="shitProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
-              <span class="card-price" id="shitPrice">Price: 6000 clicks</span>
-              <span class="card-level" id="shitLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('shit')">Buy</button>
-            <div class="timer-overlay" id="shitTimerOverlay">
-              <span class="timer-text" id="shitTimer">30</span>
-              <div class="spinner" id="shitSpinner"></div>
-            </div>
-          </div>
+        <div class="footer-button" data-section="ref"> 
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-multiple</title><path d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z" /></svg>
+            Ref
         </div>
+    </footer>
+</div>
 
-        <!-- Team Tab Cards -->
-        <div class="mining-container" id="teamTab" style="display: none">
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/59bcb9c9-112c-4a86-ba01-d4f73dba2ae9/0_2.png" alt="Card image" />
-            <h3>SEO</h3>
-            <div class="card-info">
-              <span id="seoProfit">Profit/hour: <a class="gold-text">+30 clicks</a></span>
-              <span class="card-price" id="seoPrice">Price: 500 clicks</span>
-              <span class="card-level" id="seoLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('seo')">Buy</button>
-            <div class="timer-overlay" id="seoTimerOverlay">
-              <span class="timer-text" id="seoTimer">30</span>
-              <div class="spinner" id="seoSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/cef8f033-096a-44aa-8705-76478c0cafd6/0_0.png" alt="Card image" />
-            <h3>Influencers</h3>
-            <div class="card-info">
-              <span id="influencerProfit">Profit/hour: <a class="gold-text">+60 clicks</a></span>
-              <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
-              <span class="card-level" id="influencerLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('influencer')">Buy</button>
-            <div class="timer-overlay" id="influencerTimerOverlay">
-              <span class="timer-text" id="influencerTimer">30</span>
-              <div class="spinner" id="influencerSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/23ffa0ba-e226-4d43-92ed-6273e209fc97/0_2.png" alt="Card image" />
-            <h3>Miners</h3>
-            <div class="card-info">
-              <span id="minerProfit">Profit/hour: <a class="gold-text">+100 clicks</a></span>
-              <span class="card-price" id="minerPrice">Price: 800 clicks</span>
-              <span class="card-level" id="minerLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('miner')">Buy</button>
-            <div class="timer-overlay" id="minerTimerOverlay">
-              <span class="timer-text" id="minerTimer">30</span>
-              <div class="spinner" id="minerSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/a570837e-b7d9-4e60-882a-37a143a6380f/0_2.png" alt="Card image" />
-            <h3>IT Team</h3>
-            <div class="card-info">
-              <span id="itTeamProfit">Profit/hour: <a class="gold-text">+150 clicks</a></span>
-              <span class="card-price" id="itTeamPrice">Price: 700 clicks</span>
-              <span class="card-level" id="itTeamLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('itTeam')">Buy</button>
-            <div class="timer-overlay" id="itTeamTimerOverlay">
-              <span class="timer-text" id="itTeamTimer">30</span>
-              <div class="spinner" id="itTeamSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/d86dc31d-13b0-4a2c-be36-d4716f6e8ad9/0_1.png" alt="Card image" />
-            <h3>Hacking Team</h3>
-            <div class="card-info">
-              <span id="hackProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="hackPrice">Price: 1000 clicks</span>
-              <span class="card-level" id="hackLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('hack')">Buy</button>
-            <div class="timer-overlay" id="hackTimerOverlay">
-              <span class="timer-text" id="hackTimer">30</span>
-              <div class="spinner" id="hackSpinner"></div>
-            </div>
-          </div>
-        </div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    // Initialize Telegram web app
+    const Tg = window.Telegram.WebApp;
+    Tg.expand();
 
-        <!-- Legal Tab Cards -->
-        <div class="mining-container" id="legalTab" style="display: none">
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/bd4920d7-3c05-4ea5-acf1-800ce24df81d/0_0.png" alt="Card image" />
-            <h3>License USA</h3>
-            <div class="card-info">
-              <span id="usaProfit">Profit/hour: <a class="gold-text">+2000 clicks</a></span>
-              <span class="card-price" id="usaPrice">Price: 12000 clicks</span>
-              <span class="card-level" id="usaLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('usa')">Buy</button>
-            <div class="timer-overlay" id="usaTimerOverlay">
-              <span class="timer-text" id="usaTimer">30</span>
-              <div class="spinner" id="usaSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" alt="Card image" />
-            <h3>Licence UAE</h3>
-            <div class="card-info">
-              <span id="uaeProfit">Profit/hour: <a class="gold-text">+2500 clicks</a></span>
-              <span class="card-price" id="uaePrice">Price: 15000 clicks</span>
-              <span class="card-level" id="uaeLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('uae')">Buy</button>
-            <div class="timer-overlay" id="uaeTimerOverlay">
-              <span class="timer-text" id="uaeTimer">30</span>
-              <div class="spinner" id="uaeSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/9c6d32f3-d1f7-4492-bc0e-0ea581ccbae5/0_1.png" alt="Card image" />
-            <h3>Licence Europe</h3>
-            <div class="card-info">
-              <span id="europeProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
-              <span class="card-price" id="europePrice">Price: 18000 clicks</span>
-              <span class="card-level" id="europeLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('europe')">Buy</button>
-            <div class="timer-overlay" id="europeTimerOverlay">
-              <span class="timer-text" id="europeTimer">30</span>
-              <div class="spinner" id="europeSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/24a8b056-4c31-45f8-9746-8cc496c8829f/0_3.png" alt="Card image" />
-            <h3>Licence Australia</h3>
-            <div class="card-info">
-              <span id="australiaProfit">Profit/hour: <a class="gold-text">+3500 clicks</a></span>
-              <span class="card-price" id="australiaPrice">Price: 21000 clicks</span>
-              <span class="card-level" id="australiaLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('australia')">Buy</button>
-            <div class="timer-overlay" id="australiaTimerOverlay">
-              <span class="timer-text" id="australiaTimer">30</span>
-              <div class="spinner" id="australiaSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/eda716d0-eea8-4f81-9d65-4f8b8820f920/0_1.png" alt="Card image" />
-            <h3>License Japan</h3>
-            <div class="card-info">
-              <span id="japanProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
-              <span class="card-price" id="japanPrice">Price: 24000 clicks</span>
-              <span class="card-level" id="japanLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('japan')">Buy</button>
-            <div class="timer-overlay" id="japanTimerOverlay">
-              <span class="timer-text" id="japanTimer">30</span>
-              <div class="spinner" id="japanSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/26249c54-08bd-411e-a458-103a5cb2ec85/0_0.png" alt="Card image" />
-            <h3>License Nigeria</h3>
-            <div class="card-info">
-              <span id="nigeriaProfit">Profit/hour: <a class="gold-text">+4500 clicks</a></span>
-              <span class="card-price" id="nigeriaPrice">Price: 27000 clicks</span>
-              <span class="card-level" id="nigeriaLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('nigeria')">Buy</button>
-            <div class="timer-overlay" id="nigeriaTimerOverlay">
-              <span class="timer-text" id="nigeriaTimer">30</span>
-              <div class="spinner" id="nigeriaSpinner"></div>
-            </div>
-          </div>
-        </div>
+    // Get user info
+    const firstNameElement = document.getElementById('firstName');
+    const userNameHeaderElement = document.getElementById('userNameHeader');
+    const profilePictureElement = document.getElementById('profilePicture');
 
-        <!-- Specials Tab Cards -->
-        <div class="mining-container" id="specialsTab" style="display: none">
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" alt="Card image" />
-            <h3>Olympic Games</h3>
-            <div class="card-info">
-              <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
-              <span class="card-price" id="olPrice">Price: 15000 clicks</span>
-              <span class="card-level" id="olLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('ol')">Buy</button>
-            <div class="timer-overlay" id="olTimerOverlay">
-              <span class="timer-text" id="olTimer">30</span>
-              <div class="spinner" id="olSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" alt="Card image" />
-            <h3>Ed Sheeran</h3>
-            <div class="card-info">
-              <span id="edProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
-              <span class="card-price" id="edPrice">Price: 15000 clicks</span>
-              <span class="card-level" id="edLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('ed')">Buy</button>
-            <div class="timer-overlay" id="edTimerOverlay">
-              <span class="timer-text" id="edTimer">30</span>
-              <div class="spinner" id="edSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/7e926b4c-798f-4096-970f-e449325eeea2/0_2.png" alt="Card image" />
-            <h3>We have 30 users!</h3>
-            <div class="card-info">
-              <span id="us6Profit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="us6Price">Price: 10000 clicks</span>
-              <span class="card-level" id="us6Level">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('us6')">Buy</button>
-            <div class="timer-overlay" id="us6TimerOverlay">
-              <span class="timer-text" id="us6Timer">30</span>
-              <div class="spinner" id="us6Spinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/237acce7-9b4d-4830-8ce3-61da736d7e67/0_0.png" alt="Card image" />
-            <h3>Elon Musk</h3>
-            <div class="card-info">
-              <span id="elonProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
-              <span class="card-price" id="elonPrice">Price: 10000 clicks</span>
-              <span class="card-level" id="elonLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('elon')">Buy</button>
-            <div class="timer-overlay" id="elonTimerOverlay">
-              <span class="timer-text" id="elonTimer">30</span>
-              <div class="spinner" id="elonSpinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/0fea593b-1cfe-4948-969a-202b5413c044/0_1.png" alt="Card image" />
-            <h3>Dubai Office</h3>
-            <div class="card-info">
-              <span id="dubaiProfit">Profit/hour: <a class="gold-text">+5000 clicks</a></span>
-              <span class="card-price" id="dubaiPrice">Price: 23000 clicks</span>
-              <span class="card-level" id="dubaiLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('dubai')">Buy</button>
-            <div class="timer-overlay" id="dubaiTimerOverlay">
-              <span class="timer-text" id="dubaiTimer">30</span>
-              <div class="spinner" id="us6Spinner"></div>
-            </div>
-          </div>
-          <div class="mining-card">
-            <img src="https://cdn.midjourney.com/e90db955-acb9-4317-b6ca-29b2354997d1/0_2.png" alt="Card image" />
-            <h3>Lobster City</h3>
-            <div class="card-info">
-              <span id="cityProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
-              <span class="card-price" id="cityPrice">Price: 1,000,000 clicks</span>
-              <span class="card-level" id="cityLevel">Level: 0</span>
-            </div>
-            <button class="buy-button" onclick="buyCard('city')">Buy</button>
-            <div class="timer-overlay" id="cityTimerOverlay">
-              <span class="timer-text" id="cityTimer">30</span>
-              <div class="spinner" id="us6Spinner"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    firstNameElement.textContent = Tg.WebAppUser.first_name;
+    userNameHeaderElement.textContent = '@' + Tg.WebAppUser.username;
+    profilePictureElement.src = Tg.WebAppUser.photo_url;
 
-    <div class="popup settings-popup" id="settingsPopup">
-      <button class="close-button" onclick="closeSettingsPopup()">×</button>
-      <h2>Settings</h2>
-      <button class="menu-button" onclick="confirmClearData()">Clear Data</button>
-      <button class="menu-button" onclick="openLegalInfoPopup()">Legal Info</button>
-      <input type="text" id="promoCode" placeholder="Enter promo code">
-   	  <button class="menu-button" onclick="applyPromoCode()">Apply Promo Code</button>
+    // Elements
+    const intro = document.getElementById('intro');
+    const app = document.getElementById('app');
+    const startButton = document.getElementById('startButton');
+    const balanceElement = document.getElementById('balance');
+    const footerButtons = document.querySelectorAll('.footer-button');
 
-    </div>
+    // Variables
+    let balance = 0;
+    let profitPerMinute = 0.1;
+    let lastSeen = Date.now();
+    let userName = Tg.WebAppUser.first_name;
 
-    <div class="popup" id="legalInfoPopup">
-      <button class="close-button" onclick="closeLegalInfoPopup()">×</button>
-      <h2>Legal Information</h2>
-      <div class="legal-info">
-        <p>By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
-        <button class="menu-button" href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms Of Service</button>
-      </div>
-    </div>
-  </div>
-  <div class="airdrop-popup" id="airdropPopup">
-    <button class="close-button" onclick="closeAirdropPopup()">×</button>
-    <!-- <img src="https://cdn.midjourney.com/6a5f34ab-267b-49af-97c5-1f3c56043c7e/0_2.png" alt="Lobster Swimming in Money" width="100%" height="auto"> -->
-    <div class="logo-1">
-      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
-    </div>
-    <div class="airdrop-content">
-      <h2>Airdrop!</h2>
-      <p>Get your share of LOB tokens.</p>
+    // Update user name
+    document.getElementById('userName').textContent = userName;
 
-      <!-- TONConnect Button -->
-      <div id="ton-connect"></div> 
-      <script>
-        // Initialize TONConnect UI when the popup opens
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-          manifestUrl: 'https://vasiliy-katsyka.github.io/fdsguai/tonconnect-manifest.json',
-          buttonRootId: 'ton-connect'
+    // Check if app is opened first time
+    if (!localStorage.getItem('firstTime')) {
+        localStorage.setItem('firstTime', 'false');
+    } else {
+        intro.style.display = 'none';
+        app.style.display = 'block';
+        loadState();
+        calculateOfflineProfit();
+    }
+
+    // Event Listeners
+    startButton.addEventListener('click', startApp);
+
+    footerButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const section = button.dataset.section;
+            handleFooterClick(section);
         });
-        tonConnectUI.uiOptions = {
-          twaReturnUrl: 'https://t.me/lobster_coin_bot/lobstercoin'
-        };
-      </script>
-      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
-    </div>
-  </div>
-  <div class="league-popup" id="leaguePopup">
-    <button class="close-button" onclick="closeLeaguePopup()">×</button>
-    <h2 id="leagueName"></h2>
-    <div class="trophy-container">
-      <button class="arrow-button" onclick="previousLeague()"><</button>
-      <div class="trophy">
-        <img id="leagueTrophy" src="" alt="League Trophy">
-      </div>
-      <button class="arrow-button" onclick="nextLeague()">></button>
-    </div>
-    <p class="from">From <span id="leagueRequirement"></span></p>
-    <p class="info">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
-  </div>
-  <script>
-    const dailyCombo = ["us6", "stacking", "not"];
-    
-    let collectedComboCards = []; 
-    let clickCount = 0;
-    let clickMultiplier = 1;
-    let upgradeCosts = [500, 1500, 5000];
-    let upgradeLevel = [0, 0, 0];
-    let lobsters = [];
-    let lobsterSpeed = 100; 
-    let lobsterCount = 1; 
-    let clicksPerLobster = 100; 
-    let lobsterSize = 100; 
-    let timeLeft = 30;
-    let gameRunning = false;
-    let fakeLobsterCount = 0;
-   	let fakeLobsterPenalty = 0.7; 
-   	let clicksRemaining = 100; 
-    let clicksPerMinuteLimit = 100; 
-    let limitBoostLevel = 0;
-    let limitBoostPrice = 1000;
-    let isClicking = false;
-    var WebApp = window.Telegram.WebApp;
- 
-    let cardCooldown = {};
+    });
 
-    // Mining card data
-    const miningCards = {
-      seo: {
-        profitPerHour: 30,
-        price: 500,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/59bcb9c9-112c-4a86-ba01-d4f73dba2ae9/0_2.png"
-      },
-      influencer: {
-        profitPerHour: 60,
-        price: 600,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/cef8f033-096a-44aa-8705-76478c0cafd6/0_0.png"
-      },
-      miner: {
-        profitPerHour: 100,
-        price: 800,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/23ffa0ba-e226-4d43-92ed-6273e209fc97/0_2.png"
-      },
-      stacking: {
-        profitPerHour: 405, 
-        price: 1000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/ca86efa0-5195-44c0-9d82-816b1b766d43/0_1.png"
-      },
-      btc: {
-        profitPerHour: 1215, 
-        price: 8000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/4443868e-14af-488b-96a9-79e273a91a43/0_3.png"
-      },
-      eth: {
-        profitPerHour: 1350, 
-        price: 10000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/2a2b7d0c-9650-47d7-ac4c-3703a4778838/0_2.png"
-      },
-      ton: { 
-        profitPerHour: 500, 
-        price: 2000,
-        level: 0,
-        imageUrl: "https://avatars.githubusercontent.com/u/131016009?s=280&v=4" 
-      },
-      not: { 
-        profitPerHour: 600,
-        price: 3000,
-        level: 0,
-        imageUrl: "https://s2.coinmarketcap.com/static/img/coins/200x200/28850.png"
-      },
-      gamefi: { 
-        profitPerHour: 700, 
-        price: 4000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/1eb021d4-7560-4338-81a7-ceff508d81c8/0_2.png" 
-      },
-      meme: { 
-        profitPerHour: 800, 
-        price: 5000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/a46da306-830e-4397-ae07-ba13f97cbfa3/0_1.png" 
-      },
-      shit: { 
-        profitPerHour: 900, 
-        price: 6000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/713596bf-7d82-4adc-bbb5-d1bb36c85414/0_0.png"
-      },
-      itTeam: {
-        profitPerHour: 150,
-        price: 700,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/a570837e-b7d9-4e60-882a-37a143a6380f/0_2.png"
-      },
-      hack: {
-        profitPerHour: 1000,
-        price: 1000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/d86dc31d-13b0-4a2c-be36-d4716f6e8ad9/0_1.png" 
-      },
-      ed: {
-        profitPerHour: 3000,
-        price: 15000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" 
-      },
-      us6: {
-        profitPerHour: 1000,
-        price: 10000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/7e926b4c-798f-4096-970f-e449325eeea2/0_2.png" 
-      },
-      elon: {
-        profitPerHour: 1000,
-        price: 10000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/237acce7-9b4d-4830-8ce3-61da736d7e67/0_0.png" 
-      },
-      dubai: {
-        profitPerHour: 5000,
-        price: 23000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/0fea593b-1cfe-4948-969a-202b5413c044/0_1.png" 
-      },
-      city: {
-        profitPerHour: 3000,
-        price: 1000000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/e90db955-acb9-4317-b6ca-29b2354997d1/0_2.png" 
-      },
-      ol: {
-        profitPerHour: 5000,
-        price: 15000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" 
-      },
-      usa: {
-        profitPerHour: 2000, 
-        price: 12000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/bd4920d7-3c05-4ea5-acf1-800ce24df81d/0_0.png" 
-      },
-      uae: { 
-        profitPerHour: 2500, 
-        price: 15000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" 
-      },
-      europe: { 
-        profitPerHour: 3000, 
-        price: 18000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/9c6d32f3-d1f7-4492-bc0e-0ea581ccbae5/0_1.png"
-      },
-      australia: { 
-        profitPerHour: 3500, 
-        price: 21000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/24a8b056-4c31-45f8-9746-8cc496c8829f/0_3.png"
-      },
-      japan: { 
-        profitPerHour: 4000, 
-        price: 24000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/eda716d0-eea8-4f81-9d65-4f8b8820f920/0_1.png" 
-      },
-      nigeria: { 
-        profitPerHour: 4500, 
-        price: 27000,
-        level: 0,
-        imageUrl: "https://cdn.midjourney.com/26249c54-08bd-411e-a458-103a5cb2ec85/0_0.png" 
-      }
+    // Functions
+    function startApp() {
+        intro.style.display = 'none';
+        app.style.display = 'block';
+        saveState();
+    }
+
+    function handleFooterClick(section) {
+        switch (section) {
+            case 'home':
+                // Already on home page
+                break;
+            case 'ref':
+                Tg.showAlert('This section is not implemented yet.');
+                break;
+        }
+    }
+    
+    function addBalance(amount) {
+        balance += amount;
+        balanceElement.textContent = balance.toFixed(2) + ' $TRTL';
+        saveState();
+    }
+
+    function calculateOfflineProfit() {
+        const now = Date.now();
+        const minutesPassed = Math.floor((now - lastSeen) / (1000 * 60));
+
+        let earnedOffline = 0;
+        for (let i = 0; i < minutesPassed; i++) {
+            earnedOffline += profitPerMinute;
+            profitPerMinute = Math.max(0, profitPerMinute - 0.001);
+        }
+
+        if (earnedOffline > 0) {
+            Tg.showAlert(While you were away, you earned ${earnedOffline.toFixed(2)} $TRTL!);
+            addBalance(earnedOffline);
+        }
+    }
+
+    function updateUserStatus(status) {
+        switch (status) {
+            case 'online':
+                profitPerMinute = 1; 
+                break;
+            case 'offline':
+                profitPerMinute = 0.1; 
+                break;
+            default:
+                profitPerMinute = 0.1;
+        }
+    }
+
+    function saveState() {
+        localStorage.setItem('balance', balance);
+        localStorage.setItem('lastSeen', Date.now());
+    }
+
+    function loadState() {
+        balance = parseFloat(localStorage.getItem('balance')) || 0;
+        lastSeen = parseInt(localStorage.getItem('lastSeen')) || Date.now();
+        balanceElement.textContent = balance.toFixed(2) + ' $TRTL';
+    }
+
+    setInterval(() => {
+        if (document.visibilityState === 'visible') {
+            addBalance(profitPerMinute);
+        }
+    }, 60000);
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            saveState();
+        } else {
+            calculateOfflineProfit();
+        }
+    });
+    
+    window.onerror = function(message, source, lineno, colno, error) {
+        Tg.showAlert(`An error occurred. Please try again later. (Error details: ${message})`);
+        // You can also log the error to the console for debugging:
+        console.error(error); 
     };
-
-    // Load data from localStorage
-    if (localStorage.getItem('clickCount')) {
-      clickCount = parseInt(localStorage.getItem('clickCount'));
-    }
-    if (localStorage.getItem('clickMultiplier')) {
-      clickMultiplier = parseInt(localStorage.getItem('clickMultiplier'));
-    }
-    if (localStorage.getItem('upgradeLevel')) {
-      upgradeLevel = JSON.parse(localStorage.getItem('upgradeLevel'));
-    }
-    if (localStorage.getItem('upgradeCosts')) {
-      upgradeCosts = JSON.parse(localStorage.getItem('upgradeCosts'));
-    }
-    // Load mining card levels from localStorage
-    for (const cardType in miningCards) {
-      if (localStorage.getItem(`miningCardLevel${cardType}`)) {
-        miningCards[cardType].level = parseInt(localStorage.getItem(`miningCardLevel${cardType}`));
-      }
-    }
-
-
-    function applyPromoCode() {
-      let promoCode = document.getElementById('promoCode').value;
-      if (promoCode === "developer-tester") {
-        clickCount += 500000000; // Add 500 million clicks
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 500 million clicks!");
-      } else if (promoCode === "SUMMER24") {
-        clickCount += 10000;
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 10K clicks!");
-      } else if (promoCode === "15YOULOB") {
-        clickCount += 10000000000000;
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 10T clicks!");
-      } else if (promoCode === "VASILIY939") {
-        clickCount += 50000; 
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!");
-      } else if (promoCode === "IDI_NAHUI") {
-        clickCount += 50000; 
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
-      } else if (promoCode === "ILOVEBIGDICK") {
-        clickCount += 1000000000000000000000000000; 
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received some clicks!"); 
-      } else if (promoCode === "qwertyui") {
-        clickCount += 30900987; 
-        updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
-      } else {
-        WebApp.showAlert("Invalid promo code.");
-      }
-    }
-
-    document.getElementById('loadingPopup').style.display = 'flex'; 
-   
-	// Initialize Adsgram SDK
-    const AdController = window.Adsgram.init({ blockId: "353" }); // Replace "353" with your actual block ID
-
-    // Function to show an ad
-    function showAd() {
-      AdController.show() // Call show() directly on the AdController
-        .then(result => {
-          if (result.done) {
-            clickCount += 10000; // Add 10k clicks
-            updateClickCount();
-            WebApp.showAlert("You earned 10,000 clicks! Thanks for watching the ad.");
-          }
-        })
-        .catch(result => {
-          console.error("Ad show error:", result.description);
-        });
-    }
-
-    // Hide loading screen after 4 seconds
-    let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
-    setTimeout(() => {
-      document.getElementById('loadingPopup').style.display = 'none';
-    }, randomDelay);
-    
-    function numberWithCommas(x) {
-      const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; // Add more units
-      let i = 0;
-      while (x >= 1000 && i < units.length - 1) {
-        x /= 1000;
-        i++;
-      }
-      
-      if (x < 1) {
-        return x.toFixed(2) + units[i]; // Two decimal places for numbers less than 1
-      } else if (x < 1000 > 1) {
-        return Math.round(x) + units[i]; // No decimal places for numbers between 1 and 1000
-      } else {
-        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1000 or greater
-      }
-    }
-
-    // Update click count display
-    function updateClickCount() {
-      document.getElementById('clickCount').textContent = numberWithCommas(clickCount); // Format clickCount
-      document.getElementById('clicksPerTap').textContent = numberWithCommas(clickMultiplier)
-      // Save data to localStorage
-      localStorage.setItem('clickCount', Number(clickCount)); 
-      localStorage.setItem('clickMultiplier', clickMultiplier);
-      localStorage.setItem('upgradeLevel', JSON.stringify(upgradeLevel));
-      localStorage.setItem('upgradeCosts', JSON.stringify(upgradeCosts));
-    }
-
-    // Function to handle coin click
-    function clickCoin() {
-      clickCount += clickMultiplier; // Increment clickCount *after* checking
-      updateClickCount();
-      showClickText(clickMultiplier);
-    }
-
-
-    function updateLeague() {
-      if (clickCount <= 1000) {
-        document.getElementById("league").textContent = "Bronze";
-        document.getElementById("league").style.color = "#B86552";
-      } else if (clickCount >= 1000 && clickCount <= 10000) {
-        document.getElementById("league").textContent = "Silver";
-        document.getElementById("league").style.color = "#A9A9A9";
-      } else if (clickCount >= 10000 && clickCount <= 50000) {
-        document.getElementById("league").textContent = "Gold";
-        document.getElementById("league").style.color = "#F98605";
-      } else if (clickCount >= 50000 && clickCount <= 100000) {
-        document.getElementById("league").textContent = "Platinum";
-        document.getElementById("league").style.color = "#ADCDC1";
-      } else if (clickCount >= 100000 && clickCount <= 500000) {
-        document.getElementById("league").textContent = "Diamond";
-        document.getElementById("league").style.color = "#00CDFF";
-      } else if (clickCount >= 500000 && clickCount <= 1000000) {
-        document.getElementById("league").textContent = "Epic";
-        document.getElementById("league").style.color = "#0CFF00";
-      } else if (clickCount >= 1000000 && clickCount <= 2000000) {
-        document.getElementById("league").textContent = "Legendary";
-        document.getElementById("league").style.color = "#FFFB00";
-      } else if (clickCount >= 2000000 && clickCount <= 5000000) {
-        document.getElementById("league").textContent = "Master";
-        document.getElementById("league").style.color = "#00D4FF";
-      } else if (clickCount >= 5000000 && clickCount <= 10000000) {
-        document.getElementById("league").textContent = "Grandmaster";
-        document.getElementById("league").style.color = "#B06BFD";
-      } else if (clickCount >= 10000000 && clickCount <= 100000000) {
-        document.getElementById("league").textContent = "Lord";
-        document.getElementById("league").style.color = "#F9C103";
-      } else if (clickCount >= 100000000 && clickCount <= 1000000000) {
-        document.getElementById("league").textContent = "King";
-        document.getElementById("league").style.color = "#FF5202";
-      } else if (clickCount >= 1000000000) {
-        document.getElementById("league").textContent = "Absolutely Legend";
-        document.getElementById("league").style.color = "#F002FF";
-      }
-    }
-    
-    // Function to open the popup
-    function openPopup() {
-      document.getElementById('popup').style.display = 'block';
-      updateUpgradeCosts();
-    }
-
-    // Function to close the popup
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-    }
-    
-    function closeAirdropPopup() {
-      document.getElementById('popup').style.display = 'none';
-    }
-    let youtubeBonusClaimed = localStorage.getItem('youtubeBonusClaimed') === 'true';
-    let telegramBonusClaimed = localStorage.getItem('telegramBonusClaimed') === 'true';
-    let premiumBonusClaimed = localStorage.getItem('premiumBonusClaimed') === 'true';
-
-    // Function to handle click upgrade
-    function upgradeClick() {
-      let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
-      let upgradeIndex = 0;
-
-      while (upgradeIndex < upgradeCosts.length) {
-        if (clickCount >= upgradeCosts[upgradeIndex] * upgradeAmount) {
-          clickCount -= upgradeCosts[upgradeIndex] * upgradeAmount;
-          clickMultiplier += (upgradeIndex + 1) * upgradeAmount;
-          upgradeLevel[upgradeIndex] += upgradeAmount;
-          updateClickCount();
-          updateUpgradeCosts();
-          break;
-        }
-        upgradeIndex++;
-      }
-    }
-    
-    function showMiningTab(tabName) {
-      document.getElementById('marketsTab').style.display = 'none';
-      document.getElementById('teamTab').style.display = 'none';
-      document.getElementById('legalTab').style.display = 'none';
-      document.getElementById('specialsTab').style.display = 'none';
-
-      document.getElementById(`${tabName}Tab`).style.display = 'grid'; 
-
-      // Update the active button
-      const miningButtons = document.querySelectorAll('.mining-button');
-      miningButtons.forEach(button => button.classList.remove('active'));
-      document.querySelector(`.mining-button[onclick="showMiningTab('${tabName}')"]`).classList.add('active');
-    }
-
-    // Function to update upgrade costs
-    function updateUpgradeCosts() {
-      for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000);
-        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
-      }
-    }
-
-    const leagues = [
-      { name: "Wood League", requirement: 0, trophy: "https://cdn.midjourney.com/173b4ac0-d0e1-432d-b621-295095c07227/0_1.png", color: "#8B4513" },
-      { name: "Bronze League", requirement: 1, trophy: "https://cdn.midjourney.com/daa02f5f-ae53-4ae9-a4a7-73f531a12893/0_1.png", color: "#B86552" },
-      { name: "Silver League", requirement: 5000, trophy: "https://cdn.midjourney.com/921341d7-30ae-436c-b0ba-57a904b8bd09/0_2.png", color: "#A9A9A9" },
-      { name: "Gold League", requirement: 10000, trophy: "https://cdn.midjourney.com/fa1d6157-b464-4286-bbe1-02160da9812f/0_0.png", color: "#F98605" },
-      { name: "Platinum League", requirement: 50000, trophy: "https://cdn.midjourney.com/67af7021-c03e-493e-913f-3de14f02d4a6/0_1.png", color: "#ADCDC1" },
-      { name: "Diamond League", requirement: 100000, trophy: "https://cdn.midjourney.com/b218a3a0-650c-40cd-9836-b06875cd7e88/0_2.png", color: "#00CDFF" },
-      { name: "Epic League", requirement: 500000, trophy: "https://cdn.midjourney.com/5849a88c-e0cf-4681-b754-b9f9c65fce33/0_3.png", color: "#0CFF00" },
-      { name: "Legendary League", requirement: 1000000, trophy: "https://cdn.midjourney.com/b2bf7e3e-262d-4d03-8df0-92d9cd4f7eb1/0_2.png", color: "#FFFB00" },
-      { name: "Master League", requirement: 2000000, trophy: "https://cdn.midjourney.com/d4d6fc9d-fec6-4962-b15f-0e727ed0cfbd/0_2.png", color: "#00D4FF" },
-      { name: "Grandmaster League", requirement: 5000000, trophy: "https://cdn.midjourney.com/bdee3e9f-584f-4b42-a97f-bf968a892fbd/0_1.png", color: "#B06BFD" },
-      { name: "Lord League", requirement: 10000000, trophy: "https://cdn.midjourney.com/78d72f22-3b2c-42cf-9a0e-5fb2c1d6d531/0_1.png", color: "#F9C103" },
-      { name: "King League", requirement: 100000000, trophy: "https://cdn.midjourney.com/964ce61f-0f03-4762-ab00-b19c1064bd0a/0_2.png", color: "#FF5202" },
-      { name: "Absolutely Legend League", requirement: 1000000000, trophy: "https://cdn.midjourney.com/f7e01dc4-125f-4bf3-960e-7ce572105c5d/0_3.png", color: "#F002FF" }
-    ];
-    let currentLeagueIndex = 0;
-
-    // Update league display based on clickCount
-    function updateLeague() {
-      for (let i = leagues.length - 1; i >= 0; i--) { 
-        if (clickCount >= leagues[i].requirement) {
-          currentLeagueIndex = i;
-          document.getElementById("league").textContent = leagues[i].name;
-          document.getElementById("league").style.color = leagues[i].color; // Apply league color
-          break;
-        }
-      }
-    }
-
-    // Function to open the league popup
-    function openLeaguePopup() {
-      updateLeagueData();
-      document.getElementById('leaguePopup').style.display = 'block';
-    }
-
-    // Function to close the league popup
-    function closeLeaguePopup() {
-      document.getElementById('leaguePopup').style.display = 'none';
-    }
-
-    // Function to update the league data in the popup
-    function updateLeagueData() {
-      const league = leagues[currentLeagueIndex];
-      document.getElementById('leagueName').textContent = league.name;
-      document.getElementById('leagueTrophy').src = league.trophy;
-      document.getElementById('leagueRequirement').textContent = numberWithCommas(league.requirement);
-    }
-
-    // Function to navigate to the previous league
-    function previousLeague() {
-      currentLeagueIndex = Math.max(0, currentLeagueIndex - 1);
-      updateLeagueData();
-    }
-
-    // Function to navigate to the next league
-    function nextLeague() {
-      currentLeagueIndex = Math.min(leagues.length - 1, currentLeagueIndex + 1);
-      updateLeagueData();
-    }
-
-    // Add event listener to the league text to open the popup
-    document.getElementById('league').addEventListener('click', openLeaguePopup);
-
-    // Function for "Mining" button
-    function miningClick() {
-      WebApp.showAlert("Mining feature is under development!");
-    }
-
-    // Function to open the earn popup
-    function earnClick() {
-      document.getElementById('earnPopup').style.display = 'block';
-    }
-
-    // Function to close the earn popup
-    function closeEarnPopup() {
-      document.getElementById('earnPopup').style.display = 'none';
-    }
-
-    function openSettingsPopup() {
-      document.getElementById('settingsPopup').style.display = 'block';
-    }
-
-    // Function to close the settings popup
-    function closeSettingsPopup() {
-      document.getElementById('settingsPopup').style.display = 'none';
-    }
-
-    // Function to confirm data clearing
-    function confirmClearData() {
-      if (confirm("Do you really want to completely delete your data?")) {
-        if (confirm("Are you 100% sure?")) {
-          // Clear localStorage *before* updating the counter
-          localStorage.clear();
-
-          // Reset game variables
-          clickCount = 0; 
-          clickMultiplier = 1;
-          upgradeLevel = [0, 0, 0]; 
-          upgradeCosts = [500, 1500, 5000];
-
-          // Reset mining card levels
-          for (const cardType in miningCards) {
-            miningCards[cardType].level = 0;
-          }
-
-          // Update the display and save to localStorage
-          updateClickCount();
-          updateUpgradeCosts();
-          updateMiningCardPrices();
-          updateMiningCardLevels();
-          WebApp.showAlert("Data cleared successfully!");
-        }
-      }
-    }
-
-    function showOfflineEarningsPopup(offlineEarnings) {
-      document.getElementById('offlineEarningsAmount').textContent = numberWithCommas(offlineEarnings);
-      document.getElementById('offlineEarningsPopup').style.display = 'block';
-    }
-
-    // Function to close the offline earnings popup
-    function closeOfflineEarningsPopup() {
-      document.getElementById('offlineEarningsPopup').style.display = 'none';
-      showOfflineEarningsPopupFlag = true; // Set flag to true *after* the popup is closed
-    }
-    // Function to open the legal info popup
-    function openLegalInfoPopup() {
-      document.getElementById('legalInfoPopup').style.display = 'block';
-    }
-
-    // Function to close the legal info popup
-    function closeLegalInfoPopup() {
-      document.getElementById('legalInfoPopup').style.display = 'none';
-    }
-
-    // Function to open the YouTube channel
-    function openYouTube() {
-      if (youtubeBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
-        return; // Exit the function if the bonus is already claimed
-      }
-      window.open("https://youtube.com/@kvikontent");
-      clickCount += 5000;
-      updateClickCount();
-      WebApp.showAlert("You earned 5,000 clicks! Thanks for subscribing!");
-      closeEarnPopup(); // Close the popup after opening the link
-      youtubeBonusClaimed = true;
-      localStorage.setItem('youtubeBonusClaimed', 'true');
-      // Disable the button
-      document.querySelector('[onclick="openYouTube()"]').disabled = true;
-      document.querySelector('[onclick="openYouTube()"]').style.backgroundColor = '#ccc'; // Change background color
-    }
-
-    // Function to subscribe to the Telegram channel
-    function subscribeTelegram() {
-      if (telegramBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
-        return; // Exit the function if the bonus is already claimed
-      }
-      window.open("https://t.me/freemusic2023");
-      clickCount += 1000;
-      updateClickCount();
-      WebApp.showAlert("You earned 1,000 clicks! Thanks for subscribing!");
-      closeEarnPopup(); // Close the popup after opening the link
-      telegramBonusClaimed = true;
-      localStorage.setItem('telegramBonusClaimed', 'true');
-      // Disable the button
-      document.querySelector('[onclick="subscribeTelegram()"]').disabled = true;
-      document.querySelector('[onclick="subscribeTelegram()"]').style.backgroundColor = '#ccc'; // Change background color
-    }
-    
-    // Function to subscribe to the X channel
-    function subscribeX() {
-      if (telegramBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
-        return; // Exit the function if the bonus is already claimed
-      }
-      window.open("https://x.com/lobsterfounder?t=FsSqEDhJyx27oH3bc5foNQ&s=09");
-      clickCount += 5000;
-      updateClickCount();
-      WebApp.showAlert("You earned 5,000 clicks! Thanks for subscribing! Stay tuned)");
-      closeEarnPopup(); // Close the popup after opening the link
-      telegramBonusClaimed = true;
-      localStorage.setItem('xBonusClaimed', 'true');
-      // Disable the button
-      document.querySelector('[onclick="subscribex()"]').disabled = true;
-      document.querySelector('[onclick="subscribex()"]').style.backgroundColor = '#ccc'; // Change background color
-    }
-
-    // Replace Telegram Premium with a 'Buy Premium' button
-    function buyPremium() {
-      WebApp.showAlert("Not implemented yet");
-    }
-
-    // Function for "About" button
-    function aboutClick() {
-      window.open("https://t.me/LobsterCoinAnnouncements");
-    }
-
-    // Function to show click text above the coin
-    function showClickText(clicks) {
-      let clickText = document.getElementById('clickText');
-      clickText.textContent = `+${clicks}`;
-      clickText.classList.remove('fly-up');
-
-      setTimeout(() => {
-        clickText.classList.add('fly-up');
-      }, 100);
-    }
-
-    // Function to open the Mining popup
-    function openMiningPopup() {
-      document.getElementById('miningPopup').style.display = 'block';
-      updateMiningCardPrices(); // Update card prices when popup opens
-    }
-
-    // Function to close the Mining popup
-    function closeMiningPopup() {
-      document.getElementById('miningPopup').style.display = 'none';
-    }
-
-    // Function to update mining card prices
-    function updateMiningCardPrices() {
-      for (const cardType in miningCards) {
-        let profitIncrease = miningCards[cardType].profitPerHour * 0.35;
-        miningCards[cardType].profitPerHour += profitIncrease; 
-        miningCards[cardType].profitPerHour = Math.round(miningCards[cardType].profitPerHour); 
-        let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); 
-        document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`;
-        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(miningCards[cardType].profitPerHour)} clicks`;
-      }
-    }
-
-    // Load collected combo cards from localStorage
-    if (localStorage.getItem('collectedComboCards')) {
-      collectedComboCards = JSON.parse(localStorage.getItem('collectedComboCards'));
-    }
-
-    // Function to reset daily combo data in localStorage at 17:00 UTC+0
-    function resetDailyCombo() {
-      localStorage.setItem('collectedComboCards', JSON.stringify([]));
-      localStorage.setItem('dailyComboCollected', 'false');
-
-      // Reset the combo card container display
-      for (let i = 1; i <= dailyCombo.length; i++) {
-        const comboCardId = `comboCard${i}`;
-        document.getElementById(comboCardId).innerHTML = '?';
-      }
-      
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 1; // Make reward fully visible
-      comboRewardElement.style.backgroundColor = ''; // Remove any background color
-      const checkMark = document.createElement('span'); // Remove any existing checkmark
-      checkMark.innerHTML = '✔'; // HTML code for checkmark
-      checkMark.style.color = 'green'; 
-      checkMark.style.marginLeft = '5px'; 
-      comboRewardElement.appendChild(checkMark);
-    }
-
-    // Set up daily reset timer
-    const now = new Date();
-    const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0); // 17:00 UTC+0
-
-    // Calculate time until reset
-    let timeUntilReset = resetTime.getTime() - now.getTime();
-
-    // If reset time has already passed today, set reset for tomorrow
-    if (timeUntilReset < 0) {
-      resetTime.setDate(resetTime.getDate() + 1); 
-      timeUntilReset = resetTime.getTime() - now.getTime();
-    }
-
-    // Set timeout to reset daily combo data
-    setTimeout(resetDailyCombo, timeUntilReset);
-
-    // Function to add "earn per hour" to click count
-    function buyCard(cardType) {
-      if (clickCount >= miningCards[cardType].price) {
-        clickCount -= miningCards[cardType].price;
-        miningCards[cardType].level++;
-        profitPerHour += miningCards[cardType].profitPerHour;
-        updateProfitPerHour;
-        updateClickCount(); // Update click count to trigger profit per hour update
-        updateMiningCardPrices(); // Update prices and profit per hour
-        updateMiningCardLevels();
-        cardCooldown[cardType] = 30; 
-        showCardCooldown(cardType);
-        startCooldownTimer(cardType);
-        WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
-        // Check if the purchased card is part of the daily combo
-        if (dailyCombo.includes(cardType)) {
-          
-          // Add the card type to the collected combo cards array
-          collectedComboCards.push(cardType);
-          
-          localStorage.setItem('collectedComboCards', JSON.stringify(collectedComboCards));
-
-          // Update the combo container with the card image and name
-          for (let i = 0; i < dailyCombo.length; i++) {
-            if (dailyCombo[i] === cardType) {
-              const comboCardId = `comboCard${i + 1}`; // Get the corresponding combo card ID
-              const comboCardElement = document.getElementById(comboCardId); 
-              const cardImageElement = document.createElement('img'); 
-              cardImageElement.src = miningCards[cardType].imageUrl;
-              cardImageElement.style.width = "40px";
-              cardImageElement.style.height = "40px";
-              comboCardElement.innerHTML = ''; // Clear the "?"
-              comboCardElement.appendChild(cardImageElement);
-              break; // Stop searching once the card is found
-            }
-          }
-
-          // Check if all combo cards are collected
-          if (collectedComboCards.length === dailyCombo.length) {
-            // Award the combo bonus
-            clickCount += 5000000;
-            updateClickCount();
-            WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
-			localStorage.setItem('dailyComboCollected', 'true');
-            // Reset the collected combo cards
-            collectedComboCards = [];
-            const comboRewardElement = document.querySelector('.combo-reward');
-            comboRewardElement.style.opacity = 0.5; // Make reward semi-transparent
-            comboRewardElement.style.backgroundColor = '#ccc'; // Add a grayed-out background
-
-            // Reset the combo card container display
-            for (let i = 1; i <= dailyCombo.length; i++) {
-              const comboCardId = `comboCard${i}`;
-              document.getElementById(comboCardId).innerHTML = '?'; 
-            }
-          }
-          WebApp.showAlert("You found a combo card!");
-        }
-      } else if (cardCooldown[cardType]) {
-        WebApp.showAlert("Please wait for the cooldown timer to expire.");
-      } else {
-        WebApp.showAlert("You don't have enough clicks to purchase this card!");
-      }
-    }
-
-    function showCardCooldown(cardType) {
-      document.getElementById(`${cardType}TimerOverlay`).style.display = 'flex';
-      document.getElementById(`${cardType}Timer`).textContent = cardCooldown[cardType];
-    }
-
-    function hideCardCooldown(cardType) {
-      document.getElementById(`${cardType}TimerOverlay`).style.display = 'none';
-    }
-
-    function startCooldownTimer(cardType) {
-      let timer = setInterval(() => {
-        cardCooldown[cardType]--;
-        document.getElementById(`${cardType}Timer`).textContent = cardCooldown[cardType];
-
-        // Update spinner
-        let spinner = document.getElementById(`${cardType}Spinner`);
-        if (cardCooldown[cardType] === 0) {
-          clearInterval(timer);
-          hideCardCooldown(cardType);
-          cardCooldown[cardType] = false;
-          spinner.classList.remove('yellow', 'half-yellow'); 
-          spinner.classList.add('black');
-        } else if (cardCooldown[cardType] <= 15) {
-          spinner.classList.remove('yellow');
-          spinner.classList.add('half-yellow');
-        } else {
-          spinner.classList.remove('half-yellow');
-          spinner.classList.add('yellow');
-        }
-      }, 1000); // Update every second
-    }
-
-    // Function to update mining card levels in the UI and localStorage
-    function updateMiningCardLevels() {
-      for (const cardType in miningCards) {
-        document.getElementById(`${cardType}Level`).textContent = `Level: ${miningCards[cardType].level}`;
-        localStorage.setItem(`miningCardLevel${cardType}`, miningCards[cardType].level);
-      }
-    }
-
-    // Function to calculate and update profit per hour
-    function updateProfitPerHour() {
-      let totalProfit = 0;
-      for (const cardType in miningCards) {
-        totalProfit += miningCards[cardType].profitPerHour * miningCards[cardType].level;
-      }
-      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
-      localStorage.setItem('profitPerHour', totalProfit); // Save profitPerHour
-    }
-
-    // Function to add "earn per hour" to click count
-    function addEarnPerHour() {
-      // Get profit per hour from localStorage
-      let profitPerHour = parseInt(localStorage.getItem('profitPerHour')); 
-
-      // Calculate time since last update
-      let elapsedTime = new Date().getTime() - lastUpdateTime;
-      let offlineEarnings = Math.round((profitPerHour / 3600) * (elapsedTime / 1000)); // Calculate clicks earned offline
-
-      // Add offline earnings to clickCount
-      clickCount += offlineEarnings;
-      updateClickCount();
-
-      // Update lastUpdateTime in localStorage
-      lastUpdateTime = new Date().getTime();
-      localStorage.setItem('lastUpdateTime', lastUpdateTime);
-
-      // Only show the popup if the flag is true
-      if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
-        showOfflineEarningsPopup(offlineEarnings);
-        showOfflineEarningsPopupFlag = false; // Reset the flag *after* showing the popup
-      }
-    }
-    
-    // Get Telegram user ID from query parameters
-    function getTelegramUserID() {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('friend');
-    }
-
-    // Function to handle referral clicks
-    function handleReferralClick() {
-      const telegramUserID = getTelegramUserID();
-      if (telegramUserID) {
-	    clickCount += 20000;
-        // Send a request to your server to update the referred user's clicks
-        fetch('https://d9e3-88-93-184-116.ngrok-free.app/api/referrals', {
-          method: 'POST', 
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            telegramUserID: telegramUserID
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            // Referral successful, add clicks to the referred user's account
-            clickCount += 20000; 
-            updateClickCount();
-            WebApp.showAlert('Referral bonus applied! +20,000 clicks');
-          } else {
-            // Handle referral error
-            WebApp.showAlert('Referral bonus application failed. Please try again later.');
-          }
-        })
-        .catch(error => {
-          // Handle network error
-          WebApp.showAlert('Network error: Unable to connect to the referral server.');
-        });
-      }
-    }
-
-    // Check if the page was opened via a referral link
-    window.addEventListener('load', () => {
-      handleReferralClick();
-    });
-
-    // Function to generate a referral link
-    function generateReferralLink() {
-      const telegramUserID = Telegram.WebApp.initDataUnsafe.user.id; 
-      return `https://t.me/lobster_coin_bot/lobstercoin?friend=${telegramUserID}`;
-    }
-
-    const refButton = document.getElementById('refButton'); 
-    refButton.addEventListener('click', refButtonClick); 
-
-    // Modify existing button with ID "refButton"
-    function refButtonClick() {
-      const referralLink = generateReferralLink();
-      navigator.clipboard.writeText(referralLink)
-        .then(() => {
-          console.log("COpied");
-        })
-        .catch(err => {
-          console.error('Failed to copy: ', err);
-          WebApp.showAlert('Failed to copy link. Please try again.');
-        }); 
-    }
-    
-    function updateLobsterClicks() {
-      document.getElementById('lobsterClicks').textContent = lobsterClicks;
-    }
-
-    // Function to update the timer
-    function updateTimer() {
-      document.getElementById('timeLeft').textContent = timeLeft;
-    }
-
-    // Function to create a new lobster
-    function createLobster() {
-      let lobster = document.createElement('div');
-      
-      if (Math.random() < 0.5) { // Adjust the probability as needed
-    	lobster.classList.add('fakeLobster'); // Add a CSS class for fake lobsters
-    	fakeLobsterCount++;
- 	  } else {
-      	lobster.classList.add('lobster');
-      	lobster.style.width = lobsterSize + 'px';
-      	lobster.style.height = lobsterSize + 'px';
-      	lobster.style.left = Math.random() * (window.innerWidth - lobsterSize) + 'px';
-      	lobster.style.top = Math.random() * (window.innerHeight - lobsterSize) + 'px';
-      	lobsterContainer.appendChild(lobster);
-      	lobsters.push(lobster);
-      }
-
-      // Add click event listener to the lobster
-      lobster.addEventListener('click', function() {
-      	if (lobster.classList.contains('fakeLobster')) {
-      	  lobsterClicks -= Math.round(lobsterClicks * fakeLobsterPenalty); // Subtract penalty
-      	  updateLobsterClicks();
-      	  fakeLobsterCount--;
-    	} else {
-          lobsterClicks += clicksPerLobster;
-          updateLobsterClicks();
-          lobsterContainer.removeChild(lobster);
-          lobsters.splice(lobsters.indexOf(lobster), 1);
-        }
-      });
-    }
-
-    // Function to move the lobsters
-    function moveLobsters() {
-      for (let i = 0; i < lobsters.length; i++) {
-        let lobster = lobsters[i];
-        let newX = parseInt(lobster.style.left) + Math.random() * lobsterSpeed - (lobsterSpeed / 2);
-        let newY = parseInt(lobster.style.top) + Math.random() * lobsterSpeed - (lobsterSpeed / 2);
-
-        // Keep the lobsters within the screen boundaries
-        newX = Math.max(0, Math.min(newX, window.innerWidth - lobsterSize));
-        newY = Math.max(0, Math.min(newY, window.innerHeight - lobsterSize));
-
-        lobster.style.left = newX + 'px';
-        lobster.style.top = newY + 'px';
-      }
-    }
-
-    // Function to increase difficulty (add more lobsters, increase speed)
-    function increaseDifficulty() {
-      lobsterCount++;
-      lobsterSpeed += 10;
-      clicksPerLobster += 50;
-      lobsterSize += 10; 
-      for (let i = 0; i < lobsterCount; i++) {
-        createLobster(); 
-      }
-      
-      let fakeLobstersToCreate = Math.floor(Math.random() * (lobsterCount + 1)); 
-      for (let i = 0; i < fakeLobstersToCreate; i++) {
-        createLobster(); 
-      }
-    }
-
-    function print(alertText) {
-      document.getElementById('customAlert').querySelector('h2').textContent = alertText;
-      document.getElementById('customAlert').style.display = 'block';
-    }
-
-    // Function to close the alert
-    function closeAlert() {
-      document.getElementById('customAlert').style.display = 'none';
-    }
-
-    // Function to start the game
-    function startGame() {
-      timeLeft = 30;
-      lobsterClicks = 0;
-      updateLobsterClicks();
-      updateTimer();
-      gameRunning = true;
-
-      // Clear previous lobsters
-      lobsters.forEach(lobster => lobsterContainer.removeChild(lobster));
-      lobsters = [];
-
-      // Create initial lobsters
-      for (let i = 0; i < lobsterCount; i++) {
-        createLobster();
-      }
-
-      // Start the game loop
-      gameLoop = setInterval(function() {
-        if (timeLeft > 0) {
-          timeLeft--;
-          updateTimer();
-        } else {
-          clearInterval(gameLoop);
-          gameRunning = false;
-          endGame();
-        }
-      }, 1000);
-
-      // Start moving lobsters
-      setInterval(moveLobsters, 100);
-
-      // Increase difficulty every 10 seconds
-      setInterval(increaseDifficulty, 5000);
-    }
-
-    // Function to end the game
-    function endGame() {
-      document.getElementById('gameEndPopup').style.display = 'block';
-      document.getElementById('finalClicks').textContent = lobsterClicks;
-      gameRunning = false;
-    }
-
-    // Function to restart the game
-    function restartGame() {
-      document.getElementById('gameEndPopup').style.display = 'none';
-      startGame();
-    }
-
-    function openLobsterCatchPopup() {
-      document.getElementById('lobsterCatchPopup').style.display = 'block';
-      startGame(); // Start the game when the popup opens
-    }
-
-    // Function to quit the game
-    function quitGame() {
-      document.getElementById('lobsterCatchPopup').style.display = 'none';
-      // Stop the game if it's running
-      if (gameRunning) {
-        clearInterval(gameLoop); 
-        gameRunning = false;
-      }
-      if (clickCount <= 1000000000) {
-        clickCount += lobsterClicks;
-        updateClickCount();
-        console.log("Added " + lobsterClicks); // Corrected variable name
-      } else {
-        clickCount += (100000000 * lobsterClicks)
-        updateClickCount();
-        console.log("Added " + (100000000 * lobsterClicks)); 
-      }
-    }
-    
-    function closeLobsterCatchPopup() {
-      document.getElementById('lobsterCatchPopup').style.display = 'none';
-      // Stop the game if it's running
-      if (gameRunning) {
-        clearInterval(gameLoop); 
-        gameRunning = false;
-      }
-      if (clickCount <= 1000000000) {
-      	clickCount += lobsterClicks;
-      	updateClickCount();
-      } else {
-      	clickCount += (100000000 * lobsterClicks)
-      }
-    }
-    
-    updateProfitPerHour();
-
-    let dailyRewardIndex = 0;
-    const fibonacciRewards = [1000, 2000, 5000, 25000, 50000, 80000, 130000, 210000, 1000000, 5000000]; // 10 days of Fibonacci
-    let lastRewardClaimTime = localStorage.getItem('lastRewardClaimTime') ? parseInt(localStorage.getItem('lastRewardClaimTime')) : 0;
-
-    // Function to update daily reward UI
-    function updateDailyRewardUI() {
-      const dailyRewardContainer = document.getElementById('dailyRewardContainer');
-      dailyRewardContainer.innerHTML = ''; // Clear previous content
-
-      const currentDayReward = fibonacciRewards[dailyRewardIndex];
-      const rewardMessage = `+${numberWithCommas(currentDayReward)} clicks!`;
-      const rewardElement = document.createElement('p');
-      rewardElement.textContent = rewardMessage;
-      dailyRewardContainer.appendChild(rewardElement);
-
-      // Check if the reward is claimable
-      if (isRewardClaimable()) {
-        document.getElementById('claimDailyRewardButton').disabled = false;
-      } else {
-        document.getElementById('claimDailyRewardButton').disabled = true;
-      }
-    }
-
-    // Function to check if the reward is claimable
-    function isRewardClaimable() {
-      const now = new Date().getTime();
-      const timeDifference = now - lastRewardClaimTime;
-      const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
-
-      // Calculate GMT+0 time for 9:00 AM
-      const gmtTime = new Date();
-      gmtTime.setUTCHours(9, 0, 0, 0); // Set to 9:00 AM GMT+0
-
-      // Check if it's past 9:00 AM GMT+0 and a day has passed
-      return (timeDifference >= oneDay && now >= gmtTime.getTime()); 
-    }
-
-    function claimDailyReward() {
-      const currentDayReward = fibonacciRewards[dailyRewardIndex];
-
-      // Add the reward to clickCount
-      clickCount += currentDayReward; 
-      updateClickCount();
-
-      // Update last claim time
-      lastRewardClaimTime = new Date().getTime();
-      localStorage.setItem('lastRewardClaimTime', lastRewardClaimTime);
-
-      // Move to the next reward index
-      dailyRewardIndex = (dailyRewardIndex + 1) % fibonacciRewards.length;
-
-      // Reset to the beginning of the Fibonacci sequence on day 11
-      if (dailyRewardIndex === 0) {
-        dailyRewardIndex = 0; // Reset to the first reward
-      }
-
-      // Update UI
-      updateDailyRewardUI();
-      updateProfitPerHour(); // Update profit per hour after multiplier change
-      WebApp.showAlert('Daily reward claimed!');
-    }
-
-    // Function to open the Daily Rewards popup
-    function openDailyRewardsPopup() {
-      closeEarnPopup();
-      document.getElementById('dailyRewardsPopup').style.display = 'block';
-      updateDailyRewardUI();
-    }
-
-    let connectedWallet = null;
-
-    // Load wallet from localStorage on page load
-    if (localStorage.getItem('connectedWallet')) {
-      connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
-    }
-
-    async function connectToWallet() {
-      try {
-        connectedWallet = await tonConnectUI.connectWallet();
-        console.log("Connected wallet:", connectedWallet);
-        WebApp.showAlert("Wallet connected successfully!");
-
-        // Robustly Save to localStorage:
-        if (connectedWallet) { 
-          localStorage.setItem('connectedWallet', JSON.stringify(connectedWallet));
-          console.log("Wallet saved to localStorage:", connectedWallet); // Add this for debugging
-        } else {
-          console.error("Wallet connection failed - not saving to localStorage.");
-        }
-
-        // Enable the Claim Airdrop button after successful connection
-        document.getElementById('claimAirdropButton').disabled = false;
-
-      } catch (error) {
-        console.error("Error connecting to wallet:", error);
-        WebApp.showAlert("Error connecting to wallet: " + error.message);
-      }
-    }
-
-    // Function to claim the airdrop
-    async function claimAirdrop() {
-      connectedWallet = JSON.parse(localStorage.getItem('connectedWallet'));
-      if (!connectedWallet) {
-        WebApp.showAlert("Connect your wallet first.");
-      }
-
-      const amount = Math.floor(clickCount / 10000);
-      if (amount <= 1) {
-        WebApp.showAlert("You don't have enough clicks to claim the airdrop.");
-        return;
-      }
-
-      try {
-        concole.log("Claiming...");
-        // Jetton Master address
-        const jettonMasterAddress = "UQBoRkvzUelDcxR65b5J9J3KM1Ic638n1QJUo5kZTKhT3O64"; // Replace with actual address
-
-        // Calculate LOB amount in nano tokens
-        const jettonAmount = (amount * 10**9).toString(); // 9 decimal places
-
-        // Create a Cell for the transfer payload (example)
-        const transferPayload = new ton.boc.Cell();
-        transferPayload.bits.writeUint(ton.boc.Op.OPERATION_TRANSFER, 32); // Opcode for transfer
-        transferPayload.bits.writeUint(parseInt(jettonAmount), 128); // Amount to transfer 
-
-        const response = await tonConnectUI.requestTransaction({
-          validUntil: Math.floor(Date.now() / 1000) + 360,
-          messages: [
-            {
-              address: jettonMasterAddress,
-              amount: toNano(0.05).toString(), // Commission fee 
-              payload: transferPayload.toBoc().toString("base64") // Base64 encoded payload
-            }
-          ]
-        });
-
-        console.log("Transaction sent:", response);
-        WebApp.showAlert(`Airdrop sent! You received ${amount} LOB`);
-      } catch (error) {
-        console.error("Error sending airdrop:", error);
-        WebApp.showAlert("Error sending airdrop. Please try again.");
-      }
-      // Handle common error types and display user-friendly messages:
-      if (error.code === 500) { // Example: Network error
-        WebApp.showAlert("Network error. Please check your internet connection and try again."); 
-      } else if (error.message.includes('insufficient funds')) { 
-        WebApp.showAlert("Insufficient funds in your wallet to cover the transaction fees.");
-      } else if (error.message.includes('rejected')) { // User rejected the transaction
-        WebApp.showAlert("Airdrop transaction rejected.");
-      } else { 
-        WebApp.showAlert("An error occurred. Please try again later."); // Generic error message
-      }
-    }
-
-    // Function to open the Airdrop popup
-    function openAirdrop() {
-      document.getElementById('airdropPopup').style.display = 'block';
-    }
-
-    // Function to close the Airdrop popup
-    function closeAirdropPopup() {
-      document.getElementById('airdropPopup').style.display = 'none';
-    }
-    
-    function loadClickCount() {
-      let storedClickCount = localStorage.getItem('clickCount');
-      if (storedClickCount) { // Check if the value exists
-        clickCount = Number(storedClickCount);  // Use Number to ensure a number
-        if (isNaN(clickCount)) { // Handle the case where storedClickCount is invalid
-          clickCount = 0; 
-        }
-      } else {
-        clickCount = 0; // Initialize to 0 if nothing is stored
-      }
-      updateClickCount(); // Update the display after loading
-    }
-
-    // Function to close the Daily Rewards popup
-    function closeDailyRewardsPopup() {
-      document.getElementById('dailyRewardsPopup').style.display = 'none';
-    }
-
-    // Store the last time the page was updated in localStorage
-    let lastUpdateTime = new Date().getTime();
-    if (localStorage.getItem('lastUpdateTime')) {
-      lastUpdateTime = Number(localStorage.getItem('lastUpdateTime'));
-    }
-
-    let elapsedTime = new Date().getTime() - lastUpdateTime;
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      updateMiningCardPrices();
-    });
-
-    // Update click count every second
-	setInterval(addEarnPerHour, 1000);
-
-    // Update localStorage with the current time on page load
-    localStorage.setItem('lastUpdateTime', new Date().getTime());
-
-    // Add event listener to the coin for mobile
-    const coin = document.querySelector('.coin');
-    const clickText = document.getElementById('clickText');
-    coin.addEventListener('touchstart', (event) => {
-      if (!isClicking) {
-        isClicking = true;
-        clickCount += clickMultiplier;
-        updateClickCount();
-
-        // Get touch coordinates
-        let touchX = event.touches[0].clientX;
-        let touchY = event.touches[0].clientY;
-
-        // Position the click text
-        clickText.style.left = touchX + 'px'; // Adjust for coin's position if needed
-        clickText.style.top = touchY + 'px'; // Adjust for coin's position if needed
-        clickText.textContent = `+${clickMultiplier}`;
-        clickText.classList.remove('fly-up');
-
-        clicksRemaining--;
-        updateLimitBar();
-
-        setTimeout(() => {
-          isClicking = false;
-          clickText.classList.add('fly-up');
-        }, 100); 
-      }
-    });
-
-    coin.addEventListener('touchend', () => {
-      isClicking = false;
-    });
-
-    // Load daily combo collected status from localStorage
-    if (localStorage.getItem('dailyComboCollected') === 'true') {
-      // If combo was already collected today, disable the reward visually
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 0.5;
-      comboRewardElement.style.backgroundColor = '#ccc';
-    }
-
-    let showOfflineEarningsPopupFlag = false;
-    // Initialize the game
-    updateClickCount();
-    updateProfitPerHour();
-    updateLeague();
-    loadClickCount(); // Call this function to load clickCount from localStorage
-    addEarnPerHour(); 
-    updateDailyRewardUI(); // Initial UI updateACC
-    setInterval(updateDailyRewardUI, 3600000); // Update every hour
-    
-    setInterval(addEarnPerHour, 1000); 
-  </script>
+</script>
 </body>
 </html>
