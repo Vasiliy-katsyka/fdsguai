@@ -582,7 +582,18 @@
 
     /* Settings popup styles */
     .settings-popup {
-      /* ... Existing popup styles ... */
+      position: fixed;
+      border: 2px solid #ffae00;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 10;
+      color: white;
     }
 
     .settings-popup .menu-button {
@@ -1033,6 +1044,79 @@
     .combo-reward img {
       margin-right: 5px;
     }
+    
+    .skins-button {
+      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
+      border: none;
+      border-radius: 50%;
+      padding: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin-right: 10px; 
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex; /* Align items within the button */
+      align-items: center; /* Center vertically */
+      justify-content: center; /* Center horizontally */
+    }
+
+    .skins-button:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .skins-button svg {
+      width: 20px; /* Adjust size as needed */
+      height: 20px; /* Adjust size as needed */
+    }
+
+    /* Skins popup styles */
+    .skins-popup {
+      /* ... existing popup styles ... */
+    }
+
+    .skins-popup .skins-container { /* New container for scrolling */
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Two columns */
+      grid-gap: 10px; /* Spacing between cards */
+      overflow-y: auto; /* Enable vertical scrolling */
+      max-height: 300px; /* Set a maximum height for the container */
+    }
+
+    .skins-popup .skin-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .skins-popup .skin-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .skins-popup .skin-card .skin-price {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .skins-popup .skin-card button {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 5px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
   </style>
 </head>
 <body>
@@ -1049,10 +1133,16 @@
   </div>
 
   <div class="title-container">
-    <button class="settings-button" onclick="openSettingsPopup()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
-    </button>
-    <div class="title"><span class="x-text">Ed Sheeran x </span>LobsterCoin</div>
+    <div>
+      <button class="settings-button" onclick="openSettingsPopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
+        <button class="skins-button" onclick="openSkinsPopup()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
+        </button>
+      </button>
+    </div>
+    <div class="title">LobsterCoin</div>
+    <!-- <span class="x-text">Ed Sheeran x </span> -->
   </div>
 
   <div class="container">
@@ -1087,10 +1177,6 @@
         Airdrop
       </button>
     </div>
-
-  <div class="custom-alert" id="customAlert">
-    <h2></h2> <button onclick="closeAlert()">OK</button>
-  </div>
 
   <div class="lobster-catch-popup" id="lobsterCatchPopup">
     <button class="close-button" onclick="closeLobsterCatchPopup()">×</button>
@@ -1583,6 +1669,13 @@
       <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
     </div>
   </div>
+  
+  <div class="popup skins-popup" id="skinsPopup">
+    <button class="close-button" onclick="closeSkinsPopup()">×</button>
+    <h2>Skins</h2>
+    <div class="skins-container" id="skinCardsContainer"></div> </div>
+  </div>
+  
   <div class="league-popup" id="leaguePopup">
     <button class="close-button" onclick="closeLeaguePopup()">×</button>
     <h2 id="leagueName"></h2>
@@ -1989,6 +2082,147 @@
       for (let i = 0; i < upgradeCosts.length; i++) {
         upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000);
         document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
+      }
+    }
+    
+    const skins = [
+      {
+        name: "Blue Lobster",
+        imageUrl: "https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png",
+        price: 5000000
+      },
+      {
+        name: "Red Lobster",
+        imageUrl: "https://cdn.midjourney.com/f8b7e805-5ebc-41c0-a4a1-cbd2ac24c9f2/0_0.png", 
+        price: 5000000
+      },
+      {
+        name: "LGBTQA+ Lobster",
+        imageUrl: "https://cdn.midjourney.com/1140e11a-7cc9-4198-a34d-3278be917460/0_0.png",
+        price: 5000000
+      },
+      {
+        name: "Gold Lobster",
+        imageUrl: "https://cdn.midjourney.com/96891e32-c9ef-43f8-8104-93da6e8c7daf/0_2.png", 
+        price: 10000000
+      },
+      {
+        name: "Diamond Lobster",
+        imageUrl: "https://cdn.midjourney.com/0a03ed09-e2dd-41a3-bbd8-0ff3d5d91507/0_1.png", 
+        price: 10000000
+      },
+      {
+        name: "Boss Lobster",
+        imageUrl: "https://cdn.midjourney.com/976e086a-ec5b-4d88-a1de-05b3257d056d/0_1.png",
+        price: 50000000
+      },
+      {
+        name: "Spider Lobster",
+        imageUrl: "https://cdn.midjourney.com/36932d16-6134-4dc6-a3cb-bfb877017652/0_3.png", 
+        price: 50000000
+      },
+    ];
+
+    // Load purchased skins from localStorage
+    let purchasedSkins = localStorage.getItem('purchasedSkins') ? JSON.parse(localStorage.getItem('purchasedSkins')) : [];
+    let equippedSkin = localStorage.getItem('equippedSkin') || null; // Load equipped skin
+
+    // Function to open the skins popup
+    function openSkinsPopup() {
+      document.getElementById('skinsPopup').style.display = 'block';
+      displaySkins();
+    }
+
+    // Function to close the skins popup
+    function closeSkinsPopup() {
+      document.getElementById('skinsPopup').style.display = 'none';
+    }
+
+    // Function to display skins in the popup
+    function displaySkins() {
+      const skinCardsContainer = document.getElementById('skinCardsContainer');
+      skinCardsContainer.innerHTML = ''; // Clear previous content
+
+      skins.forEach(skin => {
+        const skinCard = document.createElement('div');
+        skinCard.classList.add('skin-card');
+
+        const skinImage = document.createElement('img');
+        skinImage.src = skin.imageUrl;
+        skinImage.alt = skin.name;
+
+        const skinName = document.createElement('div');
+        skinName.textContent = skin.name;
+
+        const skinPrice = document.createElement('div');
+        skinPrice.classList.add('skin-price');
+        skinPrice.textContent = `Price: ${numberWithCommas(skin.price)} clicks`;
+
+        const buyButton = document.createElement('button');
+        if (!purchasedSkins.includes(skin.name)) {
+          // Skin not purchased
+          buyButton.textContent = 'Buy';
+          buyButton.addEventListener('click', () => buySkin(skin));
+        } else if (equippedSkin === skin.name) {
+          // Skin purchased and equipped
+          buyButton.textContent = 'Equipped';
+          buyButton.disabled = true; // Disable the button
+        } else {
+          // Skin purchased but not equipped
+          buyButton.textContent = 'Equip';
+          buyButton.addEventListener('click', () => equipSkin(skin));
+        }
+
+        // Append elements to the skin card
+        skinCard.appendChild(skinImage);
+        skinCard.appendChild(skinName);
+        skinCard.appendChild(skinPrice);
+        skinCard.appendChild(buyButton);
+
+        // Append the skin card to the container
+        skinCardsContainer.appendChild(skinCard);
+      });
+    }
+
+    // Function to buy a skin
+    function buySkin(skin) {
+      if (clickCount >= skin.price) {
+        clickCount -= skin.price;
+        updateClickCount();
+
+        purchasedSkins.push(skin.name);
+        localStorage.setItem('purchasedSkins', JSON.stringify(purchasedSkins));
+
+        // Equip the skin after purchase
+        equipSkin(skin);
+
+        // Update the display 
+        displaySkins();
+        WebApp.showAlert(`You purchased the ${skin.name} skin!`);
+      } else {
+        WebApp.showAlert("You don't have enough clicks to buy this skin!");
+      }
+    }
+    
+    // Function to equip a skin
+    function equipSkin(skin) {
+      equippedSkin = skin.name; 
+      localStorage.setItem('equippedSkin', equippedSkin);
+      applySkin(skin.imageUrl);
+      displaySkins(); // Update the button states
+    }
+
+    // Function to apply the selected skin
+    function applySkin(imageUrl) {
+      const coin = document.querySelector('.coin');
+      coin.style.background = `#ffcc00 url(${imageUrl}) center center/cover no-repeat`;
+    }
+
+    // Apply the last purchased skin on page load
+    if (equippedSkin) {
+      const skinToEquip = skins.find(skin => skin.name === equippedSkin);
+      if (skinToEquip) {
+        applySkin(skinToEquip.imageUrl);
       }
     }
 
