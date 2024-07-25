@@ -17,35 +17,6 @@
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script src="https://unpkg.com/browse/@ton/ton@14.0.0/dist/ton.min.js"></script>
   <style>
-    .custom-alert {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      display: none; /* Initially hidden */
-      z-index: 100; /* Make sure it's on top */
-    }
-
-    .custom-alert h2 {
-      font-size: 20px;
-      margin-top: 0;
-      color: white; /* White text */
-    }
-
-    .custom-alert button {
-      background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    
     body {
       font-family: sans-serif;
       display: flex;
@@ -55,11 +26,11 @@
       height: 100vh;
       margin: 0;
       background-color: #f0f0f0;
-      background: #000 url(https://cdn.midjourney.com/f4959eaa-d01a-4b63-a96c-c380c3aa4768/0_3.png) center center/cover no-repeat;
+      background: linear-gradient(0deg, #ffdd00 60%, #000000 100%);/*#000 url(https://cdn.midjourney.com/f4959eaa-d01a-4b63-a96c-c380c3aa4768/0_3.png) center center/cover no-repeat;*/*
     }
 
     .container {
-      background: #ffffff url(https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
+      background: #ffffff url(https://cdn.midjourney.com/46a77421-c05f-4acc-8307-c212669c3820/0_3.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
       border-top: 2px solid #ffae00;
       border-radius: 40px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -261,7 +232,7 @@
     }
 
     .menu-container {
-      background: #ffffff url(https://cdn.midjourney.com/abd8ea87-bd69-4f12-a933-b22d1fa77c8c/0_3.png) center center/cover no-repeat;
+      background: #ffffff url(https://cdn.midjourney.com/4cd2f462-fe7c-4c75-906f-0594c8ccbea8/0_0.png) center center/cover no-repeat;
       width: 100%;
       display: flex;
       position: fixed;
