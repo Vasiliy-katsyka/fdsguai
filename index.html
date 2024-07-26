@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -1004,7 +1005,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #1c1c1e;
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
       padding: 10px;
       border-radius: 10px;
       margin-bottom: 10px; 
@@ -1025,7 +1027,8 @@
       width: 50px;
       height: 50px;
       border-radius: 8px;
-      background-color: #333;
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
       color: #ddd; 
       display: flex;
       align-items: center;
@@ -2528,7 +2531,7 @@
         WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
         // Check if the purchased card is part of the daily combo
         if (dailyCombo.includes(cardType)) {
-          
+          WebApp.showAlert("You found a combo card!");
           // Add the card type to the collected combo cards array
           collectedComboCards.push(cardType);
           
@@ -2555,7 +2558,7 @@
             clickCount += 5000000;
             updateClickCount();
             WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
-			localStorage.setItem('dailyComboCollected', 'true');
+			      localStorage.setItem('dailyComboCollected', 'true');
             // Reset the collected combo cards
             collectedComboCards = [];
             const comboRewardElement = document.querySelector('.combo-reward');
@@ -2568,7 +2571,7 @@
               document.getElementById(comboCardId).innerHTML = '?'; 
             }
           }
-          WebApp.showAlert("You found a combo card!");
+          
         }
       } else if (cardCooldown[cardType]) {
         WebApp.showAlert("Please wait for the cooldown timer to expire.");
