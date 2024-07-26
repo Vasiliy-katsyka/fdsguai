@@ -1690,8 +1690,8 @@
     <p class="info">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
   </div>
   <script>
-    const dailyCombo = ["us6", "stacking", "not"];
-    
+    const dailyCombo = ["usa", "dubai", "ton"];
+    let skinProfitPerHour = 0;
     let collectedComboCards = []; 
     let clickCount = 0;
     let clickMultiplier = 1;
@@ -2089,37 +2089,44 @@
       {
         name: "Blue Lobster",
         imageUrl: "https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png",
-        price: 5000000
+        price: 5000000,
+        profit: 10000
       },
       {
         name: "Red Lobster",
         imageUrl: "https://cdn.midjourney.com/f8b7e805-5ebc-41c0-a4a1-cbd2ac24c9f2/0_0.png", 
-        price: 5000000
+        price: 5000000,
+        profit: 10000
       },
       {
         name: "LGBTQA+ Lobster",
         imageUrl: "https://cdn.midjourney.com/1140e11a-7cc9-4198-a34d-3278be917460/0_0.png",
-        price: 5000000
+        price: 5000000,
+        profit: 50000
       },
       {
         name: "Gold Lobster",
         imageUrl: "https://cdn.midjourney.com/96891e32-c9ef-43f8-8104-93da6e8c7daf/0_2.png", 
-        price: 10000000
+        price: 10000000,
+        profit: 100000
       },
       {
         name: "Diamond Lobster",
         imageUrl: "https://cdn.midjourney.com/0a03ed09-e2dd-41a3-bbd8-0ff3d5d91507/0_1.png", 
-        price: 10000000
+        price: 10000000,
+        profit: 100000
       },
       {
         name: "Boss Lobster",
         imageUrl: "https://cdn.midjourney.com/976e086a-ec5b-4d88-a1de-05b3257d056d/0_1.png",
-        price: 50000000
+        price: 50000000,
+        profit: 500000
       },
       {
         name: "Spider Lobster",
         imageUrl: "https://cdn.midjourney.com/36932d16-6134-4dc6-a3cb-bfb877017652/0_3.png", 
-        price: 50000000
+        price: 50000000,
+        profit: 500000
       },
     ];
 
@@ -2189,9 +2196,13 @@
       if (clickCount >= skin.price) {
         clickCount -= skin.price;
         updateClickCount();
+        
+        profit = skin.profit;
+        updateProfitPerHourSkins(profit);
 
-        purchasedSkins.push(skin.name);
-        localStorage.setItem('purchasedSkins', JSON.stringify(purchasedSkins));
+        skinProfitPerHour += skin.profit; // Update skin profit
+        updateProfitPerHour(); // Recalculate total profit
+        localStorage.setItem('skinProfitPerHour', skinProfitPerHour); 
 
         // Equip the skin after purchase
         equipSkin(skin);
@@ -2507,7 +2518,7 @@
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
         profitPerHour += miningCards[cardType].profitPerHour;
-        updateProfitPerHour;
+        updateProfitPerHour();
         updateClickCount(); // Update click count to trigger profit per hour update
         updateMiningCardPrices(); // Update prices and profit per hour
         updateMiningCardLevels();
@@ -2606,14 +2617,35 @@
       }
     }
 
+    function updateProfitPerHourSkins(profit) {
+      if (localStorage.getItem('profitPerHour')) {
+        profitPerHour = Number(localStorage.getItem('profitPerHour'));
+      }
+      profitPerHour += profit;
+      totalProfit = profitPerHour;
+      localStorage.setItem('profitPerHour', profitPerHour);
+      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
+    }
+
     // Function to calculate and update profit per hour
     function updateProfitPerHour() {
       let totalProfit = 0;
+
+      // Load skinProfitPerHour from localStorage if it exists
+      if (localStorage.getItem('skinProfitPerHour')) {
+        skinProfitPerHour = Number(localStorage.getItem('skinProfitPerHour')); 
+      }
+
+      // Calculate mining card profit (existing code) ... 
       for (const cardType in miningCards) {
         totalProfit += miningCards[cardType].profitPerHour * miningCards[cardType].level;
       }
+
+      // Add skin profit to the total
+      totalProfit += skinProfitPerHour; 
+
       document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
-      localStorage.setItem('profitPerHour', totalProfit); // Save profitPerHour
+      localStorage.setItem('profitPerHour', totalProfit);
     }
 
     // Function to add "earn per hour" to click count
@@ -3118,6 +3150,11 @@
       const comboRewardElement = document.querySelector('.combo-reward');
       comboRewardElement.style.opacity = 0.5;
       comboRewardElement.style.backgroundColor = '#ccc';
+    }
+    
+    if (localStorage.getItem('skinProfitPerHour')) {
+      skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
+      updateProfitPerHour(); // Update the profit display on page load
     }
 
     let showOfflineEarningsPopupFlag = false;
