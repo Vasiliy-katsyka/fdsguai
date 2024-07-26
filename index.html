@@ -2538,29 +2538,28 @@
           localStorage.setItem('collectedComboCards', JSON.stringify(collectedComboCards));
 
           // Update the combo container with the card image and name
-          for (let i = 0; i < dailyCombo.length; i++) {
-            if (dailyCombo[i] === cardType) {
-              const comboCardId = `comboCard${i + 1}`; // Get the corresponding combo card ID
-              const comboCardElement = document.getElementById(comboCardId); 
-              const cardImageElement = document.createElement('img'); 
-              cardImageElement.src = miningCards[cardType].imageUrl;
-              cardImageElement.style.width = "40px";
-              cardImageElement.style.height = "40px";
-              comboCardElement.innerHTML = ''; // Clear the "?"
-              comboCardElement.appendChild(cardImageElement);
-              break; // Stop searching once the card is found
-            }
+          for (let i = 0; i < collectedComboCards.length; i++) { // Use collectedComboCards
+            const cardTypeToUpdate = collectedComboCards[i];
+            const comboCardId = `comboCard${i + 1}`;
+            const comboCardElement = document.getElementById(comboCardId); 
+            const cardImageElement = document.createElement('img'); 
+            cardImageElement.src = miningCards[cardTypeToUpdate].imageUrl;
+            cardImageElement.style.width = "40px";
+            cardImageElement.style.height = "40px";
+            comboCardElement.innerHTML = ''; 
+            comboCardElement.appendChild(cardImageElement);
           }
 
-          // Check if all combo cards are collected
+          // Check for Complete Combo After Loop:
           if (collectedComboCards.length === dailyCombo.length) {
-            // Award the combo bonus
             clickCount += 5000000;
             updateClickCount();
             WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
-			      localStorage.setItem('dailyComboCollected', 'true');
-            // Reset the collected combo cards
-            collectedComboCards = [];
+            localStorage.setItem('dailyComboCollected', 'true');
+
+            // Reset Combo Cards After Applying Bonus
+            collectedComboCards = []; 
+
             const comboRewardElement = document.querySelector('.combo-reward');
             comboRewardElement.style.opacity = 0.5; // Make reward semi-transparent
             comboRewardElement.style.backgroundColor = '#ccc'; // Add a grayed-out background
