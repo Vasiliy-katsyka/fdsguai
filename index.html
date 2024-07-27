@@ -1473,6 +1473,20 @@
             </div>
           </div>
           <div class="mining-card">
+            <img src="https://cdn.midjourney.com/bd4920d7-3c05-4ea5-acf1-800ce24df81d/0_0.png" alt="Card image" />
+            <h3>License Korea</h3>
+            <div class="card-info">
+              <span id="krProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
+              <span class="card-price" id="krPrice">Price: 17000 clicks</span>
+              <span class="card-level" id="krLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('kr')">Buy</button>
+            <div class="timer-overlay" id="krTimerOverlay">
+              <span class="timer-text" id="krTimer">30</span>
+              <div class="spinner" id="krSpinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
             <img src="https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" alt="Card image" />
             <h3>Licence UAE</h3>
             <div class="card-info">
@@ -1548,7 +1562,7 @@
         <div class="mining-container" id="specialsTab" style="display: none">
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" alt="Card image" />
-            <h3>Olympic Games</h3>
+            <h3>Olympic Games START</h3>
             <div class="card-info">
               <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
               <span class="card-price" id="olPrice">Price: 15000 clicks</span>
@@ -1849,6 +1863,12 @@
       uae: { 
         profitPerHour: 2500, 
         price: 15000,
+        level: 0,
+        imageUrl: "https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" 
+      },
+      kr: { 
+        profitPerHour: 4000, 
+        price: 17000,
         level: 0,
         imageUrl: "https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" 
       },
