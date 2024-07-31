@@ -933,7 +933,8 @@
       width: 100%;
       height: 100%;
       transform: translate(-50%, -50%);
-      background-color: #222;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(25px); /* Apply blur effect */
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -1128,7 +1129,7 @@
     }
     
     .profContainer {
-      margin-top: 20px;
+      margin-top: 30px;
       display: grid; /* Use grid layout */
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
@@ -1136,18 +1137,26 @@
     
     .profElem {
       width: 120px;
-      height: 45px;
-      border: 1px solid green;
+      height: 53px;
+      border-top: 1px solid yellow;
       border-radius: 10px;
-      background-color: #333;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
     }
     
     .profElem .num {
+      margin-top: 4px;
+      font-size: 25px;
+    }
+
+    .profElem .lnum {
+      margin-top: 4px;
       font-size: 25px;
     }
     
     .profElem #des {
-      font-size: 14px;
+      font-size: 15px;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -1179,9 +1188,9 @@
 
   <div class="container">
     <div class="profContainer">
-      <div class="profElem"><div class="profit-per-hour" id="des">Profit per Hour: <span class="num" id="profitPerHour">0</span></div></div>
-      <div class="profElem"><div class="clicks-per-tap" id="des">Clicks per Tap: <span class="num" id="clicksPerTap">1</span></div></div>
-      <div class="profElem"><div class="league">League: <span id="league">Bronze</span>  ></div></div>
+      <div class="profElem"><div class="profit-per-hour" id="des">Profit per Hour: <br><span class="num" id="profitPerHour">0</span></div></div>
+      <div class="profElem"><div class="clicks-per-tap" id="des">Clicks per Tap: <br><span class="num" id="clicksPerTap">1</span></div></div>
+      <div class="profElem"><div class="league" id="des">League: <br><span class="lnum" id="league">Bronze</span></div></div>
     </div>
     <div class="counter">
       <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35">
@@ -2006,19 +2015,17 @@
     }, randomDelay);
     
     function numberWithCommas(x) {
-      const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; // Add more units
-      let i = 0;
-      while (x >= 1000 && i < units.length - 1) {
-        x /= 1000;
-        i++;
-      }
-      
-      if (x < 1) {
-        return x.toFixed(2) + units[i]; // Two decimal places for numbers less than 1
-      } else if (x < 1000 > 1) {
-        return Math.round(x) + units[i]; // No decimal places for numbers between 1 and 1000
+      const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
+
+      if (x < 1000000000) { // If less than 1 billion
+        return x.toLocaleString(); // Format with commas for thousands separators
       } else {
-        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1000 or greater
+        let i = 0;
+        while (x >= 1000 && i < units.length - 1) {
+          x /= 1000;
+          i++;
+        }
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1B or greater
       }
     }
 
@@ -2334,19 +2341,19 @@
     }
 
     const leagues = [
-      { name: "Wood League", requirement: 0, trophy: "https://cdn.midjourney.com/173b4ac0-d0e1-432d-b621-295095c07227/0_1.png", color: "#8B4513" },
-      { name: "Bronze League", requirement: 1, trophy: "https://cdn.midjourney.com/daa02f5f-ae53-4ae9-a4a7-73f531a12893/0_1.png", color: "#B86552" },
-      { name: "Silver League", requirement: 5000, trophy: "https://cdn.midjourney.com/921341d7-30ae-436c-b0ba-57a904b8bd09/0_2.png", color: "#A9A9A9" },
-      { name: "Gold League", requirement: 10000, trophy: "https://cdn.midjourney.com/fa1d6157-b464-4286-bbe1-02160da9812f/0_0.png", color: "#F98605" },
-      { name: "Platinum League", requirement: 50000, trophy: "https://cdn.midjourney.com/67af7021-c03e-493e-913f-3de14f02d4a6/0_1.png", color: "#ADCDC1" },
-      { name: "Diamond League", requirement: 100000, trophy: "https://cdn.midjourney.com/b218a3a0-650c-40cd-9836-b06875cd7e88/0_2.png", color: "#00CDFF" },
-      { name: "Epic League", requirement: 500000, trophy: "https://cdn.midjourney.com/5849a88c-e0cf-4681-b754-b9f9c65fce33/0_3.png", color: "#0CFF00" },
-      { name: "Legendary League", requirement: 1000000, trophy: "https://cdn.midjourney.com/b2bf7e3e-262d-4d03-8df0-92d9cd4f7eb1/0_2.png", color: "#FFFB00" },
-      { name: "Master League", requirement: 2000000, trophy: "https://cdn.midjourney.com/d4d6fc9d-fec6-4962-b15f-0e727ed0cfbd/0_2.png", color: "#00D4FF" },
-      { name: "Grandmaster League", requirement: 5000000, trophy: "https://cdn.midjourney.com/bdee3e9f-584f-4b42-a97f-bf968a892fbd/0_1.png", color: "#B06BFD" },
-      { name: "Lord League", requirement: 10000000, trophy: "https://cdn.midjourney.com/78d72f22-3b2c-42cf-9a0e-5fb2c1d6d531/0_1.png", color: "#F9C103" },
-      { name: "King League", requirement: 100000000, trophy: "https://cdn.midjourney.com/964ce61f-0f03-4762-ab00-b19c1064bd0a/0_2.png", color: "#FF5202" },
-      { name: "Absolutely Legend League", requirement: 1000000000, trophy: "https://cdn.midjourney.com/f7e01dc4-125f-4bf3-960e-7ce572105c5d/0_3.png", color: "#F002FF" }
+      { name: "Wood", requirement: 0, trophy: "https://cdn.midjourney.com/173b4ac0-d0e1-432d-b621-295095c07227/0_1.png", color: "#8B4513" },
+      { name: "Bronze", requirement: 1, trophy: "https://cdn.midjourney.com/daa02f5f-ae53-4ae9-a4a7-73f531a12893/0_1.png", color: "#B86552" },
+      { name: "Silver", requirement: 5000, trophy: "https://cdn.midjourney.com/921341d7-30ae-436c-b0ba-57a904b8bd09/0_2.png", color: "#A9A9A9" },
+      { name: "Gold", requirement: 10000, trophy: "https://cdn.midjourney.com/fa1d6157-b464-4286-bbe1-02160da9812f/0_0.png", color: "#F98605" },
+      { name: "Platinum", requirement: 50000, trophy: "https://cdn.midjourney.com/67af7021-c03e-493e-913f-3de14f02d4a6/0_1.png", color: "#ADCDC1" },
+      { name: "Diamond", requirement: 100000, trophy: "https://cdn.midjourney.com/b218a3a0-650c-40cd-9836-b06875cd7e88/0_2.png", color: "#00CDFF" },
+      { name: "Epic", requirement: 500000, trophy: "https://cdn.midjourney.com/5849a88c-e0cf-4681-b754-b9f9c65fce33/0_3.png", color: "#0CFF00" },
+      { name: "Legendary", requirement: 1000000, trophy: "https://cdn.midjourney.com/b2bf7e3e-262d-4d03-8df0-92d9cd4f7eb1/0_2.png", color: "#FFFB00" },
+      { name: "Master", requirement: 2000000, trophy: "https://cdn.midjourney.com/d4d6fc9d-fec6-4962-b15f-0e727ed0cfbd/0_2.png", color: "#00D4FF" },
+      { name: "Grandmaster", requirement: 5000000, trophy: "https://cdn.midjourney.com/bdee3e9f-584f-4b42-a97f-bf968a892fbd/0_1.png", color: "#B06BFD" },
+      { name: "Lord", requirement: 10000000, trophy: "https://cdn.midjourney.com/78d72f22-3b2c-42cf-9a0e-5fb2c1d6d531/0_1.png", color: "#F9C103" },
+      { name: "King", requirement: 100000000, trophy: "https://cdn.midjourney.com/964ce61f-0f03-4762-ab00-b19c1064bd0a/0_2.png", color: "#FF5202" },
+      { name: "Absolutely Legend", requirement: 1000000000, trophy: "https://cdn.midjourney.com/f7e01dc4-125f-4bf3-960e-7ce572105c5d/0_3.png", color: "#F002FF" }
     ];
     let currentLeagueIndex = 0;
 
