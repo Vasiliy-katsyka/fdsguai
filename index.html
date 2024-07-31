@@ -1126,6 +1126,29 @@
       display: flex;
       align-items: center; /* Vertically align buttons */
     }
+    
+    .profContainer {
+      margin-top: 20px;
+      display: grid; /* Use grid layout */
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+    }
+    
+    .profElem {
+      width: 120px;
+      height: 45px;
+      border: 1px solid green;
+      border-radius: 10px;
+      background-color: #333;
+    }
+    
+    .profElem .num {
+      font-size: 25px;
+    }
+    
+    .profElem #des {
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -1155,13 +1178,15 @@
   </div>
 
   <div class="container">
+    <div class="profContainer">
+      <div class="profElem"><div class="profit-per-hour" id="des">Profit per Hour: <span class="num" id="profitPerHour">0</span></div></div>
+      <div class="profElem"><div class="clicks-per-tap" id="des">Clicks per Tap: <span class="num" id="clicksPerTap">1</span></div></div>
+      <div class="profElem"><div class="league">League: <span id="league">Bronze</span>  ></div></div>
+    </div>
     <div class="counter">
       <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35">
       <span id="clickCount">0</span>
     </div>
-    <div class="profit-per-hour">Profit per Hour: <span id="profitPerHour">0</span></div>
-    <div class="clicks-per-tap">Clicks per Tap: <span id="clicksPerTap">1</span></div>
-    <div class="league">League: <span id="league">Bronze</span>  ></div>
     <div class="coin"></div>
     <div class="click-text" id="clickText"></div>
 
