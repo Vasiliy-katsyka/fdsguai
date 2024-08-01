@@ -4640,27 +4640,6 @@
         currentTranslations.postStoryLabel + ' | +' + numberWithCommas(getRewardAmount(1000000));
     }
 
-    // Function to generate dynamic story image URL with user balance
-    async function generateStoryImageURL() {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 1080; // Set the canvas width
-      canvas.height = 1920; // Set the canvas height
-      const image = new Image();
-      image.src = 'images/templates/story.jpg'; // Assuming the image is in this path
-      await new Promise(resolve => image.onload = resolve); // Wait for the image to load
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      ctx.font = "80px Arial"; // Set font size and family
-      ctx.fillStyle = "white"; // Set text color
-      ctx.textAlign = "center"; // Center align the text
-      ctx.textBaseline = "middle"; // Vertically center the text
-      ctx.fillText(numberWithCommas(clickCount), canvas.width / 2, canvas.height / 2);
-
-      const dataURL = canvas.toDataURL('image/jpeg');
-      return dataURL; 
-    }
-
     // Function to post story
     async function postStory() {
       if (storyBonusClaimed) {
@@ -4668,7 +4647,7 @@
         return; // Exit the function if the bonus is already claimed
       }
       try {
-        const storyImageURL = await generateStoryImageURL();
+        const storyImageURL = "https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/templates/story-text.jpg?raw=true";
         console.log(storyImageURL); // Check if the URL is generated correctly
         const storyWidgetLink = {
           url: "https://t.me/lobster_coin_bot?profile",
@@ -4804,7 +4783,7 @@
     WebApp.setHeaderColor('#000000');
     WebApp.setBackgroundColor('#000000');
     WebApp.disableVerticalSwipes();
-    
+
     updateRewardDisplay();
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
