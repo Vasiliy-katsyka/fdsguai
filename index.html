@@ -17,6 +17,13 @@
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script src="https://unpkg.com/browse/@ton/ton@14.0.0/dist/ton.min.js"></script>
   <style>
+    @font-face {
+      font-family: 'LobsterCoinFont'; /* Choose a unique name */
+      src: url('main-font.ttf') format('truetype'); /* Path to your font */
+      font-weight: normal; /* Adjust font weight if needed */
+      font-style: normal;  /* Adjust font style if needed */
+    }
+    
     body {
       font-family: sans-serif;
       display: flex;
@@ -279,6 +286,7 @@
     .menu-button {
       display: flex;
       align-items: center;
+      color: white;
       padding: 10px 20px;
       border-radius: 14px;
       cursor: pointer;
@@ -560,6 +568,7 @@
     /* Title styles */
     .title {
       font-size: 28px;
+      font-family: LobsterCoinFont;
       font-weight: bold;
       margin-bottom: 20px;
       flex-direction: row;
@@ -1144,7 +1153,7 @@
       width: 120px;
       height: 53px;
       border-top: 2px solid #ffae00;
-      border-radius: 10px;
+      border-radius: 20px;
       background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
       backdrop-filter: blur(5px); /* Apply blur effect */
     }
