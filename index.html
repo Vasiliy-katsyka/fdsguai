@@ -1823,7 +1823,15 @@
         <div class="airdrop-item"><button class="earn-button" id="dailyRewardButton" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg><span id="dailyRewardLabel">Daily Reward</span>   | +<span id="dailyRewardAmount">10k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="watchAdButton" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg><span id="watchAdLabel">Watch Ad</span>   | +<span id="adReward">10k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" onclick="postStory()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-plus</title><path d="M19,19H5V5H19M14,14V8H8V14H14M12,10H10V12H12V10M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,18H19V16H17V18M17,14H19V12H17V14M17,10H19V8H17V10Z" /></svg><span id="postStoryLabel">Post Story</span> | +<span id="storyReward">1M</span></button></div>
-
+        <div class="airdrop-item">
+          <button class="earn-button" id="premiumButton" onclick="claimPremiumBonus()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>star-circle-outline</title>
+              <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+            </svg>
+            <span id="premiumBonusLabel">Premium Bonus</span> | +<span id="premiumReward">50k</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1873,6 +1881,7 @@
         profitPerHour: "Profit per Hour",
         league: "League",
         boosts: "Boosts",
+        premiumBonusLabel: "Premium Bonus",
         earn: "Earn",
         about: "About",
         mining: "Mining",
@@ -1981,6 +1990,7 @@
         timeLeftLabel: "Время: ",
         gameOverTitle: "Игра окончена",
         finalClicksMessage: "Вы поймали {0} омаров!",
+        premiumBonusLabel: "Бонус Premium",
         restartButton: "Перезапустить",
         quitButton: "Выйти",
         upgradesTitle: "Улучшения",
@@ -2079,6 +2089,7 @@
         dailyRewardsTitle: "일일 보상",
         claimDailyRewardButton: "보상 받기",
         offlineEarningsTitle: "오프라인 수익",
+        premiumBonusLabel: "프리미엄 보너스",
         earningsMessage: "자리를 비운 동안 클릭을 획득했습니다!",
         miningPopupTitle: "마이닝",
         dailyComboTitle: "일일 콤보",
@@ -2175,6 +2186,7 @@
         marketsTabButton: "Mercados",
         teamTabButton: "Equipo",
         legalTabButton: "Legal",
+        premiumBonusLabel: "Bono Premium",
         specialsTabButton: "Especiales",
         stackingTitle: "Staking",
         btcTitle: "Pares BTC",
@@ -2269,6 +2281,7 @@
         stackingTitle: "Staking",
         btcTitle: "Paires BTC",
         ethTitle: "Paires ETH",
+        premiumBonusLabel: "Bonus Premium",
         tonTitle: "Paires TON",
         notTitle: "Paires NOT",
         gamefiTitle: "Jetons GameFI",
@@ -2379,6 +2392,7 @@
         olympicTitle: "奥运会开始",
         edTitle: "艾德·希兰",
         users30Title: "我们有 30 位用户！",
+        premiumBonusLabel: "高级会员奖励",
         elonTitle: "埃隆·马斯克",
         dubaiTitle: "迪拜办事处",
         cityTitle: "龙虾城",
@@ -2468,6 +2482,7 @@
         nigeriaTitle: "नाइजीरिया लाइसेंस",
         olympicTitle: "ओलंपिक खेलों की शुरुआत",
         edTitle: "एड शीरन",
+        premiumBonusLabel: "प्रीमियम बोनस",
         users30Title: "हमारे पास 30 उपयोगकर्ता हैं!",
         elonTitle: "एलोन मस्क",
         dubaiTitle: "दुबई कार्यालय",
@@ -2529,6 +2544,7 @@
         dailyRewardsTitle: "المكافآت اليومية",
         claimDailyRewardButton: "مطالبة بالمكافأة",
         offlineEarningsTitle: "الأرباح غير المتصلة بالإنترنت",
+        premiumBonusLabel: "مكافأة بريميوم",
         earningsMessage: "لقد ربحت نقرات أثناء غيابك!",
         miningPopupTitle: "التعدين",
         dailyComboTitle: "الكومبو اليومي",
@@ -2622,6 +2638,7 @@
         earningsMessage: "Hai guadagnato clic mentre eri via!",
         miningPopupTitle: "Mining",
         dailyComboTitle: "Combo giornaliero",
+        premiumBonusLabel: "Bonus Premium",
         marketsTabButton: "Mercati",
         teamTabButton: "Squadra",
         legalTabButton: "Legale",
@@ -2703,6 +2720,7 @@
         finalClicksMessage: "Sa püüdsid {0} homaari!",
         restartButton: "Taaskäivita",
         quitButton: "Välju",
+        premiumBonusLabel: "Premium boonus",
         upgradesTitle: "Uuendused",
         clickMultiplierUpgradeLabel: "Klõpsu kordaja +1",
         upgradeClicksButton: "Uuenda klikke",
@@ -2804,6 +2822,7 @@
         dailyComboTitle: "Daglig kombo",
         marketsTabButton: "Markeder",
         teamTabButton: "Lag",
+        premiumBonusLabel: "Premium Bonus",
         legalTabButton: "Juridisk",
         specialsTabButton: "Spesialtilbud",
         stackingTitle: "Stacking",
@@ -2906,6 +2925,7 @@
         shitTitle: "Шиткоїни",
         seoTitle: "SEO",
         influencerTitle: "Інфлюенсери",
+        premiumBonusLabel: "Преміум бонус",
         minerTitle: "Майнери",
         itTeamTitle: "IT команда",
         hackTitle: "Команда хакерів",
@@ -3005,6 +3025,7 @@
         europeTitle: "Licencja Europa",
         australiaTitle: "Licencja Australia",
         japanTitle: "Licencja Japonia",
+        premiumBonusLabel: "Bonus Premium",
         nigeriaTitle: "Licencja Nigeria",
         olympicTitle: "Początek Igrzysk Olimpijskich",
         edTitle: "Ed Sheeran",
@@ -3293,6 +3314,27 @@
           i++;
         }
         return x.toFixed(2) + units[i]; // Two decimal places for numbers 1B or greater
+      }
+    }
+
+    function claimPremiumBonus() {
+      if (premiumBonusClaimed) {
+        WebApp.showAlert(currentTranslations.premiumBonusAlreadyClaimed);
+        return;
+      }
+
+      if (WebApp.initDataUnsafe.user.is_premium) {
+        clickCount += getRewardAmount(50000); 
+        updateClickCount();
+        WebApp.showAlert(currentTranslations.premiumBonusSuccess);
+
+        // Disable the button after claiming
+        premiumBonusClaimed = true;
+        localStorage.setItem('premiumBonusClaimed', 'true');
+        document.getElementById('premiumButton').disabled = true;
+        document.getElementById('premiumButton').style.backgroundColor = '#ccc';
+      } else {
+        WebApp.showAlert(currentTranslations.premiumBonusNotPremium);
       }
     }
 
@@ -4611,6 +4653,7 @@
       translateElement('versionText', 'versionText');
       translateElement('clicksPerTapLabel', 'clickMultiplier');
       translateElement('leagueLabel', 'league'); 
+      translateElement('premiumBonusLabel', 'premiumBonusLabel');
 
       // Update the dynamic values (no translation needed here)
       document.getElementById('profitPerHourValue').textContent = numberWithCommas(parseInt(localStorage.getItem('profitPerHour')));
