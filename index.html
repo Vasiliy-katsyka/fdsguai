@@ -282,8 +282,8 @@
       padding: 10px 20px;
       border-radius: 14px;
       cursor: pointer;
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQey1AD0yVXPo45q1sXCHOlrwSsgvCKpa78PQ&s) center center/cover no-repeat;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
       margin: 5px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
       font-size: 13px;
@@ -1159,23 +1159,63 @@
       font-size: 25px;
     }
     
-    .profElem #des {
+    .profElem .des {
       font-size: 15px;
       margin-top: 4px;
+    }
+    
+    /* Styles for the language selector */
+    #languageSelect {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: black; /* Set text color to white for visibility */
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+      border-radius: 14px; /* Rounded corners */
+      padding: 8px 12px; /* Add some padding */
+      font-size: 16px; /* Adjust font size as needed */
+      appearance: none; /* Remove default select arrow in some browsers */
+      -webkit-appearance: none; /* Remove default select arrow in WebKit browsers */
+      cursor: pointer; /* Indicate that the selector is clickable */
+      width: 100%; /* Make the selector take up the full width of its container */
+      margin-bottom: 10px; /* Add some space below the selector */
+    }
+
+    /* Optional: Style the dropdown arrow */
+    #languageSelect::-ms-expand {
+      display: none; /* Hide the default arrow in IE11 */
+    }
+
+    #languageSelect option {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: black; /* White text for visibility */
+    }
+
+    #languageSelect::after {
+      content: '▼'; /* Use a down arrow character */
+      position: absolute;
+      right: 10px; /* Adjust position as needed */
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none; /* Prevent the arrow from being clickable */
+    }
+
+    /* Optional: Hover effect */
+    #languageSelect:hover {
+      background: rgba(255, 255, 255, 0.2); /* Slightly more opaque background on hover */
     }
   </style>
 </head>
 <body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
   <div class="lpopup" id="loadingPopup" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <h2 style="background: linear-gradient(to right, #FF00D8, #00FFF3);
+    <h2 id="loadingTitle" style="background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p style="position: absolute; bottom: 20px;">v1.61</p>
+    <p id="versionText" style="position: absolute; bottom: 20px;">v1.61</p>
   </div>
 
   <div class="title-container">
@@ -1187,92 +1227,111 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
       </button>
     </div>
-    <div class="title">LobsterCoin</div>
+    <div class="title" id="gameTitle">LobsterCoin</div>
     <!-- <span class="x-text">Ed Sheeran x </span> -->
   </div>
 
   <div class="container">
     <div class="profContainer">
-      <div class="profElem"><div class="profit-per-hour" id="des">Profit per Hour: <br><span class="num" id="profitPerHour">0</span></div></div>
-      <div class="profElem"><div class="clicks-per-tap" id="des">Clicks per Tap: <br><span class="num" id="clicksPerTap">1</span></div></div>
-      <div class="profElem"><div class="league" id="des">League: <br><span class="lnum" id="league">Bronze</span></div></div>
+      <div class="profElem">
+        <div class="profit-per-hour">
+          <span id="profitPerHourLabel" class="des">Profit per Hour:</span> 
+          <br>
+          <span class="num" id="profitPerHourValue">0</span> </div>
+      </div>
+      <div class="profElem">
+        <div class="clicks-per-tap">
+          <span id="clicksPerTapLabel" class="des">Clicks per Tap:</span> 
+          <br>
+          <span class="num" id="clicksPerTapValue">1</span> </div>
+      </div>
+      <div class="profElem">
+        <div class="league">
+          <span id="leagueLabel" class="des">League:</span> 
+          <br>
+          <span class="lnum" id="leagueValue">Bronze</span> </div>
+      </div>
     </div>
     <div class="counter">
       <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="35" height="35">
       <span id="clickCount">0</span>
     </div>
-    <div class="coin"></div>
+    <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
 
     <div class="menu-container">
-      <button class="bottom-button" onclick="openPopup()">
+      <button class="bottom-button" id="boostsButton" onclick="openPopup()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
-        Boosts
+        <span id="boostsLabel">Boosts</span>
       </button>
-      <button class="bottom-button" onclick="earnClick()">
+      <button class="bottom-button" id="earnButton" onclick="earnClick()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
-        Earn
+        <span id="earnLabel">Earn</span>
       </button>
-      <button class="bottom-button" onclick="aboutClick()">
+      <button class="bottom-button" id="aboutButton" onclick="aboutClick()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
-        About
+        <span id="aboutLabel">About</span>
       </button>
-      <button class="bottom-button" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg>Mining</button>
-      <button class="bottom-button" onclick="openAirdrop()">
+      <button class="bottom-button" id="miningButton" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg><span id="miningLabel">Mining</span></button>
+      <button class="bottom-button" id="airdropButton" onclick="openAirdrop()">
         <svg>
           <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="30" height="30" /> 
         </svg>
-        Airdrop
+        <span id="airdropLabel">Airdrop</span>
       </button>
     </div>
 
   <div class="lobster-catch-popup" id="lobsterCatchPopup">
     <button class="close-button" onclick="closeLobsterCatchPopup()">×</button>
-    <div class="title">Lobster Catch</div>
+    <div class="title" id="lobsterCatchTitle">Lobster Catch</div>
     <div class="counter">
-      Lobster Clicks: <span id="lobsterClicks">0</span>
+      <span id="lobsterClicksLabel">Lobster Clicks: </span>
+      <span id="lobsterClicks">0</span>
     </div>
-    <div class="timer">Time: <span id="timeLeft">30</span></div>
+    <div class="timer">
+      <span id="timeLeftLabel">Time: </span>
+      <span id="timeLeft">30</span>
+    </div>
     <div id="lobsterContainer"></div>
 
     <div class="popup" id="gameEndPopup">
-      <h2>Game Over</h2>
-      <p>You caught <span id="finalClicks">0</span> lobsters!</p>
-      <button onclick="restartGame()">Restart</button>
-      <button onclick="closeLobsterCatchPopup()">Quit</button>
+      <h2 id="gameOverTitle">Game Over</h2>
+      <p id="finalClicksMessage">You caught <span id="finalClicks">0</span> lobsters!</p>
+      <button id="restartButton" onclick="restartGame()">Restart</button>
+      <button id="quitButton" onclick="closeLobsterCatchPopup()">Quit</button>
     </div>
   </div>
 
     <div class="popup" id="popup">
       <button class="close-button" onclick="closePopup()">×</button>
-      <h2>Upgrades</h2>
+      <h2 id="upgradesTitle">Upgrades</h2>
       <div class="upgrade">
-        <span>Click Multiplier +1</span>
+        <span id="clickMultiplierUpgradeLabel">Click Multiplier +1</span>
         <span class="upgrade-cost" id="upgradeCost1">Cost: 500 clicks</span>
       </div>
       <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount">
-      <button class="button" onclick="upgradeClick()">Upgrade Clicks</button>
+      <button class="button" id="upgradeClicksButton" onclick="upgradeClick()">Upgrade Clicks</button>
     </div>
 
     <div class="popup" id="dailyRewardsPopup">
       <button class="close-button" onclick="closeDailyRewardsPopup()">×</button>
-      <h2>Daily Rewards</h2>
+      <h2 id="dailyRewardsTitle">Daily Rewards</h2>
       <div id="dailyRewardContainer"></div>
       <button id="claimDailyRewardButton" class="button" onclick="claimDailyReward()" disabled>Claim Reward</button>
     </div>
 
     <div class="offline-earnings-popup" id="offlineEarningsPopup">
       <button class="close-button" onclick="closeOfflineEarningsPopup()">×</button>
-      <h2>Offline Earnings</h2>
-      <p class="earnings-message">You earned some clicks while you were away!</p>
+      <h2 id="offlineEarningsTitle">Offline Earnings</h2>
+      <p class="earnings-message" id="earningsMessage">You earned some clicks while you were away!</p>
       <p class="earnings-amount" id="offlineEarningsAmount">0</p>
     </div>
 
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
-      <h2>Mining</h2>
+      <h2 id="miningPopupTitle">Mining</h2>
       <div class="daily-combo-container">
-        <div class="daily-combo-title">Daily combo</div>
+        <div class="daily-combo-title" id="dailyComboTitle">Daily combo</div>
         <div class="combo-cards">
           <div class="combo-card" id="comboCard1">?</div>
           <div class="combo-card" id="comboCard2">?</div>
@@ -1284,17 +1343,17 @@
         </div>
       </div>
       <div class="mining-tabs">
-        <button class="mining-button active" onclick="showMiningTab('markets')">Markets</button>
-        <button class="mining-button" onclick="showMiningTab('team')">Team</button>
-        <button class="mining-button" onclick="showMiningTab('legal')">Legal</button>
-        <button class="mining-button" onclick="showMiningTab('specials')">Specials</button>
+        <button class="mining-button active" id="marketsTabButton" onclick="showMiningTab('markets')">Markets</button>
+        <button class="mining-button" id="teamTabButton" onclick="showMiningTab('team')">Team</button>
+        <button class="mining-button" id="legalTabButton" onclick="showMiningTab('legal')">Legal</button>
+        <button class="mining-button" id="specialsTabButton" onclick="showMiningTab('specials')">Specials</button>
       </div>
       <div class="mining-card-wrapper" id="miningCardWrapper">
         <!-- Markets Tab Cards -->
         <div class="mining-container" id="marketsTab" style="display: none">
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/ca86efa0-5195-44c0-9d82-816b1b766d43/0_1.png" alt="Card image" />
-            <h3>Stacking</h3>
+            <h3 id="stackingTitle">Stacking</h3>
             <div class="card-info">
               <span id="stackingProfit">Profit/hour: <a class="gold-text">+300 clicks</a></span>
               <span class="card-price" id="stackingPrice">Price: 1000 clicks</span>
@@ -1308,7 +1367,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/4443868e-14af-488b-96a9-79e273a91a43/0_3.png" alt="Card image" />
-            <h3>BTC Pairs</h3>
+            <h3 id="btcTitle">BTC Pairs</h3>
             <div class="card-info">
               <span id="btcProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
               <span class="card-price" id="btcPrice">Price: 8000 clicks</span>
@@ -1322,7 +1381,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/2a2b7d0c-9650-47d7-ac4c-3703a4778838/0_2.png" alt="Card image" />
-            <h3>ETH Pairs</h3>
+            <h3 id="ethTitle">ETH Pairs</h3>
             <div class="card-info">
               <span id="ethProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
               <span class="card-price" id="ethPrice">Price: 10000 clicks</span>
@@ -1336,7 +1395,7 @@
           </div>
           <div class="mining-card">
             <img src="https://avatars.githubusercontent.com/u/131016009?s=280&v=4" alt="Card image" />
-            <h3>TON Pairs</h3>
+            <h3 id="tonTitle">TON Pairs</h3>
             <div class="card-info">
               <span id="tonProfit">Profit/hour: <a class="gold-text">+500 clicks</a></span>
               <span class="card-price" id="tonPrice">Price: 2000 clicks</span>
@@ -1350,7 +1409,7 @@
           </div>
           <div class="mining-card">
             <img src="https://s2.coinmarketcap.com/static/img/coins/200x200/28850.png" alt="Card image" />
-            <h3>NOT Pairs</h3>
+            <h3 id="notTitle">NOT Pairs</h3>
             <div class="card-info">
               <span id="notProfit">Profit/hour: <a class="gold-text">+600 clicks</a></span>
               <span class="card-price" id="notPrice">Price: 3000 clicks</span>
@@ -1364,7 +1423,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/1eb021d4-7560-4338-81a7-ceff508d81c8/0_2.png" alt="Card image" />
-            <h3>GameFI Tokens</h3>
+            <h3 id="gamefiTitle">GameFI Tokens</h3>
             <div class="card-info">
               <span id="gamefiProfit">Profit/hour: <a class="gold-text">+700 clicks</a></span>
               <span class="card-price" id="gamefiPrice">Price: 4000 clicks</span>
@@ -1378,7 +1437,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/a46da306-830e-4397-ae07-ba13f97cbfa3/0_1.png" alt="Card image" />
-            <h3>Meme Coins</h3>
+            <h3 id="memeTitle">Meme Coins</h3>
             <div class="card-info">
               <span id="memeProfit">Profit/hour: <a class="gold-text">+800 clicks</a></span>
               <span class="card-price" id="memePrice">Price: 5000 clicks</span>
@@ -1392,7 +1451,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/713596bf-7d82-4adc-bbb5-d1bb36c85414/0_0.png" alt="Card image" />
-            <h3>Shit Coins</h3>
+            <h3 id="shitTitle">Shit Coins</h3>
             <div class="card-info">
               <span id="shitProfit">Profit/hour: <a class="gold-text">+900 clicks</a></span>
               <span class="card-price" id="shitPrice">Price: 6000 clicks</span>
@@ -1410,7 +1469,7 @@
         <div class="mining-container" id="teamTab" style="display: none">
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/59bcb9c9-112c-4a86-ba01-d4f73dba2ae9/0_2.png" alt="Card image" />
-            <h3>SEO</h3>
+            <h3 id="seoTitle">SEO</h3>
             <div class="card-info">
               <span id="seoProfit">Profit/hour: <a class="gold-text">+30 clicks</a></span>
               <span class="card-price" id="seoPrice">Price: 500 clicks</span>
@@ -1424,7 +1483,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/cef8f033-096a-44aa-8705-76478c0cafd6/0_0.png" alt="Card image" />
-            <h3>Influencers</h3>
+            <h3 id="influencerTitle">Influencers</h3>
             <div class="card-info">
               <span id="influencerProfit">Profit/hour: <a class="gold-text">+60 clicks</a></span>
               <span class="card-price" id="influencerPrice">Price: 600 clicks</span>
@@ -1438,7 +1497,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/23ffa0ba-e226-4d43-92ed-6273e209fc97/0_2.png" alt="Card image" />
-            <h3>Miners</h3>
+            <h3 id="minerTitle">Miners</h3>
             <div class="card-info">
               <span id="minerProfit">Profit/hour: <a class="gold-text">+100 clicks</a></span>
               <span class="card-price" id="minerPrice">Price: 800 clicks</span>
@@ -1452,7 +1511,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/a570837e-b7d9-4e60-882a-37a143a6380f/0_2.png" alt="Card image" />
-            <h3>IT Team</h3>
+            <h3 id="itTeamTitle">IT Team</h3>
             <div class="card-info">
               <span id="itTeamProfit">Profit/hour: <a class="gold-text">+150 clicks</a></span>
               <span class="card-price" id="itTeamPrice">Price: 700 clicks</span>
@@ -1466,7 +1525,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/d86dc31d-13b0-4a2c-be36-d4716f6e8ad9/0_1.png" alt="Card image" />
-            <h3>Hacking Team</h3>
+            <h3 id="hackTitle">Hacking Team</h3>
             <div class="card-info">
               <span id="hackProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
               <span class="card-price" id="hackPrice">Price: 1000 clicks</span>
@@ -1484,7 +1543,7 @@
         <div class="mining-container" id="legalTab" style="display: none">
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/bd4920d7-3c05-4ea5-acf1-800ce24df81d/0_0.png" alt="Card image" />
-            <h3>License USA</h3>
+            <h3 id="usaTitle">License USA</h3>
             <div class="card-info">
               <span id="usaProfit">Profit/hour: <a class="gold-text">+2000 clicks</a></span>
               <span class="card-price" id="usaPrice">Price: 12000 clicks</span>
@@ -1498,7 +1557,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/bd4920d7-3c05-4ea5-acf1-800ce24df81d/0_0.png" alt="Card image" />
-            <h3>License Korea</h3>
+            <h3 id="koreaTitle">License Korea</h3>
             <div class="card-info">
               <span id="krProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
               <span class="card-price" id="krPrice">Price: 17000 clicks</span>
@@ -1512,7 +1571,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/3d7e85a7-6be6-41ad-9a7f-0a184f558bc3/0_2.png" alt="Card image" />
-            <h3>Licence UAE</h3>
+            <h3 id="uaeTitle">Licence UAE</h3>
             <div class="card-info">
               <span id="uaeProfit">Profit/hour: <a class="gold-text">+2500 clicks</a></span>
               <span class="card-price" id="uaePrice">Price: 15000 clicks</span>
@@ -1526,7 +1585,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/9c6d32f3-d1f7-4492-bc0e-0ea581ccbae5/0_1.png" alt="Card image" />
-            <h3>Licence Europe</h3>
+            <h3 id="europeTitle">Licence Europe</h3>
             <div class="card-info">
               <span id="europeProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
               <span class="card-price" id="europePrice">Price: 18000 clicks</span>
@@ -1540,7 +1599,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/24a8b056-4c31-45f8-9746-8cc496c8829f/0_3.png" alt="Card image" />
-            <h3>Licence Australia</h3>
+            <h3 id="australiaTitle">Licence Australia</h3>
             <div class="card-info">
               <span id="australiaProfit">Profit/hour: <a class="gold-text">+3500 clicks</a></span>
               <span class="card-price" id="australiaPrice">Price: 21000 clicks</span>
@@ -1554,7 +1613,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/eda716d0-eea8-4f81-9d65-4f8b8820f920/0_1.png" alt="Card image" />
-            <h3>License Japan</h3>
+            <h3 id="japanTitle">License Japan</h3>
             <div class="card-info">
               <span id="japanProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
               <span class="card-price" id="japanPrice">Price: 24000 clicks</span>
@@ -1568,7 +1627,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/26249c54-08bd-411e-a458-103a5cb2ec85/0_0.png" alt="Card image" />
-            <h3>License Nigeria</h3>
+            <h3 id="nigeriaTitle">License Nigeria</h3>
             <div class="card-info">
               <span id="nigeriaProfit">Profit/hour: <a class="gold-text">+4500 clicks</a></span>
               <span class="card-price" id="nigeriaPrice">Price: 27000 clicks</span>
@@ -1586,7 +1645,7 @@
         <div class="mining-container" id="specialsTab" style="display: none">
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" alt="Card image" />
-            <h3>Olympic Games START</h3>
+            <h3 id="olympicTitle">Olympic Games START</h3>
             <div class="card-info">
               <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
               <span class="card-price" id="olPrice">Price: 15000 clicks</span>
@@ -1600,7 +1659,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" alt="Card image" />
-            <h3>Ed Sheeran</h3>
+            <h3 id="edTitle">Ed Sheeran</h3>
             <div class="card-info">
               <span id="edProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
               <span class="card-price" id="edPrice">Price: 15000 clicks</span>
@@ -1614,7 +1673,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/7e926b4c-798f-4096-970f-e449325eeea2/0_2.png" alt="Card image" />
-            <h3>We have 30 users!</h3>
+            <h3 id="users30Title">We have 30 users!</h3>
             <div class="card-info">
               <span id="us6Profit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
               <span class="card-price" id="us6Price">Price: 10000 clicks</span>
@@ -1628,7 +1687,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/237acce7-9b4d-4830-8ce3-61da736d7e67/0_0.png" alt="Card image" />
-            <h3>Elon Musk</h3>
+            <h3 id="elonTitle">Elon Musk</h3>
             <div class="card-info">
               <span id="elonProfit">Profit/hour: <a class="gold-text">+1000 clicks</a></span>
               <span class="card-price" id="elonPrice">Price: 10000 clicks</span>
@@ -1642,7 +1701,7 @@
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/0fea593b-1cfe-4948-969a-202b5413c044/0_1.png" alt="Card image" />
-            <h3>Dubai Office</h3>
+            <h3 id="dubaiTitle">Dubai Office</h3>
             <div class="card-info">
               <span id="dubaiProfit">Profit/hour: <a class="gold-text">+5000 clicks</a></span>
               <span class="card-price" id="dubaiPrice">Price: 23000 clicks</span>
@@ -1651,12 +1710,12 @@
             <button class="buy-button" onclick="buyCard('dubai')">Buy</button>
             <div class="timer-overlay" id="dubaiTimerOverlay">
               <span class="timer-text" id="dubaiTimer">30</span>
-              <div class="spinner" id="us6Spinner"></div>
+              <div class="spinner" id="dubaiSpinner"></div>
             </div>
           </div>
           <div class="mining-card">
             <img src="https://cdn.midjourney.com/e90db955-acb9-4317-b6ca-29b2354997d1/0_2.png" alt="Card image" />
-            <h3>Lobster City</h3>
+            <h3 id="cityTitle">Lobster City</h3>
             <div class="card-info">
               <span id="cityProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
               <span class="card-price" id="cityPrice">Price: 1,000,000 clicks</span>
@@ -1665,7 +1724,7 @@
             <button class="buy-button" onclick="buyCard('city')">Buy</button>
             <div class="timer-overlay" id="cityTimerOverlay">
               <span class="timer-text" id="cityTimer">30</span>
-              <div class="spinner" id="us6Spinner"></div>
+              <div class="spinner" id="citySpinner"></div>
             </div>
           </div>
         </div>
@@ -1674,20 +1733,37 @@
 
     <div class="popup settings-popup" id="settingsPopup">
       <button class="close-button" onclick="closeSettingsPopup()">×</button>
-      <h2>Settings</h2>
-      <button class="menu-button" onclick="confirmClearData()">Clear Data</button>
-      <button class="menu-button" onclick="openLegalInfoPopup()">Legal Info</button>
+      <h2 id="settingsTitle">Settings</h2>
+      <label for="languageSelect" id="languageSelectLabel">Language:</label>
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="ru">Russian</option>
+        <option value="kr">Korean</option>
+        <option value="es">Español</option>
+        <option value="fr">French</option>
+        <option value="uk">Ukrainian</option>
+        <option value="zh">Chineese</option>
+        <option value="hi">Hindi</option>
+        <option value="ar">Arabic</option>
+        <option value="it">Italian</option>
+        <option value="et">Estonian</option>
+        <option value="no">Norwegian</option>
+        <option value="pl">Polish</option>
+      </select>
+      <button class="menu-button" id="saveLanguageButton" onclick="saveLanguage()">Save Language</button>
+      <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
+      <button class="menu-button" id="legalInfoButton" onclick="openLegalInfoPopup()">Legal Info</button>
       <input type="text" id="promoCode" placeholder="Enter promo code">
-   	  <button class="menu-button" onclick="applyPromoCode()">Apply Promo Code</button>
+      <button class="menu-button" id="applyPromoCodeButton" onclick="applyPromoCode()">Apply Promo Code</button>
 
     </div>
 
     <div class="popup" id="legalInfoPopup">
       <button class="close-button" onclick="closeLegalInfoPopup()">×</button>
-      <h2>Legal Information</h2>
+      <h2 id="legalInfoTitle">Legal Information</h2>
       <div class="legal-info">
-        <p>By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
-        <button class="menu-button" href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms Of Service</button>
+        <p id="legalInfoMessage">By using LobsterCoin, you agree to our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en">full Terms of Service</a> for more information.</p>
+        <button class="menu-button" href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en" id="termsOfServiceButton">Terms Of Service</button>
       </div>
     </div>
   </div>
@@ -1698,8 +1774,8 @@
       <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
     </div>
     <div class="airdrop-content">
-      <h2>Airdrop!</h2>
-      <p>Get your share of LOB tokens.</p>
+      <h2 id="airdropPopupTitle">Airdrop!</h2>
+      <p id="airdropPopupMessage">Get your share of LOB tokens.</p>
 
       <!-- TONConnect Button -->
       <div id="ton-connect"></div> 
@@ -1719,41 +1795,42 @@
   
   <div class="popup skins-popup" id="skinsPopup">
     <button class="close-button" onclick="closeSkinsPopup()">×</button>
-    <h2>Skins</h2>
+    <h2 id="skinsPopupTitle">Skins</h2>
     <div class="skins-container" id="skinCardsContainer"></div> </div>
   </div>
   
   <div class="airdrop-popup" id="earnPopup">
-    <button class="close-button" onclick="closeEarnPopup()">×</button>
-    <div class="logo-1">
-      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
-    </div>
-    <h2>Earn Clicks</h2>
-    <div class="airdrop-content"> <!-- Added airdrop-content class for scrolling -->
-      <div class="airdrop-item"><button class="earn-button" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg>Subscribe YouTube  | +<span id="youtubeReward">5k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg>Subscribe Telegram | +<span id="telegramReward">1k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>Subscribe X (Twitter) | +<span id="xReward">5k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-cowboy-hat</title><path d="M20 22H4V20C4 17.8 7.6 16 12 16S20 17.8 20 20M8 9H16V10C16 12.2 14.2 14 12 14S8 12.2 8 10M19 4C18.4 4 18 4.4 18 5V6H16.5L15.1 3C15 2.8 14.9 2.6 14.7 2.5C14.2 2 13.4 1.9 12.7 2.2L12 2.4L11.3 2.1C10.6 1.8 9.8 1.9 9.3 2.4C9.1 2.6 9 2.8 8.9 3L7.5 6H6V5C6 4.4 5.6 4 5 4S4 4.4 4 5V6C4 7.1 4.9 8 6 8H18C19.1 8 20 7.1 20 6V5C20 4.5 19.6 4 19 4Z" /></svg>Invite Friend      | +<span id="referralReward">20k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="openLobsterCatchPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>nintendo-game-boy</title><path d="M7 1C5.9 1 5 1.9 5 3V21C5 22.11 5.9 23 7 23H14C16.76 23 19 20.76 19 18V3C19 1.9 18.11 1 17 1H7M8 4H16V11H8V4M9 14H10V16H12V17H10V19H9V17H7V16H9V14M16 15C16.55 15 17 15.45 17 16C17 16.55 16.55 17 16 17C15.45 17 15 16.55 15 16C15 15.45 15.45 15 16 15M14 17C14.55 17 15 17.45 15 18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18C13 17.45 13.45 17 14 17Z" /></svg>Game               | +<span id="gameReward">10k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg>Daily Reward   | +<span id="dailyRewardAmount">10k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg>Watch Ad   | +<span id="adReward">10k</span></button></div>
-      <div class="airdrop-item"><button class="earn-button" onclick="postStory()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-plus</title><path d="M19,19H5V5H19M14,14V8H8V14H14M12,10H10V12H12V10M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,18H19V16H17V18M17,14H19V12H17V14M17,10H19V8H17V10Z" /></svg>Post Story | +<span id="storyReward">1M</span></button></div>
-    </div>
-  </div>
-
-  <div class="league-popup" id="leaguePopup">
-    <button class="close-button" onclick="closeLeaguePopup()">×</button>
-    <h2 id="leagueName"></h2>
-    <div class="trophy-container">
-      <button class="arrow-button" onclick="previousLeague()"><</button>
-      <div class="trophy">
-        <img id="leagueTrophy" src="" alt="League Trophy">
+      <button class="close-button" onclick="closeEarnPopup()">×</button>
+      <div class="logo-1">
+        <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
       </div>
-      <button class="arrow-button" onclick="nextLeague()">></button>
+      <h2 id="earnClicksTitle">Earn Clicks</h2>
+      <div class="airdrop-content"> 
+        <div class="airdrop-item"><button class="earn-button" id="youtubeButton" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg><span id="subscribeYoutubeLabel">Subscribe YouTube</span>  | +<span id="youtubeReward">5k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="telegramButton" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg><span id="subscribeTelegramLabel">Subscribe Telegram</span> | +<span id="telegramReward">1k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="xButton" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg><span id="subscribeXLabel">Subscribe X (Twitter)</span> | +<span id="xReward">5k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-cowboy-hat</title><path d="M20 22H4V20C4 17.8 7.6 16 12 16S20 17.8 20 20M8 9H16V10C16 12.2 14.2 14 12 14S8 12.2 8 10M19 4C18.4 4 18 4.4 18 5V6H16.5L15.1 3C15 2.8 14.9 2.6 14.7 2.5C14.2 2 13.4 1.9 12.7 2.2L12 2.4L11.3 2.1C10.6 1.8 9.8 1.9 9.3 2.4C9.1 2.6 9 2.8 8.9 3L7.5 6H6V5C6 4.4 5.6 4 5 4S4 4.4 4 5V6C4 7.1 4.9 8 6 8H18C19.1 8 20 7.1 20 6V5C20 4.5 19.6 4 19 4Z" /></svg><span id="inviteFriendLabel">Invite Friend </span>     | +<span id="referralReward">20k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="gameButton" onclick="openLobsterCatchPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>nintendo-game-boy</title><path d="M7 1C5.9 1 5 1.9 5 3V21C5 22.11 5.9 23 7 23H14C16.76 23 19 20.76 19 18V3C19 1.9 18.11 1 17 1H7M8 4H16V11H8V4M9 14H10V16H12V17H10V19H9V17H7V16H9V14M16 15C16.55 15 17 15.45 17 16C17 16.55 16.55 17 16 17C15.45 17 15 16.55 15 16C15 15.45 15.45 15 16 15M14 17C14.55 17 15 17.45 15 18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18C13 17.45 13.45 17 14 17Z" /></svg><span id="gameLabel">Game</span>               | +<span id="gameReward">10k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="dailyRewardButton" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg><span id="dailyRewardLabel">Daily Reward</span>   | +<span id="dailyRewardAmount">10k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="watchAdButton" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg><span id="watchAdLabel">Watch Ad</span>   | +<span id="adReward">10k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" onclick="postStory()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-plus</title><path d="M19,19H5V5H19M14,14V8H8V14H14M12,10H10V12H12V10M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,18H19V16H17V18M17,14H19V12H17V14M17,10H19V8H17V10Z" /></svg><span id="postStoryLabel">Post Story</span> | +<span id="storyReward">1M</span></button></div>
+
+      </div>
     </div>
-    <p class="from">From <span id="leagueRequirement"></span></p>
-    <p class="info">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
-  </div>
+
+    <div class="league-popup" id="leaguePopup">
+      <button class="close-button" onclick="closeLeaguePopup()">×</button>
+      <h2 id="leagueName"></h2>
+      <div class="trophy-container">
+        <button class="arrow-button" onclick="previousLeague()"><</button>
+        <div class="trophy">
+          <img id="leagueTrophy" src="" alt="League Trophy">
+        </div>
+        <button class="arrow-button" onclick="nextLeague()">></button>
+      </div>
+      <p class="from" id="leagueFromLabel">From <span id="leagueRequirement"></span></p>
+      <p class="info" id="leagueInfoMessage">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
+    </div>
   <script>
     const dailyCombo = ["usa", "dubai", "ton"];
     let skinProfitPerHour = 0;
@@ -1779,6 +1856,1179 @@
     var WebApp = window.Telegram.WebApp;
  
     let cardCooldown = {};
+
+    const translations = {
+      en: { 
+        clicks: "Clicks",
+        clickMultiplier: "Clicks per Tap",
+        profitPerHour: "Profit per Hour",
+        league: "League",
+        boosts: "Boosts",
+        earn: "Earn",
+        about: "About",
+        mining: "Mining",
+        airdrop: "Airdrop",
+        settings: "Settings",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "LobsterCoin",
+        boostsLabel: "Boosts",
+        earnLabel: "Earn",
+        aboutLabel: "About",
+        miningLabel: "Mining",
+        airdropLabel: "Airdrop",
+        lobsterCatchTitle: "Lobster Catch",
+        lobsterClicksLabel: "Lobster Clicks: ",
+        timeLeftLabel: "Time: ",
+        gameOverTitle: "Game Over",
+        finalClicksMessage: "You caught {0} lobsters!", // Use {0} for placeholder
+        restartButton: "Restart",
+        quitButton: "Quit",
+        upgradesTitle: "Upgrades",
+        clickMultiplierUpgradeLabel: "Click Multiplier +1",
+        upgradeClicksButton: "Upgrade Clicks",
+        dailyRewardsTitle: "Daily Rewards",
+        claimDailyRewardButton: "Claim Reward",
+        offlineEarningsTitle: "Offline Earnings",
+        earningsMessage: "You earned some clicks while you were away!",
+        miningPopupTitle: "Mining",
+        dailyComboTitle: "Daily combo",
+        marketsTabButton: "Markets",
+        teamTabButton: "Team",
+        legalTabButton: "Legal",
+        specialsTabButton: "Specials",
+        stackingTitle: "Stacking",
+        btcTitle: "BTC Pairs",
+        ethTitle: "ETH Pairs",
+        tonTitle: "TON Pairs",
+        notTitle: "NOT Pairs",
+        gamefiTitle: "GameFI Tokens",
+        memeTitle: "Meme Coins",
+        shitTitle: "Shit Coins",
+        seoTitle: "SEO",
+        influencerTitle: "Influencers",
+        minerTitle: "Miners",
+        itTeamTitle: "IT Team",
+        hackTitle: "Hacking Team",
+        usaTitle: "License USA",
+        koreaTitle: "License Korea",
+        uaeTitle: "Licence UAE",
+        europeTitle: "Licence Europe",
+        australiaTitle: "Licence Australia",
+        japanTitle: "License Japan",
+        nigeriaTitle: "License Nigeria",
+        olympicTitle: "Olympic Games START",
+        edTitle: "Ed Sheeran",
+        users30Title: "We have 30 users!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Dubai Office",
+        cityTitle: "Lobster City",
+        settingsTitle: "Settings",
+        languageSelectLabel: "Language:",
+        saveLanguageButton: "Save Language",
+        clearDataButton: "Clear Data",
+        legalInfoButton: "Legal Info",
+        applyPromoCodeButton: "Apply Promo Code",
+        legalInfoTitle: "Legal Information",
+        legalInfoMessage: "By using LobsterCoin, you agree to our <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>full Terms of Service</a> for more information.",
+        termsOfServiceButton: "Terms Of Service",
+        airdropPopupTitle: "Airdrop!",
+        airdropPopupMessage: "Get your share of LOB tokens.",
+        claimAirdropButton: "Recieve Money",
+        skinsPopupTitle: "Skins",
+        earnClicksTitle: "Earn Clicks",
+        subscribeYoutubeLabel: "Subscribe YouTube",
+        subscribeTelegramLabel: "Subscribe Telegram",
+        subscribeXLabel: "Subscribe X (Twitter)",
+        inviteFriendLabel: "Invite Friend",
+        gameLabel: "Game",
+        dailyRewardLabel: "Daily Reward",
+        watchAdLabel: "Watch Ad",
+        postStoryLabel: "Post Story",
+        leagueFromLabel: "From",
+        leagueInfoMessage: "⚠ If trophy image is not changing, wait a bit time or check internet connection"
+      },
+      ru: { 
+        clicks: "Клики",
+        clickMultiplier: "Клики за нажатие",
+        profitPerHour: "Прибыль в час",
+        league: "Лига",
+        boosts: "Ускорители",
+        earn: "Заработать",
+        about: "О нас",
+        mining: "Майнинг",
+        airdrop: "Эйрдроп",
+        settings: "Настройки",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "LobsterCoin",
+        boostsLabel: "Ускорители",
+        earnLabel: "Заработать",
+        aboutLabel: "О нас",
+        miningLabel: "Майнинг",
+        airdropLabel: "Эйрдроп",
+        lobsterCatchTitle: "Ловля омаров",
+        lobsterClicksLabel: "Клики омаров: ",
+        timeLeftLabel: "Время: ",
+        gameOverTitle: "Игра окончена",
+        finalClicksMessage: "Вы поймали {0} омаров!",
+        restartButton: "Перезапустить",
+        quitButton: "Выйти",
+        upgradesTitle: "Улучшения",
+        clickMultiplierUpgradeLabel: "Множитель кликов +1",
+        upgradeClicksButton: "Улучшить клики",
+        dailyRewardsTitle: "Ежедневные награды",
+        claimDailyRewardButton: "Получить награду",
+        offlineEarningsTitle: "Заработок офлайн",
+        earningsMessage: "Вы заработали клики, пока вас не было!",
+        miningPopupTitle: "Майнинг",
+        dailyComboTitle: "Ежедневное комбо",
+        marketsTabButton: "Рынки",
+        teamTabButton: "Команда",
+        legalTabButton: "Юридические",
+        specialsTabButton: "Специальные",
+        stackingTitle: "Стейкинг",
+        btcTitle: "Пары BTC",
+        ethTitle: "Пары ETH",
+        tonTitle: "Пары TON",
+        notTitle: "Пары NOT",
+        gamefiTitle: "Токены GameFI",
+        memeTitle: "Мем-монеты",
+        shitTitle: "Шиткоины",
+        seoTitle: "SEO",
+        influencerTitle: "Инфлюенсеры",
+        minerTitle: "Майнеры",
+        itTeamTitle: "IT-команда",
+        hackTitle: "Хакерская команда",
+        usaTitle: "Лицензия США",
+        koreaTitle: "Лицензия Кореи",
+        uaeTitle: "Лицензия ОАЭ",
+        europeTitle: "Лицензия Европы",
+        australiaTitle: "Лицензия Австралии",
+        japanTitle: "Лицензия Японии",
+        nigeriaTitle: "Лицензия Нигерии",
+        olympicTitle: "Начало Олимпийских игр",
+        edTitle: "Эд Ширан",
+        users30Title: "У нас 30 пользователей!",
+        elonTitle: "Илон Маск",
+        dubaiTitle: "Офис в Дубае",
+        cityTitle: "Город омаров",
+        settingsTitle: "Настройки",
+        languageSelectLabel: "Язык:",
+        saveLanguageButton: "Сохранить язык",
+        clearDataButton: "Очистить данные",
+        legalInfoButton: "Юридическая информация",
+        applyPromoCodeButton: "Применить промокод",
+        legalInfoTitle: "Юридическая информация",
+        legalInfoMessage: "Используя LobsterCoin, вы соглашаетесь с нашими <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Условиями обслуживания</a>, которые регулируют ваш доступ и использование игры и всего связанного контента. Пожалуйста, ознакомьтесь с <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>полными Условиями обслуживания</a> для получения дополнительной информации.",
+        termsOfServiceButton: "Условия обслуживания",
+        airdropPopupTitle: "Эйрдроп!",
+        airdropPopupMessage: "Получите свою долю токенов LOB.",
+        claimAirdropButton: "Получить деньги",
+        skinsPopupTitle: "Скины",
+        earnClicksTitle: "Заработать клики",
+        subscribeYoutubeLabel: "Подписаться на YouTube",
+        subscribeTelegramLabel: "Подписаться на Telegram",
+        subscribeXLabel: "Подписаться на X (Twitter)",
+        inviteFriendLabel: "Пригласить друга",
+        gameLabel: "Игра",
+        dailyRewardLabel: "Ежедневная награда",
+        watchAdLabel: "Посмотреть рекламу",
+        postStoryLabel: "Опубликовать историю",
+        leagueFromLabel: "От",
+        leagueInfoMessage: "⚠ Если изображение трофея не меняется, подождите немного или проверьте подключение к интернету" 
+      },
+      kr: {
+        clicks: "클릭",
+        clickMultiplier: "탭당 클릭 수",
+        profitPerHour: "시간당 수익",
+        league: "리그",
+        boosts: "부스트",
+        earn: "획득",
+        about: "정보",
+        mining: "마이닝",
+        airdrop: "에어드랍",
+        settings: "설정",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "LobsterCoin",
+        boostsLabel: "부스트",
+        earnLabel: "획득",
+        aboutLabel: "정보",
+        miningLabel: "마이닝",
+        airdropLabel: "에어드랍",
+        lobsterCatchTitle: "랍스터 잡기",
+        lobsterClicksLabel: "랍스터 클릭: ",
+        timeLeftLabel: "시간: ",
+        gameOverTitle: "게임 오버",
+        finalClicksMessage: "{0} 마리의 랍스터를 잡았습니다!", 
+        restartButton: "다시 시작",
+        quitButton: "종료",
+        upgradesTitle: "업그레이드",
+        clickMultiplierUpgradeLabel: "클릭 배율 +1",
+        upgradeClicksButton: "클릭 업그레이드",
+        dailyRewardsTitle: "일일 보상",
+        claimDailyRewardButton: "보상 받기",
+        offlineEarningsTitle: "오프라인 수익",
+        earningsMessage: "자리를 비운 동안 클릭을 획득했습니다!",
+        miningPopupTitle: "마이닝",
+        dailyComboTitle: "일일 콤보",
+        marketsTabButton: "시장",
+        teamTabButton: "팀",
+        legalTabButton: "법률",
+        specialsTabButton: "특별",
+        stackingTitle: "스테이킹",
+        btcTitle: "BTC 페어",
+        ethTitle: "ETH 페어",
+        tonTitle: "TON 페어",
+        notTitle: "NOT 페어",
+        gamefiTitle: "GameFI 토큰",
+        memeTitle: "밈 코인",
+        shitTitle: "잡 코인",
+        seoTitle: "SEO",
+        influencerTitle: "인플루언서",
+        minerTitle: "마이너",
+        itTeamTitle: "IT 팀",
+        hackTitle: "해킹 팀",
+        usaTitle: "미국 라이선스",
+        koreaTitle: "한국 라이선스",
+        uaeTitle: "UAE 라이선스",
+        europeTitle: "유럽 라이선스",
+        australiaTitle: "호주 라이선스",
+        japanTitle: "일본 라이선스",
+        nigeriaTitle: "나이지리아 라이선스",
+        olympicTitle: "올림픽 게임 시작",
+        edTitle: "에드 시런",
+        users30Title: "사용자 30명 달성!",
+        elonTitle: "일론 머스크",
+        dubaiTitle: "두바이 사무실",
+        cityTitle: "랍스터 도시",
+        settingsTitle: "설정",
+        languageSelectLabel: "언어:",
+        saveLanguageButton: "언어 저장",
+        clearDataButton: "데이터 삭제",
+        legalInfoButton: "법적 정보",
+        applyPromoCodeButton: "프로모 코드 적용",
+        legalInfoTitle: "법적 정보",
+        legalInfoMessage: "LobsterCoin을 이용함으로써 귀하는 게임 및 모든 관련 콘텐츠에 대한 액세스 및 사용을 규제하는 당사의 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>서비스 약관</a>에 동의하는 것입니다. 자세한 내용은 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>전체 서비스 약관</a>을 검토하십시오.",
+        termsOfServiceButton: "서비스 약관",
+        airdropPopupTitle: "에어드랍!",
+        airdropPopupMessage: "LOB 토큰을 받으세요.",
+        claimAirdropButton: "돈 받기",
+        skinsPopupTitle: "스킨",
+        earnClicksTitle: "클릭 획득",
+        subscribeYoutubeLabel: "YouTube 구독",
+        subscribeTelegramLabel: "Telegram 구독",
+        subscribeXLabel: "X (Twitter) 구독",
+        inviteFriendLabel: "친구 초대",
+        gameLabel: "게임",
+        dailyRewardLabel: "일일 보상",
+        watchAdLabel: "광고 시청",
+        postStoryLabel: "스토리 게시",
+        leagueFromLabel: "부터",
+        leagueInfoMessage: "⚠ 트로피 이미지가 변경되지 않으면 잠시 기다리거나 인터넷 연결을 확인하십시오."
+      },
+      es: { 
+        clicks: "Clics",
+        clickMultiplier: "Clics por toque",
+        profitPerHour: "Ganancia por hora",
+        league: "Liga",
+        boosts: "Impulsos",
+        earn: "Ganar",
+        about: "Acerca de",
+        mining: "Minería",
+        airdrop: "Lanzamiento Aéreo",
+        settings: "Ajustes",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "LobsterCoin",
+        boostsLabel: "Impulsos",
+        earnLabel: "Ganar",
+        aboutLabel: "Acerca de",
+        miningLabel: "Minería",
+        airdropLabel: "Lanzamiento Aéreo",
+        lobsterCatchTitle: "Captura de Langostas",
+        lobsterClicksLabel: "Clics de Langosta: ",
+        timeLeftLabel: "Tiempo: ",
+        gameOverTitle: "Juego Terminado",
+        finalClicksMessage: "¡Has atrapado {0} langostas!", 
+        restartButton: "Reiniciar",
+        quitButton: "Salir",
+        upgradesTitle: "Mejoras",
+        clickMultiplierUpgradeLabel: "Multiplicador de clics +1",
+        upgradeClicksButton: "Mejorar clics",
+        dailyRewardsTitle: "Recompensas Diarias",
+        claimDailyRewardButton: "Reclamar Recompensa",
+        offlineEarningsTitle: "Ganancias Fuera de Línea",
+        earningsMessage: "¡Has ganado clics mientras estabas fuera!",
+        miningPopupTitle: "Minería",
+        dailyComboTitle: "Combo diario",
+        marketsTabButton: "Mercados",
+        teamTabButton: "Equipo",
+        legalTabButton: "Legal",
+        specialsTabButton: "Especiales",
+        stackingTitle: "Staking",
+        btcTitle: "Pares BTC",
+        ethTitle: "Pares ETH",
+        tonTitle: "Pares TON",
+        notTitle: "Pares NOT",
+        gamefiTitle: "Tokens GameFI",
+        memeTitle: "Meme Coins",
+        shitTitle: "Shit Coins",
+        seoTitle: "SEO",
+        influencerTitle: "Influencers",
+        minerTitle: "Mineros",
+        itTeamTitle: "Equipo de IT",
+        hackTitle: "Equipo de Hacking",
+        usaTitle: "Licencia USA",
+        koreaTitle: "Licencia Corea",
+        uaeTitle: "Licencia EAU",
+        europeTitle: "Licencia Europa",
+        australiaTitle: "Licencia Australia",
+        japanTitle: "Licencia Japón",
+        nigeriaTitle: "Licencia Nigeria",
+        olympicTitle: "Inicio de los Juegos Olímpicos",
+        edTitle: "Ed Sheeran",
+        users30Title: "¡Tenemos 30 usuarios!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Oficina en Dubai",
+        cityTitle: "Ciudad Langosta",
+        settingsTitle: "Ajustes",
+        languageSelectLabel: "Idioma:",
+        saveLanguageButton: "Guardar Idioma",
+        clearDataButton: "Borrar Datos",
+        legalInfoButton: "Información Legal",
+        applyPromoCodeButton: "Aplicar Código Promocional",
+        legalInfoTitle: "Información Legal",
+        legalInfoMessage: "Al usar LobsterCoin, aceptas nuestros <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Términos de Servicio</a>, que rigen tu acceso y uso del juego y todo el contenido relacionado. Por favor, revisa nuestros <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Términos de Servicio completos</a> para obtener más información.",
+        termsOfServiceButton: "Términos de Servicio",
+        airdropPopupTitle: "¡Lanzamiento Aéreo!",
+        airdropPopupMessage: "Obtén tu parte de los tokens LOB.",
+        claimAirdropButton: "Recibir Dinero",
+        skinsPopupTitle: "Skins",
+        earnClicksTitle: "Ganar Clics",
+        subscribeYoutubeLabel: "Suscribirse a YouTube",
+        subscribeTelegramLabel: "Suscribirse a Telegram",
+        subscribeXLabel: "Suscribirse a X (Twitter)",
+        inviteFriendLabel: "Invitar a un Amigo",
+        gameLabel: "Juego",
+        dailyRewardLabel: "Recompensa Diaria",
+        watchAdLabel: "Ver Anuncio",
+        postStoryLabel: "Publicar Historia",
+        leagueFromLabel: "Desde",
+        leagueInfoMessage: "⚠ Si la imagen del trofeo no cambia, espere un poco o compruebe la conexión a Internet"
+      },
+      fr: { 
+        clicks: "Clics",
+        clickMultiplier: "Clics par Touche",
+        profitPerHour: "Profit par Heure",
+        league: "Ligue",
+        boosts: "Boosters",
+        earn: "Gagner",
+        about: "À propos",
+        mining: "Minage",
+        airdrop: "Airdrop",
+        settings: "Paramètres",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "LobsterCoin",
+        boostsLabel: "Boosters",
+        earnLabel: "Gagner",
+        aboutLabel: "À propos",
+        miningLabel: "Minage",
+        airdropLabel: "Airdrop",
+        lobsterCatchTitle: "Attrapez le Homard",
+        lobsterClicksLabel: "Clics de Homard : ",
+        timeLeftLabel: "Temps : ",
+        gameOverTitle: "Fin du Jeu",
+        finalClicksMessage: "Vous avez attrapé {0} homards !",
+        restartButton: "Redémarrer",
+        quitButton: "Quitter",
+        upgradesTitle: "Améliorations",
+        clickMultiplierUpgradeLabel: "Multiplicateur de Clics +1",
+        upgradeClicksButton: "Améliorer les Clics",
+        dailyRewardsTitle: "Récompenses Quotidiennes",
+        claimDailyRewardButton: "Réclamer la Récompense",
+        offlineEarningsTitle: "Gains Hors Ligne",
+        earningsMessage: "Vous avez gagné des clics pendant votre absence !",
+        miningPopupTitle: "Minage",
+        dailyComboTitle: "Combo Quotidien",
+        marketsTabButton: "Marchés",
+        teamTabButton: "Équipe",
+        legalTabButton: "Légal",
+        specialsTabButton: "Spéciaux",
+        stackingTitle: "Staking",
+        btcTitle: "Paires BTC",
+        ethTitle: "Paires ETH",
+        tonTitle: "Paires TON",
+        notTitle: "Paires NOT",
+        gamefiTitle: "Jetons GameFI",
+        memeTitle: "Meme Coins",
+        shitTitle: "Shit Coins",
+        seoTitle: "SEO",
+        influencerTitle: "Influenceurs",
+        minerTitle: "Mineurs",
+        itTeamTitle: "Équipe IT",
+        hackTitle: "Équipe de Hacking",
+        usaTitle: "Licence USA",
+        koreaTitle: "Licence Corée",
+        uaeTitle: "Licence EAU",
+        europeTitle: "Licence Europe",
+        australiaTitle: "Licence Australie",
+        japanTitle: "Licence Japon",
+        nigeriaTitle: "Licence Nigeria",
+        olympicTitle: "Début des Jeux Olympiques",
+        edTitle: "Ed Sheeran",
+        users30Title: "Nous avons 30 utilisateurs !",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Bureau de Dubaï",
+        cityTitle: "Ville Homard",
+        settingsTitle: "Paramètres",
+        languageSelectLabel: "Langue :",
+        saveLanguageButton: "Enregistrer la Langue",
+        clearDataButton: "Effacer les Données",
+        legalInfoButton: "Informations Légales",
+        applyPromoCodeButton: "Appliquer le Code Promo",
+        legalInfoTitle: "Informations Légales",
+        legalInfoMessage: "En utilisant LobsterCoin, vous acceptez nos <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Conditions d'Utilisation</a>, qui régissent votre accès et votre utilisation du jeu et de tout le contenu associé. Veuillez consulter nos <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Conditions d'Utilisation complètes</a> pour plus d'informations.",
+        termsOfServiceButton: "Conditions d'Utilisation",
+        airdropPopupTitle: "Airdrop !",
+        airdropPopupMessage: "Obtenez votre part des jetons LOB.",
+        claimAirdropButton: "Recevoir de l'Argent",
+        skinsPopupTitle: "Skins",
+        earnClicksTitle: "Gagner des Clics",
+        subscribeYoutubeLabel: "S'abonner à YouTube",
+        subscribeTelegramLabel: "S'abonner à Telegram",
+        subscribeXLabel: "S'abonner à X (Twitter)",
+        inviteFriendLabel: "Inviter un Ami",
+        gameLabel: "Jeu",
+        dailyRewardLabel: "Récompense Quotidienne",
+        watchAdLabel: "Regarder une Publicité",
+        postStoryLabel: "Publier une Story",
+        leagueFromLabel: "De",
+        leagueInfoMessage: "⚠ Si l'image du trophée ne change pas, veuillez patienter ou vérifier votre connexion Internet" 
+      },
+      zh: { // Chinese (Simplified)
+        clicks: "点击次数",
+        clickMultiplier: "每次点击次数",
+        profitPerHour: "每小时利润",
+        league: "联赛",
+        boosts: "助推器",
+        earn: "赚取",
+        about: "关于",
+        mining: "采矿",
+        airdrop: "空投",
+        settings: "设置",
+        loadingTitle: "龙虾币",
+        versionText: "v1.61",
+        gameTitle: "龙虾币",
+        boostsLabel: "助推器",
+        earnLabel: "赚取",
+        aboutLabel: "关于",
+        miningLabel: "采矿",
+        airdropLabel: "空投",
+        lobsterCatchTitle: "捕捉龙虾",
+        lobsterClicksLabel: "龙虾点击次数：",
+        timeLeftLabel: "时间：",
+        gameOverTitle: "游戏结束",
+        finalClicksMessage: "你抓到了 {0} 只龙虾！",
+        restartButton: "重新开始",
+        quitButton: "退出",
+        upgradesTitle: "升级",
+        clickMultiplierUpgradeLabel: "点击倍增器 +1",
+        upgradeClicksButton: "升级点击次数",
+        dailyRewardsTitle: "每日奖励",
+        claimDailyRewardButton: "领取奖励",
+        offlineEarningsTitle: "离线收益",
+        earningsMessage: "您在离开时获得了一些点击次数！",
+        miningPopupTitle: "采矿",
+        dailyComboTitle: "每日组合",
+        marketsTabButton: "市场",
+        teamTabButton: "团队",
+        legalTabButton: "法律",
+        specialsTabButton: "特别优惠",
+        stackingTitle: "质押",
+        btcTitle: "BTC 交易对",
+        ethTitle: "ETH 交易对",
+        tonTitle: "TON 交易对",
+        notTitle: "NOT 交易对",
+        gamefiTitle: "GameFI 代币",
+        memeTitle: "模因币",
+        shitTitle: "垃圾币",
+        seoTitle: "搜索引擎优化",
+        influencerTitle: "影响者",
+        minerTitle: "矿工",
+        itTeamTitle: "IT 团队",
+        hackTitle: "黑客团队",
+        usaTitle: "美国许可证",
+        koreaTitle: "韩国许可证",
+        uaeTitle: "阿联酋许可证",
+        europeTitle: "欧洲许可证",
+        australiaTitle: "澳大利亚许可证",
+        japanTitle: "日本许可证",
+        nigeriaTitle: "尼日利亚许可证",
+        olympicTitle: "奥运会开始",
+        edTitle: "艾德·希兰",
+        users30Title: "我们有 30 位用户！",
+        elonTitle: "埃隆·马斯克",
+        dubaiTitle: "迪拜办事处",
+        cityTitle: "龙虾城",
+        settingsTitle: "设置",
+        languageSelectLabel: "语言：",
+        saveLanguageButton: "保存语言",
+        clearDataButton: "清除数据",
+        legalInfoButton: "法律信息",
+        applyPromoCodeButton: "应用促销代码",
+        legalInfoTitle: "法律信息",
+        legalInfoMessage: "使用龙虾币，即表示您同意我们的 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>服务条款</a>，该条款约束您对游戏和所有相关内容的访问和使用。请查看我们的 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>完整服务条款</a> 以获取更多信息。",
+        termsOfServiceButton: "服务条款",
+        airdropPopupTitle: "空投！",
+        airdropPopupMessage: "获取您的 LOB 代币份额。",
+        claimAirdropButton: "领取资金",
+        skinsPopupTitle: "皮肤",
+        earnClicksTitle: "赚取点击次数",
+        subscribeYoutubeLabel: "订阅 YouTube",
+        subscribeTelegramLabel: "订阅 Telegram",
+        subscribeXLabel: "订阅 X (Twitter)",
+        inviteFriendLabel: "邀请朋友",
+        gameLabel: "游戏",
+        dailyRewardLabel: "每日奖励",
+        watchAdLabel: "观看广告",
+        postStoryLabel: "发布故事",
+        leagueFromLabel: "来自",
+        leagueInfoMessage: "⚠ 如果奖杯图片未更改，请稍等片刻或检查您的互联网连接"
+      },
+      hi: { // Hindi
+        clicks: "क्लिक",
+        clickMultiplier: "प्रति टैप क्लिक",
+        profitPerHour: "प्रति घंटा लाभ",
+        league: "लीग",
+        boosts: "बूस्ट",
+        earn: "कमाएँ",
+        about: "बारे में",
+        mining: "माइनिंग",
+        airdrop: "एयरड्रॉप",
+        settings: "सेटिंग्स",
+        loadingTitle: "लॉबस्टर कॉइन",
+        versionText: "v1.61",
+        gameTitle: "लॉबस्टर कॉइन",
+        boostsLabel: "बूस्ट",
+        earnLabel: "कमाएँ",
+        aboutLabel: "बारे में",
+        miningLabel: "माइनिंग",
+        airdropLabel: "एयरड्रॉप",
+        lobsterCatchTitle: "लॉबस्टर पकड़ो",
+        lobsterClicksLabel: "लॉबस्टर क्लिक:",
+        timeLeftLabel: "समय:",
+        gameOverTitle: "खेल खत्म",
+        finalClicksMessage: "आपने {0} लॉबस्टर पकड़े!",
+        restartButton: "पुनः आरंभ करें",
+        quitButton: "छोड़ दें",
+        upgradesTitle: "अपग्रेड",
+        clickMultiplierUpgradeLabel: "क्लिक गुणक +1",
+        upgradeClicksButton: "क्लिक अपग्रेड करें",
+        dailyRewardsTitle: "दैनिक पुरस्कार",
+        claimDailyRewardButton: "पुरस्कार का दावा करें",
+        offlineEarningsTitle: "ऑफ़लाइन कमाई",
+        earningsMessage: "जब आप दूर थे तब आपने क्लिक अर्जित किए!",
+        miningPopupTitle: "माइनिंग",
+        dailyComboTitle: "दैनिक कॉम्बो",
+        marketsTabButton: "बाजार",
+        teamTabButton: "टीम",
+        legalTabButton: "कानूनी",
+        specialsTabButton: "विशेष",
+        stackingTitle: "स्टैकिंग",
+        btcTitle: "बीटीसी जोड़े",
+        ethTitle: "ईटीएच जोड़े",
+        tonTitle: "टन जोड़े",
+        notTitle: "नॉट जोड़े",
+        gamefiTitle: "गेमएफआई टोकन",
+        memeTitle: "मेम कॉइन",
+        shitTitle: "शिटकॉइन",
+        seoTitle: "एसईओ",
+        influencerTitle: "प्रभावशाली",
+        minerTitle: "खनिक",
+        itTeamTitle: "आईटी टीम",
+        hackTitle: "हैकिंग टीम",
+        usaTitle: "यूएसए लाइसेंस",
+        koreaTitle: "कोरिया लाइसेंस",
+        uaeTitle: "यूएई लाइसेंस",
+        europeTitle: "यूरोप लाइसेंस",
+        australiaTitle: "ऑस्ट्रेलिया लाइसेंस",
+        japanTitle: "जापान लाइसेंस",
+        nigeriaTitle: "नाइजीरिया लाइसेंस",
+        olympicTitle: "ओलंपिक खेलों की शुरुआत",
+        edTitle: "एड शीरन",
+        users30Title: "हमारे पास 30 उपयोगकर्ता हैं!",
+        elonTitle: "एलोन मस्क",
+        dubaiTitle: "दुबई कार्यालय",
+        cityTitle: "लॉबस्टर शहर",
+        settingsTitle: "सेटिंग्स",
+        languageSelectLabel: "भाषा:",
+        saveLanguageButton: "भाषा सहेजें",
+        clearDataButton: "डेटा साफ़ करें",
+        legalInfoButton: "कानूनी जानकारी",
+        applyPromoCodeButton: "प्रोमो कोड लागू करें",
+        legalInfoTitle: "कानूनी जानकारी",
+        legalInfoMessage: "लॉबस्टर कॉइन का उपयोग करके, आप हमारी <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>सेवा की शर्तों</a> से सहमत होते हैं, जो आपके खेल और सभी संबंधित सामग्री तक पहुंच और उपयोग को नियंत्रित करती हैं। अधिक जानकारी के लिए कृपया हमारी <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>पूरी सेवा की शर्तों</a> की समीक्षा करें।",
+        termsOfServiceButton: "सेवा की शर्तें",
+        airdropPopupTitle: "एयरड्रॉप!",
+        airdropPopupMessage: "एलओबी टोकन का अपना हिस्सा प्राप्त करें।",
+        claimAirdropButton: "पैसे प्राप्त करें",
+        skinsPopupTitle: "स्किन",
+        earnClicksTitle: "क्लिक कमाएँ",
+        subscribeYoutubeLabel: "यूट्यूब को सब्सक्राइब करें",
+        subscribeTelegramLabel: "टेलीग्राम को सब्सक्राइब करें",
+        subscribeXLabel: "एक्स (ट्विटर) को सब्सक्राइब करें",
+        inviteFriendLabel: "दोस्त को आमंत्रित करें",
+        gameLabel: "खेल",
+        dailyRewardLabel: "दैनिक पुरस्कार",
+        watchAdLabel: "विज्ञापन देखें",
+        postStoryLabel: "कहानी पोस्ट करें",
+        leagueFromLabel: "से",
+        leagueInfoMessage: "⚠ अगर ट्रॉफी इमेज नहीं बदल रही है, तो थोड़ा इंतजार करें या इंटरनेट कनेक्शन चेक करें"
+      },
+      ar: { // Arabic
+        clicks: "النقرات",
+        clickMultiplier: "النقرات لكل نقرة",
+        profitPerHour: "الربح في الساعة",
+        league: "الدوري",
+        boosts: "التعزيزات",
+        earn: "اربح",
+        about: "حول",
+        mining: "التعدين",
+        airdrop: "الإنزال الجوي",
+        settings: "الإعدادات",
+        loadingTitle: "عملة الكركند",
+        versionText: "v1.61",
+        gameTitle: "عملة الكركند",
+        boostsLabel: "التعزيزات",
+        earnLabel: "اربح",
+        aboutLabel: "حول",
+        miningLabel: "التعدين",
+        airdropLabel: "الإنزال الجوي",
+        lobsterCatchTitle: "اصطياد الكركند",
+        lobsterClicksLabel: "نقرات الكركند:",
+        timeLeftLabel: "الوقت:",
+        gameOverTitle: "انتهت اللعبة",
+        finalClicksMessage: "لقد اصطدت {0} من الكركند!",
+        restartButton: "إعادة التشغيل",
+        quitButton: "إنهاء",
+        upgradesTitle: "الترقيات",
+        clickMultiplierUpgradeLabel: "مضاعف النقرات +1",
+        upgradeClicksButton: "ترقية النقرات",
+        dailyRewardsTitle: "المكافآت اليومية",
+        claimDailyRewardButton: "مطالبة بالمكافأة",
+        offlineEarningsTitle: "الأرباح غير المتصلة بالإنترنت",
+        earningsMessage: "لقد ربحت نقرات أثناء غيابك!",
+        miningPopupTitle: "التعدين",
+        dailyComboTitle: "الكومبو اليومي",
+        marketsTabButton: "الأسواق",
+        teamTabButton: "الفريق",
+        legalTabButton: "قانوني",
+        specialsTabButton: "العروض الخاصة",
+        stackingTitle: "التكديس",
+        btcTitle: "أزواج BTC",
+        ethTitle: "أزواج ETH",
+        tonTitle: "أزواج TON",
+        notTitle: "أزواج NOT",
+        gamefiTitle: "رموز GameFI",
+        memeTitle: "عملات Meme",
+        shitTitle: "عملات Shit",
+        seoTitle: "تحسين محركات البحث",
+        influencerTitle: "المؤثرون",
+        minerTitle: "عمال المناجم",
+        itTeamTitle: "فريق تكنولوجيا المعلومات",
+        hackTitle: "فريق القرصنة",
+        usaTitle: "رخصة الولايات المتحدة الأمريكية",
+        koreaTitle: "رخصة كوريا",
+        uaeTitle: "رخصة الإمارات العربية المتحدة",
+        europeTitle: "رخصة أوروبا",
+        australiaTitle: "رخصة أستراليا",
+        japanTitle: "رخصة اليابان",
+        nigeriaTitle: "رخصة نيجيريا",
+        olympicTitle: "بدء الألعاب الأولمبية",
+        edTitle: "إد شيران",
+        users30Title: "لدينا 30 مستخدمًا!",
+        elonTitle: "إيلون ماسك",
+        dubaiTitle: "مكتب دبي",
+        cityTitle: "مدينة الكركند",
+        settingsTitle: "الإعدادات",
+        languageSelectLabel: "اللغة:",
+        saveLanguageButton: "حفظ اللغة",
+        clearDataButton: "مسح البيانات",
+        legalInfoButton: "المعلومات القانونية",
+        applyPromoCodeButton: "تطبيق رمز الترويج",
+        legalInfoTitle: "المعلومات القانونية",
+        legalInfoMessage: "باستخدام LobsterCoin ، فإنك توافق على <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>شروط الخدمة</a> الخاصة بنا ، والتي تحكم وصولك واستخدامك للعبة وجميع المحتويات ذات الصلة. يرجى مراجعة <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>شروط الخدمة الكاملة</a> الخاصة بنا للحصول على مزيد من المعلومات.",
+        termsOfServiceButton: "شروط الخدمة",
+        airdropPopupTitle: "الإنزال الجوي!",
+        airdropPopupMessage: "احصل على حصتك من رموز LOB.",
+        claimAirdropButton: "استلام الأموال",
+        skinsPopupTitle: "الجلود",
+        earnClicksTitle: "اربح النقرات",
+        subscribeYoutubeLabel: "الاشتراك في YouTube",
+        subscribeTelegramLabel: "الاشتراك في Telegram",
+        subscribeXLabel: "الاشتراك في X (Twitter)",
+        inviteFriendLabel: "دعوة صديق",
+        gameLabel: "لعبة",
+        dailyRewardLabel: "مكافأة يومية",
+        watchAdLabel: "مشاهدة إعلان",
+        postStoryLabel: "نشر قصة",
+        leagueFromLabel: "من",
+        leagueInfoMessage: "⚠ إذا لم تتغير صورة الكأس ، يرجى الانتظار قليلاً أو التحقق من اتصال الإنترنت"
+      },
+      it: { // Italian
+        clicks: "Clic",
+        clickMultiplier: "Clic per tocco",
+        profitPerHour: "Guadagno all'ora",
+        league: "Lega",
+        boosts: "Boost",
+        earn: "Guadagna",
+        about: "Informazioni",
+        mining: "Mining",
+        airdrop: "Airdrop",
+        settings: "Impostazioni",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "Lobster Coin",
+        boostsLabel: "Boost",
+        earnLabel: "Guadagna",
+        aboutLabel: "Informazioni",
+        miningLabel: "Mining",
+        airdropLabel: "Airdrop",
+        lobsterCatchTitle: "Cattura l'Aragosta",
+        lobsterClicksLabel: "Clic Aragosta:",
+        timeLeftLabel: "Tempo:",
+        gameOverTitle: "Game Over",
+        finalClicksMessage: "Hai catturato {0} aragoste!",
+        restartButton: "Riavvia",
+        quitButton: "Esci",
+        upgradesTitle: "Aggiornamenti",
+        clickMultiplierUpgradeLabel: "Moltiplicatore di clic +1",
+        upgradeClicksButton: "Aggiorna clic",
+        dailyRewardsTitle: "Premi giornalieri",
+        claimDailyRewardButton: "Richiedi premio",
+        offlineEarningsTitle: "Guadagni offline",
+        earningsMessage: "Hai guadagnato clic mentre eri via!",
+        miningPopupTitle: "Mining",
+        dailyComboTitle: "Combo giornaliero",
+        marketsTabButton: "Mercati",
+        teamTabButton: "Squadra",
+        legalTabButton: "Legale",
+        specialsTabButton: "Speciali",
+        stackingTitle: "Stacking",
+        btcTitle: "Coppie BTC",
+        ethTitle: "Coppie ETH",
+        tonTitle: "Coppie TON",
+        notTitle: "Coppie NOT",
+        gamefiTitle: "Token GameFI",
+        memeTitle: "Meme Coin",
+        shitTitle: "Shit Coin",
+        seoTitle: "SEO",
+        influencerTitle: "Influencer",
+        minerTitle: "Minatori",
+        itTeamTitle: "Team IT",
+        hackTitle: "Team di hacking",
+        usaTitle: "Licenza USA",
+        koreaTitle: "Licenza Corea",
+        uaeTitle: "Licenza EAU",
+        europeTitle: "Licenza Europa",
+        australiaTitle: "Licenza Australia",
+        japanTitle: "Licenza Giappone",
+        nigeriaTitle: "Licenza Nigeria",
+        olympicTitle: "Inizio dei Giochi Olimpici",
+        edTitle: "Ed Sheeran",
+        users30Title: "Abbiamo 30 utenti!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Ufficio di Dubai",
+        cityTitle: "Lobster City",
+        settingsTitle: "Impostazioni",
+        languageSelectLabel: "Lingua:",
+        saveLanguageButton: "Salva lingua",
+        clearDataButton: "Cancella dati",
+        legalInfoButton: "Informazioni legali",
+        applyPromoCodeButton: "Applica codice promozionale",
+        legalInfoTitle: "Informazioni legali",
+        legalInfoMessage: "Utilizzando LobsterCoin, accetti i nostri <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Termini di servizio</a>, che regolano l'accesso e l'utilizzo del gioco e di tutti i contenuti correlati. Per ulteriori informazioni, consulta i nostri <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Termini di servizio completi</a>.",
+        termsOfServiceButton: "Termini di servizio",
+        airdropPopupTitle: "Airdrop!",
+        airdropPopupMessage: "Ottieni la tua quota di token LOB.",
+        claimAirdropButton: "Ricevi denaro",
+        skinsPopupTitle: "Skin",
+        earnClicksTitle: "Guadagna clic",
+        subscribeYoutubeLabel: "Iscriviti a YouTube",
+        subscribeTelegramLabel: "Iscriviti a Telegram",
+        subscribeXLabel: "Iscriviti a X (Twitter)",
+        inviteFriendLabel: "Invita un amico",
+        gameLabel: "Gioco",
+        dailyRewardLabel: "Ricompensa giornaliera",
+        watchAdLabel: "Guarda un annuncio",
+        postStoryLabel: "Pubblica una storia",
+        leagueFromLabel: "Da",
+        leagueInfoMessage: "⚠ Se l'immagine del trofeo non cambia, attendi un po' o controlla la connessione Internet"
+      },
+      et: { // Estonian
+        clicks: "Klikid",
+        clickMultiplier: "Klikke kraani kohta",
+        profitPerHour: "Tulu tunnis",
+        league: "Liiga",
+        boosts: "Võimendid",
+        earn: "Teeni",
+        about: "Teave",
+        mining: "Kaevandamine",
+        airdrop: "Õhulaskmine",
+        settings: "Seaded",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "Lobster Coin",
+        boostsLabel: "Võimendid",
+        earnLabel: "Teeni",
+        aboutLabel: "Teave",
+        miningLabel: "Kaevandamine",
+        airdropLabel: "Õhulaskmine",
+        lobsterCatchTitle: "Homaaripüük",
+        lobsterClicksLabel: "Homaari klikid:",
+        timeLeftLabel: "Aeg:",
+        gameOverTitle: "Mäng läbi",
+        finalClicksMessage: "Sa püüdsid {0} homaari!",
+        restartButton: "Taaskäivita",
+        quitButton: "Välju",
+        upgradesTitle: "Uuendused",
+        clickMultiplierUpgradeLabel: "Klõpsu kordaja +1",
+        upgradeClicksButton: "Uuenda klikke",
+        dailyRewardsTitle: "Igapäevased autasud",
+        claimDailyRewardButton: "Nõua autasu",
+        offlineEarningsTitle: "Võrguühenduseta tulud",
+        earningsMessage: "Teenisid klikke, kui olid eemal!",
+        miningPopupTitle: "Kaevandamine",
+        dailyComboTitle: "Igapäevane kombo",
+        marketsTabButton: "Turud",
+        teamTabButton: "Meeskond",
+        legalTabButton: "Juriidiline",
+        specialsTabButton: "Eripakkumised",
+        stackingTitle: "Stacking",
+        btcTitle: "BTC paarid",
+        ethTitle: "ETH paarid",
+        tonTitle: "TON paarid",
+        notTitle: "NOT paarid",
+        gamefiTitle: "GameFI žetoonid",
+        memeTitle: "Meemimündid",
+        shitTitle: "Rämpsmündid",
+        seoTitle: "SEO",
+        influencerTitle: "Mõjuisikud",
+        minerTitle: "Kaevurid",
+        itTeamTitle: "IT meeskond",
+        hackTitle: "Häkkimismeeskond",
+        usaTitle: "USA litsents",
+        koreaTitle: "Korea litsents",
+        uaeTitle: "UAE litsents",
+        europeTitle: "Euroopa litsents",
+        australiaTitle: "Austraalia litsents",
+        japanTitle: "Jaapani litsents",
+        nigeriaTitle: "Nigeeria litsents",
+        olympicTitle: "Olümpiamängude algus",
+        edTitle: "Ed Sheeran",
+        users30Title: "Meil on 30 kasutajat!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Dubai kontor",
+        cityTitle: "Lobster City",
+        settingsTitle: "Seaded",
+        languageSelectLabel: "Keel:",
+        saveLanguageButton: "Salvesta keel",
+        clearDataButton: "Kustuta andmed",
+        legalInfoButton: "Juriidiline teave",
+        applyPromoCodeButton: "Rakenda promokoodi",
+        legalInfoTitle: "Juriidiline teave",
+        legalInfoMessage: "Lobster Coini kasutades nõustute meie <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>teenuse tingimustega</a>, mis reguleerivad teie juurdepääsu mängule ja kogu seotud sisule. Lisateabe saamiseks vaadake meie <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>täielikke teenuse tingimusi</a>.",
+        termsOfServiceButton: "Teenuse tingimused",
+        airdropPopupTitle: "Õhulaskmine!",
+        airdropPopupMessage: "Hankige oma osa LOB žetoone.",
+        claimAirdropButton: "Saada raha",
+        skinsPopupTitle: "Nahad",
+        earnClicksTitle: "Teeni klikke",
+        subscribeYoutubeLabel: "Telli YouTube",
+        subscribeTelegramLabel: "Telli Telegram",
+        subscribeXLabel: "Telli X (Twitter)",
+        inviteFriendLabel: "Kutsu sõber",
+        gameLabel: "Mäng",
+        dailyRewardLabel: "Igapäevane autasu",
+        watchAdLabel: "Vaata reklaami",
+        postStoryLabel: "Postita lugu",
+        leagueFromLabel: "Alates",
+        leagueInfoMessage: "⚠ Kui trofee pilt ei muutu, oodake veidi või kontrollige internetiühendust"
+      },
+      no: { // Norwegian
+        clicks: "Klikk",
+        clickMultiplier: "Klikk per trykk",
+        profitPerHour: "Fortjeneste per time",
+        league: "Liga",
+        boosts: "Boosts",
+        earn: "Tjen",
+        about: "Om",
+        mining: "Gruvedrift",
+        airdrop: "Airdrop",
+        settings: "Innstillinger",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "Lobster Coin",
+        boostsLabel: "Boosts",
+        earnLabel: "Tjen",
+        aboutLabel: "Om",
+        miningLabel: "Gruvedrift",
+        airdropLabel: "Airdrop",
+        lobsterCatchTitle: "Hummerfangst",
+        lobsterClicksLabel: "Hummerklikk:",
+        timeLeftLabel: "Tid:",
+        gameOverTitle: "Spillet er over",
+        finalClicksMessage: "Du fanget {0} hummere!",
+        restartButton: "Start på nytt",
+        quitButton: "Avslutt",
+        upgradesTitle: "Oppgraderinger",
+        clickMultiplierUpgradeLabel: "Klikkmultiplikator +1",
+        upgradeClicksButton: "Oppgrader klikk",
+        dailyRewardsTitle: "Daglige belønninger",
+        claimDailyRewardButton: "Krev belønning",
+        offlineEarningsTitle: "Frakoblet inntjening",
+        earningsMessage: "Du har tjent klikk mens du var borte!",
+        miningPopupTitle: "Gruvedrift",
+        dailyComboTitle: "Daglig kombo",
+        marketsTabButton: "Markeder",
+        teamTabButton: "Lag",
+        legalTabButton: "Juridisk",
+        specialsTabButton: "Spesialtilbud",
+        stackingTitle: "Stacking",
+        btcTitle: "BTC-par",
+        ethTitle: "ETH-par",
+        tonTitle: "TON-par",
+        notTitle: "NOT-par",
+        gamefiTitle: "GameFI-tokens",
+        memeTitle: "Meme-mynter",
+        shitTitle: "Shit-mynter",
+        seoTitle: "SEO",
+        influencerTitle: "Influencers",
+        minerTitle: "Gruvearbeidere",
+        itTeamTitle: "IT-team",
+        hackTitle: "Hackingteam",
+        usaTitle: "Lisens USA",
+        koreaTitle: "Lisens Korea",
+        uaeTitle: "Lisens UAE",
+        europeTitle: "Lisens Europa",
+        australiaTitle: "Lisens Australia",
+        japanTitle: "Lisens Japan",
+        nigeriaTitle: "Lisens Nigeria",
+        olympicTitle: "Start på OL",
+        edTitle: "Ed Sheeran",
+        users30Title: "Vi har 30 brukere!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Dubai-kontor",
+        cityTitle: "Hummerbyen",
+        settingsTitle: "Innstillinger",
+        languageSelectLabel: "Språk:",
+        saveLanguageButton: "Lagre språk",
+        clearDataButton: "Slett data",
+        legalInfoButton: "Juridisk informasjon",
+        applyPromoCodeButton: "Bruk promokode",
+        legalInfoTitle: "Juridisk informasjon",
+        legalInfoMessage: "Ved å bruke Lobster Coin, godtar du våre <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>vilkår for bruk</a>, som styrer din tilgang til og bruk av spillet og alt relatert innhold. Vennligst les våre <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>fullstendige vilkår for bruk</a> for mer informasjon.",
+        termsOfServiceButton: "Vilkår for bruk",
+        airdropPopupTitle: "Airdrop!",
+        airdropPopupMessage: "Få din andel av LOB-tokens.",
+        claimAirdropButton: "Motta penger",
+        skinsPopupTitle: "Skins",
+        earnClicksTitle: "Tjen klikk",
+        subscribeYoutubeLabel: "Abonner på YouTube",
+        subscribeTelegramLabel: "Abonner på Telegram",
+        subscribeXLabel: "Abonner på X (Twitter)",
+        inviteFriendLabel: "Inviter en venn",
+        gameLabel: "Spill",
+        dailyRewardLabel: "Daglig belønning",
+        watchAdLabel: "Se en annonse",
+        postStoryLabel: "Legg ut en historie",
+        leagueFromLabel: "Fra",
+        leagueInfoMessage: "⚠ Hvis trofébildet ikke endres, vent litt eller sjekk internettforbindelsen din"
+      },
+      uk: { // Ukrainian
+        clicks: "Кліки",
+        clickMultiplier: "Кліки за дотик",
+        profitPerHour: "Прибуток за годину",
+        league: "Ліга",
+        boosts: "Бусти",
+        earn: "Заробляти",
+        about: "Про",
+        mining: "Майнінг",
+        airdrop: "Ейрдроп",
+        settings: "Налаштування",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "Lobster Coin",
+        boostsLabel: "Бусти",
+        earnLabel: "Заробляти",
+        aboutLabel: "Про",
+        miningLabel: "Майнінг",
+        airdropLabel: "Ейрдроп",
+        lobsterCatchTitle: "Ловля омарів",
+        lobsterClicksLabel: "Кліки омарів:",
+        timeLeftLabel: "Час:",
+        gameOverTitle: "Гру завершено",
+        finalClicksMessage: "Ви зловили {0} омарів!",
+        restartButton: "Перезапустити",
+        quitButton: "Вийти",
+        upgradesTitle: "Оновлення",
+        clickMultiplierUpgradeLabel: "Множник кліків +1",
+        upgradeClicksButton: "Оновити кліки",
+        dailyRewardsTitle: "Щоденні нагороди",
+        claimDailyRewardButton: "Отримати нагороду",
+        offlineEarningsTitle: "Офлайн-заробіток",
+        earningsMessage: "Ви заробили кліки, поки вас не було!",
+        miningPopupTitle: "Майнінг",
+        dailyComboTitle: "Щоденне комбо",
+        marketsTabButton: "Ринки",
+        teamTabButton: "Команда",
+        legalTabButton: "Юридична",
+        specialsTabButton: "Спеціальні пропозиції",
+        stackingTitle: "Стейкінг",
+        btcTitle: "BTC пари",
+        ethTitle: "ETH пари",
+        tonTitle: "TON пари",
+        notTitle: "NOT пари",
+        gamefiTitle: "Токени GameFI",
+        memeTitle: "Мем-монети",
+        shitTitle: "Шиткоїни",
+        seoTitle: "SEO",
+        influencerTitle: "Інфлюенсери",
+        minerTitle: "Майнери",
+        itTeamTitle: "IT команда",
+        hackTitle: "Команда хакерів",
+        usaTitle: "Ліцензія США",
+        koreaTitle: "Ліцензія Кореї",
+        uaeTitle: "Ліцензія ОАЕ",
+        europeTitle: "Ліцензія Європи",
+        australiaTitle: "Ліцензія Австралії",
+        japanTitle: "Ліцензія Японії",
+        nigeriaTitle: "Ліцензія Нігерії",
+        olympicTitle: "Початок Олімпійських ігор",
+        edTitle: "Ед Ширан",
+        users30Title: "У нас 30 користувачів!",
+        elonTitle: "Ілон Маск",
+        dubaiTitle: "Офіс у Дубаї",
+        cityTitle: "Місто омарів",
+        settingsTitle: "Налаштування",
+        languageSelectLabel: "Мова:",
+        saveLanguageButton: "Зберегти мову",
+        clearDataButton: "Очистити дані",
+        legalInfoButton: "Юридична інформація",
+        applyPromoCodeButton: "Застосувати промокод",
+        legalInfoTitle: "Юридична інформація",
+        legalInfoMessage: "Використовуючи Lobster Coin, ви погоджуєтесь з нашими <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Умовами обслуговування</a>, які регулюють ваш доступ та використання гри та всього пов'язаного контенту. Будь ласка, перегляньте наші <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>повні Умови обслуговування</a> для отримання додаткової інформації.",
+        termsOfServiceButton: "Умови обслуговування",
+        airdropPopupTitle: "Ейрдроп!",
+        airdropPopupMessage: "Отримайте свою частку токенів LOB.",
+        claimAirdropButton: "Отримати гроші",
+        skinsPopupTitle: "Скіни",
+        earnClicksTitle: "Заробляйте кліки",
+        subscribeYoutubeLabel: "Підписатися на YouTube",
+        subscribeTelegramLabel: "Підписатися на Telegram",
+        subscribeXLabel: "Підписатися на X (Twitter)",
+        inviteFriendLabel: "Запросити друга",
+        gameLabel: "Гра",
+        dailyRewardLabel: "Щоденна нагорода",
+        watchAdLabel: "Переглянути рекламу",
+        postStoryLabel: "Опублікувати історію",
+        leagueFromLabel: "Від",
+        leagueInfoMessage: "⚠ Якщо зображення трофею не змінюється, зачекайте або перевірте підключення до Інтернету" 
+      },
+      pl: { // Polish
+        clicks: "Kliknięcia",
+        clickMultiplier: "Kliknięcia na dotknięcie",
+        profitPerHour: "Zysk na godzinę",
+        league: "Liga",
+        boosts: "Wzmocnienia",
+        earn: "Zarób",
+        about: "O nas",
+        mining: "Górnictwo",
+        airdrop: "Airdrop",
+        settings: "Ustawienia",
+        loadingTitle: "Lobster Coin",
+        versionText: "v1.61",
+        gameTitle: "Lobster Coin",
+        boostsLabel: "Wzmocnienia",
+        earnLabel: "Zarób",
+        aboutLabel: "O nas",
+        miningLabel: "Górnictwo",
+        airdropLabel: "Airdrop",
+        lobsterCatchTitle: "Połów homarów",
+        lobsterClicksLabel: "Kliknięcia homarów:",
+        timeLeftLabel: "Czas:",
+        gameOverTitle: "Koniec gry",
+        finalClicksMessage: "Złapałeś {0} homarów!",
+        restartButton: "Uruchom ponownie",
+        quitButton: "Wyjdź",
+        upgradesTitle: "Ulepszenia",
+        clickMultiplierUpgradeLabel: "Mnożnik kliknięć +1",
+        upgradeClicksButton: "Ulepsz kliknięcia",
+        dailyRewardsTitle: "Codzienne nagrody",
+        claimDailyRewardButton: "Odbierz nagrodę",
+        offlineEarningsTitle: "Zarobki offline",
+        earningsMessage: "Zarobiłeś kliknięcia, gdy byłeś offline!",
+        miningPopupTitle: "Górnictwo",
+        dailyComboTitle: "Codzienne combo",
+        marketsTabButton: "Rynki",
+        teamTabButton: "Zespół",
+        legalTabButton: "Prawne",
+        specialsTabButton: "Specjalne",
+        stackingTitle: "Stacking",
+        btcTitle: "Pary BTC",
+        ethTitle: "Pary ETH",
+        tonTitle: "Pary TON",
+        notTitle: "Pary NOT",
+        gamefiTitle: "Tokeny GameFI",
+        memeTitle: "Monety Meme",
+        shitTitle: "Monety Shit",
+        seoTitle: "SEO",
+        influencerTitle: "Influencerzy",
+        minerTitle: "Górnicy",
+        itTeamTitle: "Zespół IT",
+        hackTitle: "Zespół hakerski",
+        usaTitle: "Licencja USA",
+        koreaTitle: "Licencja Korea",
+        uaeTitle: "Licencja ZEA",
+        europeTitle: "Licencja Europa",
+        australiaTitle: "Licencja Australia",
+        japanTitle: "Licencja Japonia",
+        nigeriaTitle: "Licencja Nigeria",
+        olympicTitle: "Początek Igrzysk Olimpijskich",
+        edTitle: "Ed Sheeran",
+        users30Title: "Mamy 30 użytkowników!",
+        elonTitle: "Elon Musk",
+        dubaiTitle: "Biuro w Dubaju",
+        cityTitle: "Miasto Homarów",
+        settingsTitle: "Ustawienia",
+        languageSelectLabel: "Język:",
+        saveLanguageButton: "Zapisz język",
+        clearDataButton: "Wyczyść dane",
+        legalInfoButton: "Informacje prawne",
+        applyPromoCodeButton: "Zastosuj kod promocyjny",
+        legalInfoTitle: "Informacje prawne",
+        legalInfoMessage: "Korzystając z Lobster Coin, zgadzasz się na nasze <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Warunki korzystania z usługi</a>, które regulują Twój dostęp do gry i korzystanie z niej oraz wszystkich powiązanych treści. Zapoznaj się z naszymi <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>pełnymi Warunkami korzystania z usługi</a>, aby uzyskać więcej informacji.",
+        termsOfServiceButton: "Warunki korzystania z usługi",
+        airdropPopupTitle: "Airdrop!",
+        airdropPopupMessage: "Zdobądź swój udział w tokenach LOB.",
+        claimAirdropButton: "Odbierz pieniądze",
+        skinsPopupTitle: "Skórki",
+        earnClicksTitle: "Zarób kliknięcia",
+        subscribeYoutubeLabel: "Subskrybuj YouTube",
+        subscribeTelegramLabel: "Subskrybuj Telegram",
+        subscribeXLabel: "Subskrybuj X (Twitter)",
+        inviteFriendLabel: "Zaproś znajomego",
+        gameLabel: "Gra",
+        dailyRewardLabel: "Codzienna nagroda",
+        watchAdLabel: "Obejrzyj reklamę",
+        postStoryLabel: "Opublikuj historię",
+        leagueFromLabel: "Od",
+        leagueInfoMessage: "⚠ Jeśli obraz trofeum się nie zmienia, poczekaj chwilę lub sprawdź połączenie internetowe"
+      }
+    }; 
 
     // Mining card data
     const miningCards = {
@@ -2040,7 +3290,7 @@
     // Update click count display
     function updateClickCount() {
       document.getElementById('clickCount').textContent = numberWithCommas(clickCount); // Format clickCount
-      document.getElementById('clicksPerTap').textContent = numberWithCommas(clickMultiplier)
+      document.getElementById('clicksPerTapValue').textContent = numberWithCommas(clickMultiplier)
       // Save data to localStorage
       localStorage.setItem('clickCount', Number(clickCount)); 
       localStorage.setItem('clickMultiplier', clickMultiplier);
@@ -2058,41 +3308,41 @@
 
     function updateLeague() {
       if (clickCount <= 1000) {
-        document.getElementById("league").textContent = "Bronze";
-        document.getElementById("league").style.color = "#B86552";
+        document.getElementById("leagueValue").textContent = "Bronze";
+        document.getElementById("leagueValue").style.color = "#B86552";
       } else if (clickCount >= 1000 && clickCount <= 10000) {
-        document.getElementById("league").textContent = "Silver";
-        document.getElementById("league").style.color = "#A9A9A9";
+        document.getElementById("leagueValue").textContent = "Silver";
+        document.getElementById("leagueValue").style.color = "#A9A9A9";
       } else if (clickCount >= 10000 && clickCount <= 50000) {
-        document.getElementById("league").textContent = "Gold";
-        document.getElementById("league").style.color = "#F98605";
+        document.getElementById("leagueValue").textContent = "Gold";
+        document.getElementById("leagueValue").style.color = "#F98605";
       } else if (clickCount >= 50000 && clickCount <= 100000) {
-        document.getElementById("league").textContent = "Platinum";
-        document.getElementById("league").style.color = "#ADCDC1";
+        document.getElementById("leagueValue").textContent = "Platinum";
+        document.getElementById("leagueValue").style.color = "#ADCDC1";
       } else if (clickCount >= 100000 && clickCount <= 500000) {
-        document.getElementById("league").textContent = "Diamond";
-        document.getElementById("league").style.color = "#00CDFF";
+        document.getElementById("leagueValue").textContent = "Diamond";
+        document.getElementById("leagueValue").style.color = "#00CDFF";
       } else if (clickCount >= 500000 && clickCount <= 1000000) {
-        document.getElementById("league").textContent = "Epic";
-        document.getElementById("league").style.color = "#0CFF00";
+        document.getElementById("leagueValue").textContent = "Epic";
+        document.getElementById("leagueValue").style.color = "#0CFF00";
       } else if (clickCount >= 1000000 && clickCount <= 2000000) {
-        document.getElementById("league").textContent = "Legendary";
-        document.getElementById("league").style.color = "#FFFB00";
+        document.getElementById("leagueValue").textContent = "Legendary";
+        document.getElementById("leagueValue").style.color = "#FFFB00";
       } else if (clickCount >= 2000000 && clickCount <= 5000000) {
-        document.getElementById("league").textContent = "Master";
-        document.getElementById("league").style.color = "#00D4FF";
+        document.getElementById("leagueValue").textContent = "Master";
+        document.getElementById("leagueValue").style.color = "#00D4FF";
       } else if (clickCount >= 5000000 && clickCount <= 10000000) {
-        document.getElementById("league").textContent = "Grandmaster";
-        document.getElementById("league").style.color = "#B06BFD";
+        document.getElementById("leagueValue").textContent = "Grandmaster";
+        document.getElementById("leagueValue").style.color = "#B06BFD";
       } else if (clickCount >= 10000000 && clickCount <= 100000000) {
-        document.getElementById("league").textContent = "Lord";
-        document.getElementById("league").style.color = "#F9C103";
+        document.getElementById("leagueValue").textContent = "Lord";
+        document.getElementById("leagueValue").style.color = "#F9C103";
       } else if (clickCount >= 100000000 && clickCount <= 1000000000) {
-        document.getElementById("league").textContent = "King";
-        document.getElementById("league").style.color = "#FF5202";
+        document.getElementById("leagueValue").textContent = "King";
+        document.getElementById("leagueValue").style.color = "#FF5202";
       } else if (clickCount >= 1000000000) {
-        document.getElementById("league").textContent = "Absolutely Legend";
-        document.getElementById("league").style.color = "#F002FF";
+        document.getElementById("leagueValue").textContent = "Absolutely Legend";
+        document.getElementById("leagueValue").style.color = "#F002FF";
       }
     }
     
@@ -2370,8 +3620,8 @@
       for (let i = leagues.length - 1; i >= 0; i--) { 
         if (clickCount >= leagues[i].requirement) {
           currentLeagueIndex = i;
-          document.getElementById("league").textContent = leagues[i].name;
-          document.getElementById("league").style.color = leagues[i].color; // Apply league color
+          document.getElementById("leagueValue").textContent = leagues[i].name;
+          document.getElementById("leagueValue").style.color = leagues[i].color; // Apply league color
           break;
         }
       }
@@ -2393,7 +3643,7 @@
       const league = leagues[currentLeagueIndex];
       document.getElementById('leagueName').textContent = league.name;
       document.getElementById('leagueTrophy').src = league.trophy;
-      document.getElementById('leagueRequirement').textContent = numberWithCommas(league.requirement);
+      document.getElementById('leagueFromLabel').textContent = numberWithCommas(league.requirement);
     }
 
     // Function to navigate to the previous league
@@ -2409,7 +3659,7 @@
     }
 
     // Add event listener to the league text to open the popup
-    document.getElementById('league').addEventListener('click', openLeaguePopup);
+    document.getElementById('leagueValue').addEventListener('click', openLeaguePopup);
 
     // Function for "Mining" button
     function miningClick() {
@@ -2734,7 +3984,7 @@
       profitPerHour += profit;
       totalProfit = profitPerHour;
       localStorage.setItem('profitPerHour', profitPerHour);
-      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
     }
 
     // Function to calculate and update profit per hour
@@ -2754,7 +4004,7 @@
       // Add skin profit to the total
       totalProfit += skinProfitPerHour; 
 
-      document.getElementById('profitPerHour').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
@@ -3083,6 +4333,42 @@
       WebApp.showAlert('Daily reward claimed!');
     }
 
+    function loadTranslations() {
+      let language = localStorage.getItem('language') || 'en'; // Default to English
+      document.getElementById('languageSelect').value = language; // Set the dropdown to the loaded language
+      return translations[language];
+    }
+
+    // Function to save the selected language
+    function saveLanguage() {
+      let selectedLanguage = document.getElementById('languageSelect').value;
+      localStorage.setItem('language', selectedLanguage);
+      WebApp.showAlert("Language saved!");
+
+      // Reload the translations (or update your UI)
+      currentTranslations = loadTranslations(); 
+      updateTranslatedText(); 
+    }
+
+    // Function to translate text elements
+    function translateElement(elementId, translationKey) {
+      let element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = currentTranslations[translationKey];
+      }
+    }
+
+    // Function to update all translated text in the UI
+    function updateTranslatedText() {
+      translateElement('clickCountLabel', 'clicks');
+      translateElement('clicksPerTapLabel', 'clickMultiplier');
+      translateElement('profitPerHourLabel', 'profitPerHour');
+      // ... (add more translateElement calls for other UI elements) ...
+      // Update the Earn popup buttons as well:
+      updateRewardDisplay();
+    }
+
+
     // Function to open the Daily Rewards popup
     function openDailyRewardsPopup() {
       closeEarnPopup();
@@ -3203,6 +4489,148 @@
       document.getElementById('dailyRewardsPopup').style.display = 'none';
     }
     
+    // Function to load translations
+    function loadTranslations() {
+      let language = localStorage.getItem('language') || 'en'; // Default to English
+      document.getElementById('languageSelect').value = language; // Set the dropdown to the loaded language
+      return translations[language];
+    }
+
+    // Function to save the selected language
+    function saveLanguage() {
+      let selectedLanguage = document.getElementById('languageSelect').value;
+      localStorage.setItem('language', selectedLanguage);
+      WebApp.showAlert(currentTranslations.languageSavedAlert); // Show alert using translation
+
+      // Reload the translations 
+      currentTranslations = loadTranslations(); 
+      updateTranslatedText(); 
+    }
+
+    // Function to translate text elements
+    function translateElement(elementId, translationKey) {
+      let element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = currentTranslations[translationKey];
+      }
+    }
+
+    // Function to update all translated text in the UI
+    function updateTranslatedText() {
+      translateElement('clickCountLabel', 'clicks');
+      translateElement('clicksPerTapLabel', 'clickMultiplier');
+      translateElement('profitPerHourLabel', 'profitPerHour');
+      translateElement('leagueLabel', 'league');
+      translateElement('boostsLabel', 'boosts');
+      translateElement('earnLabel', 'earn');
+      translateElement('aboutLabel', 'about');
+      translateElement('miningLabel', 'mining');
+      translateElement('airdropLabel', 'airdrop');
+      translateElement('lobsterCatchTitle', 'lobsterCatchTitle');
+      translateElement('lobsterClicksLabel', 'lobsterClicksLabel');
+      translateElement('timeLeftLabel', 'timeLeftLabel');
+      translateElement('gameOverTitle', 'gameOverTitle');
+      // Format the finalClicksMessage with the number of clicks 
+      document.getElementById('finalClicksMessage').textContent = 
+          currentTranslations.finalClicksMessage.replace('{0}', lobsterClicks);
+      translateElement('restartButton', 'restartButton');
+      translateElement('quitButton', 'quitButton');
+      translateElement('upgradesTitle', 'upgradesTitle');
+      translateElement('clickMultiplierUpgradeLabel', 'clickMultiplierUpgradeLabel');
+      translateElement('upgradeClicksButton', 'upgradeClicksButton');
+      translateElement('dailyRewardsTitle', 'dailyRewardsTitle');
+      translateElement('claimDailyRewardButton', 'claimDailyRewardButton');
+      translateElement('offlineEarningsTitle', 'offlineEarningsTitle');
+      translateElement('earningsMessage', 'earningsMessage');
+      translateElement('miningPopupTitle', 'miningPopupTitle');
+      translateElement('dailyComboTitle', 'dailyComboTitle');
+      translateElement('marketsTabButton', 'marketsTabButton');
+      translateElement('teamTabButton', 'teamTabButton');
+      translateElement('legalTabButton', 'legalTabButton');
+      translateElement('specialsTabButton', 'specialsTabButton');
+      translateElement('stackingTitle', 'stackingTitle');
+      translateElement('btcTitle', 'btcTitle');
+      translateElement('ethTitle', 'ethTitle');
+      translateElement('tonTitle', 'tonTitle');
+      translateElement('notTitle', 'notTitle');
+      translateElement('gamefiTitle', 'gamefiTitle');
+      translateElement('memeTitle', 'memeTitle');
+      translateElement('shitTitle', 'shitTitle');
+      translateElement('seoTitle', 'seoTitle');
+      translateElement('influencerTitle', 'influencerTitle');
+      translateElement('minerTitle', 'minerTitle');
+      translateElement('itTeamTitle', 'itTeamTitle');
+      translateElement('hackTitle', 'hackTitle');
+      translateElement('usaTitle', 'usaTitle');
+      translateElement('koreaTitle', 'koreaTitle');
+      translateElement('uaeTitle', 'uaeTitle');
+      translateElement('europeTitle', 'europeTitle');
+      translateElement('australiaTitle', 'australiaTitle');
+      translateElement('japanTitle', 'japanTitle');
+      translateElement('nigeriaTitle', 'nigeriaTitle');
+      translateElement('olympicTitle', 'olympicTitle');
+      translateElement('edTitle', 'edTitle');
+      translateElement('users30Title', 'users30Title');
+      translateElement('elonTitle', 'elonTitle');
+      translateElement('dubaiTitle', 'dubaiTitle');
+      translateElement('cityTitle', 'cityTitle');
+      translateElement('settingsTitle', 'settingsTitle');
+      translateElement('languageSelectLabel', 'languageSelectLabel');
+      translateElement('saveLanguageButton', 'saveLanguageButton');
+      translateElement('clearDataButton', 'clearDataButton');
+      translateElement('legalInfoButton', 'legalInfoButton');
+      translateElement('applyPromoCodeButton', 'applyPromoCodeButton');
+      translateElement('legalInfoTitle', 'legalInfoTitle');
+      translateElement('legalInfoMessage', 'legalInfoMessage');
+      translateElement('termsOfServiceButton', 'termsOfServiceButton');
+      translateElement('airdropPopupTitle', 'airdropPopupTitle');
+      translateElement('airdropPopupMessage', 'airdropPopupMessage');
+      translateElement('claimAirdropButton', 'claimAirdropButton');
+      translateElement('skinsPopupTitle', 'skinsPopupTitle');
+      translateElement('earnClicksTitle', 'earnClicksTitle');
+      translateElement('subscribeYoutubeLabel', 'subscribeYoutubeLabel');
+      translateElement('subscribeTelegramLabel', 'subscribeTelegramLabel');
+      translateElement('subscribeXLabel', 'subscribeXLabel');
+      translateElement('inviteFriendLabel', 'inviteFriendLabel');
+      translateElement('gameLabel', 'gameLabel');
+      translateElement('dailyRewardLabel', 'dailyRewardLabel');
+      translateElement('watchAdLabel', 'watchAdLabel');
+      translateElement('postStoryLabel', 'postStoryLabel');
+      translateElement('leagueFromLabel', 'leagueFromLabel');
+      translateElement('leagueInfoMessage', 'leagueInfoMessage');
+      translateElement('loadingTitle', 'loadingTitle');
+      translateElement('versionText', 'versionText');
+      translateElement('clicksPerTapLabel', 'clickMultiplier');
+      translateElement('leagueLabel', 'league'); 
+
+      // Update the dynamic values (no translation needed here)
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas(parseInt(localStorage.getItem('profitPerHour')));
+      document.getElementById('clicksPerTapValue').textContent = numberWithCommas(clickMultiplier);
+      document.getElementById('leagueValue').textContent = leagues[currentLeagueIndex];; // Assuming you have a variable 'currentLeague'
+
+      updateRewardDisplay(); 
+    }
+
+    // Function to update Earn popup button labels
+    function updateRewardDisplay() {
+      document.getElementById('youtubeButton').textContent = 
+        currentTranslations.subscribeYoutubeLabel + ' | +' + numberWithCommas(getRewardAmount(5000)); 
+      document.getElementById('telegramButton').textContent = 
+        currentTranslations.subscribeTelegramLabel + ' | +' + numberWithCommas(getRewardAmount(1000)); 
+      document.getElementById('xButton').textContent = 
+        currentTranslations.subscribeXLabel + ' | +' + numberWithCommas(getRewardAmount(5000)); 
+      document.getElementById('refButton').textContent = 
+        currentTranslations.inviteFriendLabel + ' | +' + numberWithCommas(getRewardAmount(20000));
+      document.getElementById('gameButton').textContent = 
+        currentTranslations.gameLabel + ' | +' + numberWithCommas(getRewardAmount(10000));
+      document.getElementById('dailyRewardButton').textContent = 
+        currentTranslations.dailyRewardLabel + ' | +' + numberWithCommas(getRewardAmount(10000)); 
+      document.getElementById('watchAdButton').textContent = 
+        currentTranslations.watchAdLabel + ' | +' + numberWithCommas(getRewardAmount(10000)); 
+      document.querySelector('[onclick="postStory()"]').textContent = // Assuming you have the Post Story button in your HTML
+        currentTranslations.postStoryLabel + ' | +' + numberWithCommas(getRewardAmount(1000000));
+    }
+
     // Function to generate dynamic story image URL with user balance
     async function generateStoryImageURL() {
       const canvas = document.createElement('canvas');
@@ -3347,7 +4775,9 @@
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
       updateProfitPerHour(); // Update the profit display on page load
     }
-
+    
+    let currentTranslations = loadTranslations();
+    updateTranslatedText(); // Translate all text elements initially
     let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
