@@ -4796,6 +4796,15 @@
     addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI updateACC
     WebApp.ready();
+    WebApp.isVerticalSwipesEnabled = false;
+    if (!WebApp.isExpanded) {
+      WebApp.expand();
+    }
+    WebApp.enableClosingConfirmation();
+    WebApp.setHeaderColor('#000000');
+    WebApp.setBackgroundColor('#000000');
+    WebApp.disableVerticalSwipes();
+    
     updateRewardDisplay();
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
