@@ -4387,8 +4387,19 @@
     }
 
     function loadTranslations() {
-      let language = localStorage.getItem('language') || 'en'; // Default to English
-      document.getElementById('languageSelect').value = language; // Set the dropdown to the loaded language
+      let userLanguage = WebApp.WebAppUser.language_code; // Get user's language code
+      let language = localStorage.getItem('language'); // Check if language is already saved
+
+      if (!language) { // If language is not saved (first time user)
+        if (translations[userLanguage]) {
+          language = userLanguage; // Use the user's language if it's supported
+        } else {
+          language = 'en'; // Default to English if user's language is not supported
+        }
+        localStorage.setItem('language', language); // Save the language to localStorage
+      }
+
+      document.getElementById('languageSelect').value = language; // Set the dropdown
       return translations[language];
     }
 
@@ -4809,8 +4820,8 @@
       updateProfitPerHour(); // Update the profit display on page load
     }
     
-    let currentTranslations = loadTranslations();
-    updateTranslatedText(); // Translate all text elements initially
+    let currentTranslations = loadTranslations(); 
+    updateTranslatedText(); 
     let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
