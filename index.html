@@ -1851,6 +1851,7 @@
   <script>
     const dailyCombo = ["usa", "dubai", "ton"];
     let skinProfitPerHour = 0;
+    let profitPerHour = 0;
     let collectedComboCards = []; 
     let clickCount = 0;
     let clickMultiplier = 1;
@@ -3930,6 +3931,7 @@
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
         profitPerHour += miningCards[cardType].profitPerHour;
+        localStorage.setItem('profitPerHour', profitPerHour);
         updateProfitPerHour();
         updateClickCount(); // Update click count to trigger profit per hour update
         updateMiningCardPrices(); // Update prices and profit per hour
