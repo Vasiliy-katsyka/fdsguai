@@ -145,7 +145,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #000 url(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ center center/cover no-repeat;
+      background: linear-gradient(0deg, #00ff11 0%, #005266 100%); /*#000 url(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ center center/cover no-repeat;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -3296,11 +3296,23 @@
           console.error("Ad show error:", result.description);
         });
     }
-
+    
+    //background: linear-gradient(0deg, #00ff11 0%, #005266 100%);
+    WebApp.ready();
+    WebApp.setHeaderColor('#005266');
+    WebApp.setBackgroundColor('#00ff11');
     // Hide loading screen after 4 seconds
     let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
     setTimeout(() => {
       document.getElementById('loadingPopup').style.display = 'none';
+      WebApp.isVerticalSwipesEnabled = false;
+      if (!WebApp.isExpanded) {
+        WebApp.expand();
+      }
+      WebApp.enableClosingConfirmation();
+      WebApp.setHeaderColor('#000000');
+      WebApp.setBackgroundColor('#000000');
+      WebApp.disableVerticalSwipes();
     }, randomDelay);
     
     function numberWithCommas(x) {
@@ -4830,15 +4842,6 @@
     loadClickCount(); // Call this function to load clickCount from localStorage
     addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI updateACC
-    WebApp.ready();
-    WebApp.isVerticalSwipesEnabled = false;
-    if (!WebApp.isExpanded) {
-      WebApp.expand();
-    }
-    WebApp.enableClosingConfirmation();
-    WebApp.setHeaderColor('#000000');
-    WebApp.setBackgroundColor('#000000');
-    WebApp.disableVerticalSwipes();
 
     updateRewardDisplay();
     setInterval(updateRewardDisplay, 1000); 
