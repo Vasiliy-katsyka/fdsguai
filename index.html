@@ -3614,7 +3614,7 @@
         } else if (equippedSkin === skin.name) {
           // Skin purchased and equipped
           buyButton.textContent = 'Equipped';
-          buyButton.disabled = true; // Disable the button
+          buyButton.disabled = true; 
         } else {
           // Skin purchased but not equipped
           buyButton.textContent = 'Equip';
@@ -3642,14 +3642,15 @@
         updateProfitPerHourSkins(profit);
 
         skinProfitPerHour += skin.profit; // Update skin profit
-        updateProfitPerHour(); // Recalculate total profit
-        localStorage.setItem('skinProfitPerHour', skinProfitPerHour); 
+        updateProfitPerHourSkins(); // Recalculate total profit
+        purchasedSkins.push(skin.name); // Add the skin to purchasedSkins
+        localStorage.setItem('purchasedSkins', JSON.stringify(purchasedSkins)); 
 
-        // Equip the skin after purchase
-        equipSkin(skin);
+        equipSkin(skin); // Equip the skin after purchase
 
-        // Update the display 
-        displaySkins();
+        // Update the display *after* updating purchasedSkins
+        displaySkins(); 
+
         WebApp.showAlert(`You purchased the ${skin.name} skin!`);
       } else {
         WebApp.showAlert("You don't have enough clicks to buy this skin!");
