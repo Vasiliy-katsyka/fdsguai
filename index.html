@@ -17,6 +17,7 @@
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <script src="https://unpkg.com/browse/@ton/ton@14.0.0/dist/ton.min.js"></script>
   <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js" type="module"></script>
   <style>
     @font-face {
       font-family: 'LobsterCoinFont'; /* Choose a unique name */
@@ -1219,6 +1220,52 @@
     #languageSelect:hover {
       background: rgba(255, 255, 255, 0.2); /* Slightly more opaque background on hover */
     }
+
+    .theme-option {
+      margin-bottom: 10px; 
+    }
+
+    .theme-option label {
+      display: block; 
+      margin-bottom: 5px;
+    }
+
+    .theme-option input[type="color"] {
+      width: 100%; 
+      padding: 8px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px;
+    }
+
+    .theme-option input[type="file"] { /* Style for image uploader */
+      display: block; 
+      margin-top: 5px;
+    }
+
+    .generate-button {
+      background: linear-gradient(50deg, #006eff 0%, #00ff7b 100%); 
+      /* ... other button styles ... */
+    }
+
+    .ai-input {
+      margin-bottom: 10px; 
+    }
+
+    .ai-result {
+      width: 100%;
+      height: 200px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+      margin-bottom: 10px;
+      display: flex; /* Center content */
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ai-result img { /* Style for generated image */
+      max-width: 100%; 
+      max-height: 100%; 
+    }
   </style>
 </head>
 <body>
@@ -1230,7 +1277,7 @@
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p id="versionText" style="position: absolute; bottom: 20px;">v1.61</p>
+    <p id="versionText" style="position: absolute; bottom: 20px;">v1.66</p>
   </div>
 
   <div class="title-container">
@@ -1770,8 +1817,50 @@
       <button class="menu-button" id="legalInfoButton" onclick="openLegalInfoPopup()">Legal Info</button>
       <input type="text" id="promoCode" placeholder="Enter promo code">
       <button class="menu-button" id="applyPromoCodeButton" onclick="applyPromoCode()">Apply Promo Code</button>
-      <buttpn class="menu-button" id="attachbutton" onclick="addAttach()">Add bot to attach menu</button>
+      <button class="menu-button" id="themeButton" onclick="openThemePopup()">Theme</button> 
+      <buttpn class="menu-button" id="giftButton">Gift Clicks</button>
     </div>
+
+    <!-- Theme Customization Popup -->
+    <div class="popup" id="themePopup">
+      <button class="close-button" onclick="closeThemePopup()">×</button>
+      <h2 id="themePopupTitle">Theme Customization</h2>
+
+      <div class="theme-option">
+        <label for="headerColor" id="headerColorLabel">Header Color:</label>
+        <input type="color" id="headerColor" value="#000000">
+      </div>
+
+      <div class="theme-option">
+        <label for="backgroundImageUploader" id="backgroundImageLabel">Background Image:</label>
+        <input type="file" id="backgroundImageUploader" accept="image/*">
+      </div>
+
+      <div class="theme-option">
+        <label for="bottomMenuImageUploader" id="bottomMenuImageLabel">Bottom Menu Image:</label>
+        <input type="file" id="bottomMenuImageUploader" accept="image/*">
+      </div>
+
+      <button class="button" id="applyThemeButton" onclick="applyTheme()">Apply Theme</button>
+    </div>
+
+    <!-- AI Generator Popup -->
+    <div class="popup" id="aiGeneratorPopup">
+      <button class="close-button" onclick="closeAIGeneratorPopup()">×</button>
+      <h2 id="aiGeneratorPopupTitle">AI Image Generator</h2>
+
+      <div class="ai-input">
+        <label for="aiPrompt" id="aiPromptLabel">Prompt:</label>
+        <input type="text" id="aiPrompt" placeholder="Enter your prompt...">
+      </div>
+
+      <div class="ai-result" id="aiResultContainer">
+        <span id="aiResultLabel">Enter a prompt and an image will appear here.</span>
+      </div> 
+
+      <button class="generate-button" id="aiGenerateButton" onclick="generateImage()">Generate</button>
+      <button class="button" id="aiApplyButton" onclick="applyGeneratedImage()">Apply</button>
+    </div> 
 
     <div class="popup" id="legalInfoPopup">
       <button class="close-button" onclick="closeLegalInfoPopup()">×</button>
@@ -1790,10 +1879,9 @@
     </div>
     <div class="airdrop-content">
       <h2 id="airdropPopupTitle">Airdrop!</h2>
-      <p id="airdropPopupMessage">Get your share of LOB tokens.</p>
-      <input type="text" id="walletAddress" placeholder="Enter wallet address">
-      <!-- TONConnect Button -->
-      <!--<button id="ton-connect" class="connect-wallet-button" onclick="connectToWallet()">Connect Wallet</button> 
+      <p id="airdropPopupMessage">Come here soon...</p>
+      <!--<input type="text" id="walletAddress" placeholder="Enter wallet address">
+      <button id="ton-connect" class="connect-wallet-button" onclick="connectToWallet()">Connect Wallet</button> 
       <script>
         // Initialize TONConnect UI when the popup opens
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -1803,7 +1891,7 @@
         tonConnectUI.uiOptions = {
           twaReturnUrl: 'https://t.me/lobster_coin_bot/lobstercoin'
         };
-      </script>-->
+      </script>
       <div class="airdrop-form" id="airdropForm">
         <h3>Swap Clicks To $LOB</h3>
         <div class="form-group">
@@ -1815,7 +1903,7 @@
           <input type="number" id="lobAmount" disabled>
         </div>
       </div>
-      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
+      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>-->
     </div>
   </div>
   
@@ -1850,6 +1938,27 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="popup" id="giftPopup">
+      <button class="close-button" onclick="closeGiftPopup()">×</button>
+      <h2 id="giftPopupTitle">Gift Clicks</h2>
+      <div class="gift-option" onclick="prepareGift(10000)">
+        <span>Gift 10K Clicks</span>
+      </div>
+      <div class="gift-option" onclick="prepareGift(100000)">
+        <span>Gift 100K Clicks</span>
+      </div>
+      <div class="gift-option" onclick="prepareGift(1000000)">
+        <span>Gift 1M Clicks</span>
+      </div>
+      <div class="gift-option" onclick="prepareGift(1000000000)">
+        <span>Gift 1B Clicks</span>
+      </div>
+      <div id="promoCodeContainer">
+        <span id="promoCodeLabel">Promo Code:</span>
+        <span id="generatedPromoCode" onclick="copyPromoCode()"></span>
+      </div> 
     </div>
 
     <div class="league-popup" id="leaguePopup">
@@ -1969,7 +2078,7 @@
         legalInfoMessage: "By using LobsterCoin, you agree to our <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Terms of Service</a>, which govern your access and use of the game and all related content. Please review our <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>full Terms of Service</a> for more information.",
         termsOfServiceButton: "Terms Of Service",
         airdropPopupTitle: "Airdrop!",
-        airdropPopupMessage: "Get your share of LOB tokens.",
+        airdropPopupMessage: "Come here soon...",
         claimAirdropButton: "Recieve Money",
         skinsPopupTitle: "Skins",
         earnClicksTitle: "Earn Clicks",
@@ -2060,7 +2169,7 @@
         legalInfoMessage: "Используя LobsterCoin, вы соглашаетесь с нашими <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Условиями обслуживания</a>, которые регулируют ваш доступ и использование игры и всего связанного контента. Пожалуйста, ознакомьтесь с <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>полными Условиями обслуживания</a> для получения дополнительной информации.",
         termsOfServiceButton: "Условия обслуживания",
         airdropPopupTitle: "Эйрдроп!",
-        airdropPopupMessage: "Получите свою долю токенов LOB.",
+        airdropPopupMessage: "Скоро здесь...",
         claimAirdropButton: "Получить деньги",
         skinsPopupTitle: "Скины",
         earnClicksTitle: "Заработать клики",
@@ -2151,7 +2260,7 @@
         legalInfoMessage: "LobsterCoin을 이용함으로써 귀하는 게임 및 모든 관련 콘텐츠에 대한 액세스 및 사용을 규제하는 당사의 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>서비스 약관</a>에 동의하는 것입니다. 자세한 내용은 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>전체 서비스 약관</a>을 검토하십시오.",
         termsOfServiceButton: "서비스 약관",
         airdropPopupTitle: "에어드랍!",
-        airdropPopupMessage: "LOB 토큰을 받으세요.",
+        airdropPopupMessage: "일시적으로 여기에...",
         claimAirdropButton: "돈 받기",
         skinsPopupTitle: "스킨",
         earnClicksTitle: "클릭 획득",
@@ -2242,7 +2351,7 @@
         legalInfoMessage: "Al usar LobsterCoin, aceptas nuestros <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Términos de Servicio</a>, que rigen tu acceso y uso del juego y todo el contenido relacionado. Por favor, revisa nuestros <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Términos de Servicio completos</a> para obtener más información.",
         termsOfServiceButton: "Términos de Servicio",
         airdropPopupTitle: "¡Lanzamiento Aéreo!",
-        airdropPopupMessage: "Obtén tu parte de los tokens LOB.",
+        airdropPopupMessage: "Come here soon...",
         claimAirdropButton: "Recibir Dinero",
         skinsPopupTitle: "Skins",
         earnClicksTitle: "Ganar Clics",
@@ -2333,7 +2442,7 @@
         legalInfoMessage: "En utilisant LobsterCoin, vous acceptez nos <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Conditions d'Utilisation</a>, qui régissent votre accès et votre utilisation du jeu et de tout le contenu associé. Veuillez consulter nos <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>Conditions d'Utilisation complètes</a> pour plus d'informations.",
         termsOfServiceButton: "Conditions d'Utilisation",
         airdropPopupTitle: "Airdrop !",
-        airdropPopupMessage: "Obtenez votre part des jetons LOB.",
+        airdropPopupMessage: "Come here soon...",
         claimAirdropButton: "Recevoir de l'Argent",
         skinsPopupTitle: "Skins",
         earnClicksTitle: "Gagner des Clics",
@@ -2424,7 +2533,7 @@
         legalInfoMessage: "使用龙虾币，即表示您同意我们的 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>服务条款</a>，该条款约束您对游戏和所有相关内容的访问和使用。请查看我们的 <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>完整服务条款</a> 以获取更多信息。",
         termsOfServiceButton: "服务条款",
         airdropPopupTitle: "空投！",
-        airdropPopupMessage: "获取您的 LOB 代币份额。",
+        airdropPopupMessage: "Come here soon...",
         claimAirdropButton: "领取资金",
         skinsPopupTitle: "皮肤",
         earnClicksTitle: "赚取点击次数",
@@ -2515,7 +2624,7 @@
         legalInfoMessage: "लॉबस्टर कॉइन का उपयोग करके, आप हमारी <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>सेवा की शर्तों</a> से सहमत होते हैं, जो आपके खेल और सभी संबंधित सामग्री तक पहुंच और उपयोग को नियंत्रित करती हैं। अधिक जानकारी के लिए कृपया हमारी <a href='https://www.e-droid.net/privacy.php?ida=2257006&idl=en'>पूरी सेवा की शर्तों</a> की समीक्षा करें।",
         termsOfServiceButton: "सेवा की शर्तें",
         airdropPopupTitle: "एयरड्रॉप!",
-        airdropPopupMessage: "एलओबी टोकन का अपना हिस्सा प्राप्त करें।",
+        airdropPopupMessage: "Come here soon...",
         claimAirdropButton: "पैसे प्राप्त करें",
         skinsPopupTitle: "स्किन",
         earnClicksTitle: "क्लिक कमाएँ",
@@ -3262,10 +3371,23 @@
       }
     }
 
+    document.getElementById('giftButton').addEventListener('click', openGiftPopup);
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
-      if (promoCode === "developer-tester") {
+      if (pr10.includes(promoCode)) {
+        clickCount += 10000;
+        WebApp.showAlert("Promo code applied! You've received 10,000 clicks!");
+      } else if (pr100.includes(promoCode)) {
+        clickCount += 100000;
+        WebApp.showAlert("Promo code applied! You've received 100,000 clicks!");
+      } else if (pr1m.includes(promoCode)) {
+        clickCount += 1000000;
+        WebApp.showAlert("Promo code applied! You've received 1,000,000 clicks!");
+      } else if (pr1b.includes(promoCode)) {
+        clickCount += 1000000000;
+        WebApp.showAlert("Promo code applied! You've received 1,000,000,000 clicks!");
+      } else if (promoCode === "developer-tester") {
         clickCount += 500000000; // Add 500 million clicks
         updateClickCount();
         WebApp.showAlert("Promo code applied! You've received 500 million clicks!");
@@ -3639,15 +3761,19 @@
 
     // Function to buy a skin
     function buySkin(skin) {
-      if (clickCount >= skin.price) {
-        clickCount -= skin.price;
+      console.log("Skin: ", skin, ", Price: ", skin.price);
+      if (clickCount >= Number(skin.price)) {
+        console.log("Buying skin: ", skin.name);
+        clickCount -= Number(skin.price);
+        console.log("Click count after skin purchase: ", clickCount);
         updateClickCount();
         
-        profit = skin.profit;
+        profit = Number(skin.profit);
+        console.log("Profit: ", profit);
         updateProfitPerHourSkins(profit);
 
-        skinProfitPerHour += skin.profit; // Update skin profit
-        updateProfitPerHourSkins(); // Recalculate total profit
+        skinProfitPerHour += Number(skin.profit); // Update skin profit
+        localStorage.setItem('skinProfitPerHour', JSON.stringify(skinProfitPerHour)); // Update local storage
         purchasedSkins.push(skin.name); // Add the skin to purchasedSkins
         localStorage.setItem('purchasedSkins', JSON.stringify(purchasedSkins)); 
 
@@ -3855,6 +3981,55 @@
       document.querySelector('[onclick="subscribeTelegram()"]').style.backgroundColor = '#ccc'; // Change background color
     }
     
+    const pr10 = ["LOBSTERGIFT10A", "LOBSTERGIFT10B", "LOBSTERGIFT10C", "LOBSTERGIFT10D"]; 
+    const pr100 = ["LOBSTERGIFT100A", "LOBSTERGIFT100B", "LOBSTERGIFT100C", "LOBSTERGIFT100D"]; 
+    const pr1m = ["LOBSTERGIFT1MA", "LOBSTERGIFT1MB", "LOBSTERGIFT1MC", "LOBSTERGIFT1MD"]; 
+    const pr1b = ["LOBSTERGIFT1BA", "LOBSTERGIFT1BB", "LOBSTERGIFT1BC", "LOBSTERGIFT1BD"]; 
+
+    function openGiftPopup() {
+      document.getElementById('giftPopup').style.display = 'block';
+    }
+
+    function closeGiftPopup() {
+      document.getElementById('giftPopup').style.display = 'none';
+    }
+
+    function prepareGift(amount) {
+      if (clickCount >= amount) {
+        let promoCode = generatePromoCode(amount); 
+        document.getElementById('generatedPromoCode').textContent = promoCode;
+        document.getElementById('promoCodeContainer').style.display = 'block'; // Show the code
+        clickCount -= amount;
+        updateClickCount();
+        WebApp.showAlert("Promo code generated! Tap to copy.");
+      } else {
+        WebApp.showAlert("You don't have enough clicks to gift this amount!");
+      }
+    }
+
+    function generatePromoCode(amount) {
+      let promoArray;
+      if (amount === 10000) promoArray = pr10;
+      else if (amount === 100000) promoArray = pr100;
+      else if (amount === 1000000) promoArray = pr1m;
+      else if (amount === 1000000000) promoArray = pr1b;
+
+      let randomIndex = Math.floor(Math.random() * promoArray.length); 
+      return promoArray[randomIndex]; 
+    }
+
+    function copyPromoCode() {
+      let promoCode = document.getElementById('generatedPromoCode').textContent;
+      navigator.clipboard.writeText(promoCode)
+        .then(() => {
+          WebApp.showAlert("Promo code copied to clipboard!");
+        })
+        .catch(err => {
+          console.error('Failed to copy: ', err);
+          WebApp.showAlert('Failed to copy code. Please try again.');
+        });
+    }
+
     // Function to subscribe to the X channel
     function subscribeX() {
       if (telegramBonusClaimed) {
@@ -3913,7 +4088,8 @@
         miningCards[cardType].profitPerHour = Math.round(miningCards[cardType].profitPerHour); 
         let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); 
         document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`;
-        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(miningCards[cardType].profitPerHour)} clicks`;
+        const cardProfit = miningCards[cardType].profitPerHour * miningCards[cardType].level;
+        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(cardProfit)} clicks`;
       }
     }
 
@@ -3964,7 +4140,7 @@
       if (clickCount >= miningCards[cardType].price) {
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
-        profitPerHour += miningCards[cardType].profitPerHour;
+        profitPerHour += miningCards[cardType].profitPerHour * miningCards[cardType].level; 
         localStorage.setItem('profitPerHour', profitPerHour);
         updateProfitPerHour();
         updateClickCount(); // Update click count to trigger profit per hour update
@@ -4064,12 +4240,18 @@
       }
     }
 
+    function print(text) {
+      console.log(text);
+    }
+
     function updateProfitPerHourSkins(profit) {
       if (localStorage.getItem('profitPerHour')) {
         profitPerHour = Number(localStorage.getItem('profitPerHour'));
       }
-      profitPerHour += profit;
-      totalProfit = profitPerHour;
+      console.log("Adding profit: ", Number(profit));
+      profitPerHour += Number(profit);
+      console.log("New profit per hour: ", profitPerHour);
+      totalProfit = Number(profitPerHour);
       localStorage.setItem('profitPerHour', profitPerHour);
       document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
     }
@@ -4779,6 +4961,150 @@
 
     let storyBonusClaimed = localStorage.getItem('storyBonusClaimed') === 'true'; // Flag to track story sharing
 
+    // Theme Customization
+    let headerColor = localStorage.getItem('headerColor') || '#000000';
+    let backgroundImage = localStorage.getItem('backgroundImage') || null;
+    let bottomMenuImage = localStorage.getItem('bottomMenuImage') || null;
+    let currentGeneratingTarget = null; // To know where to apply the AI image
+
+    function openThemePopup() {
+      document.getElementById('themePopup').style.display = 'block';
+      // Set current values in the popup
+      document.getElementById('headerColor').value = headerColor; 
+    }
+
+    function closeThemePopup() {
+      document.getElementById('themePopup').style.display = 'none';
+    }
+
+    function applyTheme() {
+      headerColor = document.getElementById('headerColor').value;
+      localStorage.setItem('headerColor', headerColor);
+
+      // Apply background image if set
+      if (backgroundImage) {
+        document.querySelector('.container').style.backgroundImage = `url(${backgroundImage})`;
+      } else {
+        // Set default background if no image is uploaded or generated
+        document.querySelector('.container').style.backgroundImage = `linear-gradient(0deg, #ffdd00 60%, #000000 100%)`;
+      }
+
+      // Apply bottom menu image if set
+      if (bottomMenuImage) {
+        document.querySelector('.menu-container').style.backgroundImage = `url(${bottomMenuImage})`;
+      } else {
+        // Set default background if no image is uploaded or generated
+        document.querySelector('.menu-container').style.backgroundImage = `#ffffff url(https://cdn.midjourney.com/4cd2f462-fe7c-4c75-906f-0594c8ccbea8/0_0.png) center center/cover no-repeat`;
+      }
+
+      // ... apply other theme settings ... 
+      WebApp.setHeaderColor(headerColor); // Update the header color immediately
+      closeThemePopup(); 
+      WebApp.showAlert("Theme applied!");
+    }
+
+    // Image Uploads
+    document.getElementById('backgroundImageUploader').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        backgroundImage = e.target.result; 
+        localStorage.setItem('backgroundImage', backgroundImage);
+      }
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('bottomMenuImageUploader').addEventListener('change', (event) => {
+      const file = event.target.files[0]; // Get the uploaded file
+      const reader = new FileReader(); // Create a FileReader to read the file
+
+      reader.onload = (e) => { 
+        bottomMenuImage = e.target.result; // Get the data URL of the image
+        localStorage.setItem('bottomMenuImage', bottomMenuImage); // Store in localStorage
+      }
+      reader.readAsDataURL(file); // Read the file as a data URL
+    });
+
+    // AI Integration
+    function openAIGenerator(target) {
+      currentGeneratingTarget = target; // Set the target (background or bottomMenu)
+      document.getElementById('aiGeneratorPopup').style.display = 'block';
+    }
+
+    function closeAIGeneratorPopup() {
+      document.getElementById('aiGeneratorPopup').style.display = 'none';
+    }
+
+    async function generateImage() {
+      let prompt = document.getElementById('aiPrompt').value;
+      if (prompt === "") {
+        WebApp.showAlert("Please enter a prompt!");
+        return;
+      }
+
+      // Set image size based on target
+      let width, height;
+      if (currentGeneratingTarget === 'background') {
+        width = 720; 
+        height = 1024;
+      } else if (currentGeneratingTarget === 'bottomMenu') {
+        width = 1024;
+        height = 600;
+      } else { 
+        width = 1024;
+        height = 1024;
+      }
+
+      try {
+        const { Client } = await import("@gradio/client"); 
+        const client = await Client.connect("black-forest-labs/FLUX.1-dev");
+        const result = await client.predict("/infer", {
+            prompt: prompt,
+            seed: 0,
+            randomize_seed: true,
+            width: width, 
+            height: height, 
+            guidance_scale: 3.5,
+            num_inference_steps: 28,
+        });
+
+        console.log(result.data); // Log the result for debugging
+
+        // Display the generated image
+        displayGeneratedImage(result);
+      } catch (error) {
+        console.error("Error generating image:", error);
+        WebApp.showAlert("Error generating image. Please try again later.");
+      }
+    }
+
+    function displayGeneratedImage(imageUrl) {
+      const aiResultContainer = document.getElementById('aiResultContainer');
+      aiResultContainer.innerHTML = ''; // Clear previous content
+
+      const imageElement = document.createElement('img');
+      imageElement.src = imageUrl;
+      aiResultContainer.appendChild(imageElement);
+    }
+
+    function applyGeneratedImage() {
+      const imageElement = document.getElementById('aiResultContainer').querySelector('img'); 
+      if (imageElement) {
+        if (currentGeneratingTarget === 'background') {
+          backgroundImage = imageElement.src; 
+          localStorage.setItem('backgroundImage', backgroundImage); 
+        } else if (currentGeneratingTarget === 'bottomMenu') {
+          bottomMenuImage = imageElement.src; 
+          localStorage.setItem('bottomMenuImage', bottomMenuImage); 
+        }
+        closeAIGeneratorPopup(); 
+        WebApp.showAlert("Image applied! Apply your theme to see the changes.");
+      } else {
+        WebApp.showAlert("No image generated yet!");
+      }
+    }
+
     // Function to calculate reward amount based on user balance
     function getRewardAmount(baseReward) {
       let multiplier = 1;
@@ -4805,6 +5131,24 @@
       document.getElementById('storyReward').textContent = numberWithCommas(getRewardAmount(1000000));
     }
 
+    function loadTheme() {
+      headerColor = localStorage.getItem('headerColor') || '#000000'; // Load header color
+      backgroundImage = localStorage.getItem('backgroundImage') || null; // Load background image
+      bottomMenuImage = localStorage.getItem('bottomMenuImage') || null; // Load bottom menu image
+
+      // Apply header color
+      WebApp.setHeaderColor(headerColor); 
+
+      // Apply background image if available
+      if (backgroundImage) {
+        document.querySelector('.container').style.backgroundImage = `url(${backgroundImage})`;
+      }
+
+      // Apply bottom menu image if available
+      if (bottomMenuImage) {
+        document.querySelector('.menu-container').style.backgroundImage = `url(${bottomMenuImage})`;
+      }
+    }
 
     // Store the last time the page was updated in localStorage
     let lastUpdateTime = new Date().getTime();
@@ -4816,10 +5160,11 @@
     
     document.addEventListener('DOMContentLoaded', function() {
       updateMiningCardPrices();
+      loadTheme();
     });
 
     // Update click count every second
-	setInterval(addEarnPerHour, 1000);
+	  setInterval(addEarnPerHour, 1000);
 
     // Update localStorage with the current time on page load
     localStorage.setItem('lastUpdateTime', new Date().getTime());
