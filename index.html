@@ -1277,10 +1277,6 @@
       margin-bottom: 5px;
     }
 
-    /* Style the file input (uploader) */
-    .skins-popup .skin-card input[type="file"] {
-      display: none; /* Hide the default file input */
-    }
 
     /* Style the custom upload button */
     .skins-popup .skin-card .upload-button {
@@ -3706,6 +3702,18 @@
         profit: 100000
       },
       {
+        name: "Cutty Lobster",
+        imageUrl: "https://cdn.midjourney.com/ff09764a-f72c-4892-aa42-36e9ad04a4f4/0_2.png", 
+        price: 10000000,
+        profit: 100000
+      },      
+      {
+        name: "Turtle Lobster",
+        imageUrl: "https://cdn.midjourney.com/50f8984d-c53e-4392-ba38-a09ecef8fad2/0_3.png", 
+        price: 10000000,
+        profit: 100000
+      },
+      {
         name: "Boss Lobster",
         imageUrl: "https://cdn.midjourney.com/976e086a-ec5b-4d88-a1de-05b3257d056d/0_1.png",
         price: 50000000,
@@ -3818,7 +3826,7 @@
       fileInput.type = 'file';
       fileInput.id = 'customSkinUploader';
       fileInput.accept = "image/*";
-      customSkinCard.appendChild(fileInput);
+      customSkinCard.appendChild(fileInput); // Add fileInput to customSkinCard
 
       const customSkinName = document.createElement('div');
       customSkinName.textContent = "Custom Skin";
@@ -3837,8 +3845,19 @@
           // If purchased, trigger equipCustomSkin (which will use updated image)
           equipCustomSkin();
         } else {
-          // If not purchased, trigger the file upload
-          document.getElementById('customSkinUploader').click(); 
+          customSkinBuyButton.textContent = 'Buy';
+          
+
+          // Attach the click listener here, AFTER customSkinPurchased is potentially updated
+          customSkinBuyButton.addEventListener('click', () => {
+            if (customSkinPurchased) {
+              // If purchased, trigger equipCustomSkin (which will use updated image)
+              equipCustomSkin(); 
+            } else {
+              // If not purchased, trigger the file upload
+              document.getElementById('customSkinUploader').click();
+            }
+          }); 
         }
       });
 
@@ -3846,12 +3865,10 @@
         if (customSkinEquipped) {
           customSkinBuyButton.textContent = 'Equipped';
           customSkinBuyButton.disabled = true;
-          fileInput.disabled = true;
         } else {
           customSkinBuyButton.textContent = 'Equip';
           customSkinBuyButton.disabled = false; // Enable the equip button
           customSkinBuyButton.onclick = equipCustomSkin; // Set the onclick function
-          fileInput.disabled = true;
         }
       } else {
         customSkinBuyButton.textContent = 'Buy';
@@ -3889,14 +3906,15 @@
         WebApp.showAlert("Custom skin purchased! Now upload your image.");
 
         // Trigger the file upload dialog
-        document.getElementById('customSkinUploader').click(); 
+        document.getElementById('customSkinUploader').click();
 
-        // Equip the custom skin (it will be equipped once an image is uploaded)
-        equipCustomSkin(); 
+        // DO NOT call equipCustomSkin() here. It will be called 
+        // automatically from the image upload handler once the image is loaded. 
       } else {
         WebApp.showAlert("You don't have enough clicks to buy the custom skin!");
       }
     }
+
 
     // Function to equip the custom skin
     function equipCustomSkin() {
@@ -3927,11 +3945,12 @@
       reader.onload = (e) => {
         customSkin.imageUrl = e.target.result;
         localStorage.setItem('customSkinImageUrl', customSkin.imageUrl);
+        print("Custom skin image saved!")
 
-        // If custom skin is currently equipped, reapply it
-        if (customSkinEquipped) { 
-          applySkin(customSkin.imageUrl); 
-        }
+        // Equip the custom skin automatically after the image is loaded
+        if (customSkinPurchased) { // Only equip if the skin has been purchased
+          equipCustomSkin();
+        } 
 
         WebApp.showAlert("Custom skin image uploaded!");
       }
@@ -4089,14 +4108,51 @@
     function confirmClearData() {
       if (confirm("Do you really want to completely delete your data?")) {
         if (confirm("Are you 100% sure?")) {
-          // Clear localStorage *before* updating the counter
-          localStorage.clear();
+          // Clear all relevant localStorage items
+          localStorage.removeItem('clickCount');
+          localStorage.removeItem('clickMultiplier');
+          localStorage.removeItem('upgradeLevel');
+          localStorage.removeItem('upgradeCosts');
+          localStorage.removeItem('lastUpdateTime');
+          localStorage.removeItem('lastRewardClaimTime');
+          localStorage.removeItem('dailyRewardIndex');
+          localStorage.removeItem('collectedComboCards');
+          localStorage.removeItem('dailyComboCollected');
+          localStorage.removeItem('youtubeBonusClaimed');
+          localStorage.removeItem('telegramBonusClaimed');
+          localStorage.removeItem('xBonusClaimed');
+          localStorage.removeItem('storyBonusClaimed');
+          localStorage.removeItem('premiumBonusClaimed');
+          localStorage.removeItem('language'); 
+          localStorage.removeItem('headerColor');
+          localStorage.removeItem('backgroundImage');
+          localStorage.removeItem('bottomMenuImage'); 
+          localStorage.removeItem('purchasedSkins');
+          localStorage.removeItem('equippedSkin');
+          localStorage.removeItem('customSkinPurchased');
+          localStorage.removeItem('customSkinEquipped');
+          localStorage.removeItem('customSkinImageUrl');
+
+          // Clear mining card levels
+          for (const cardType in miningCards) {
+            localStorage.removeItem(`miningCardLevel${cardType}`);
+          }
 
           // Reset game variables
-          clickCount = 0; 
+          clickCount = 0;
           clickMultiplier = 1;
-          upgradeLevel = [0, 0, 0]; 
+          upgradeLevel = [0, 0, 0];
           upgradeCosts = [500, 1500, 5000];
+          profitPerHour = 0; // Reset profitPerHour
+          skinProfitPerHour = 0; // Reset skinProfitPerHour
+          dailyRewardIndex = 0; 
+          lastRewardClaimTime = 0; 
+          collectedComboCards = []; 
+          purchasedSkins = [];
+          equippedSkin = null; 
+          customSkinPurchased = false;
+          customSkinEquipped = false;
+          customSkin.imageUrl = null; 
 
           // Reset mining card levels
           for (const cardType in miningCards) {
@@ -4108,6 +4164,12 @@
           updateUpgradeCosts();
           updateMiningCardPrices();
           updateMiningCardLevels();
+          updateProfitPerHour(); // Make sure to update profit display
+          displaySkins(); // Refresh the skins popup to reflect changes
+
+          // Reset any other relevant variables in your game
+          // ... 
+
           WebApp.showAlert("Data cleared successfully!");
         }
       }
