@@ -3885,11 +3885,14 @@
         updateProfitPerHourSkins(customSkin.profit);
         customSkinPurchased = true;
         localStorage.setItem('customSkinPurchased', 'true');
-        document.getElementById('customSkinUploader').disabled = false;
+
         WebApp.showAlert("Custom skin purchased! Now upload your image.");
 
-        // Equip the custom skin immediately after purchase
-        equipCustomSkin();
+        // Trigger the file upload dialog
+        document.getElementById('customSkinUploader').click(); 
+
+        // Equip the custom skin (it will be equipped once an image is uploaded)
+        equipCustomSkin(); 
       } else {
         WebApp.showAlert("You don't have enough clicks to buy the custom skin!");
       }
