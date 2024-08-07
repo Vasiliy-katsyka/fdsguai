@@ -1121,10 +1121,7 @@
       margin-bottom: 10px;
     }
 
-    .skins-popup .skin-card .skin-price {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+
     
     .skins-popup .skin-card button {
       background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
@@ -1265,6 +1262,44 @@
     .ai-result img { /* Style for generated image */
       max-width: 100%; 
       max-height: 100%; 
+    }
+
+    .skins-popup .skin-card.custom {
+      border: 2px dashed #ccc; /* Dashed border for custom skin */
+    }
+
+    .skins-popup .skin-card.custom img {
+      opacity: 0.5; /* Make the default image semi-transparent */
+    }
+
+    .skins-popup .skin-card .skin-price {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    /* Style the file input (uploader) */
+    .skins-popup .skin-card input[type="file"] {
+      display: none; /* Hide the default file input */
+    }
+
+    /* Style the custom upload button */
+    .skins-popup .skin-card .upload-button {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin: 5px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      width: auto; /* Make the button's width adjust to its content */
+    }
+
+    .skins-popup .skin-card .upload-button:hover {
+      background-color: #4b0082;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
   </style>
 </head>
@@ -1910,7 +1945,17 @@
   <div class="popup skins-popup" id="skinsPopup">
     <button class="close-button" onclick="closeSkinsPopup()">×</button>
     <h2 id="skinsPopupTitle">Skins</h2>
-    <div class="skins-container" id="skinCardsContainer"></div> </div>
+    <div class="skins-container" id="skinCardsContainer">
+      <!-- Custom Skin Card -->
+      <div class="skin-card custom" id="customSkinCard">
+        <img src="https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png" alt="Default Image">
+        <input type="file" id="customSkinUploader" accept="image/*">
+        <div>Custom Skin</div>
+        <div class="skin-price">Price: 1,000,000,000 clicks</div>
+        <button class="upload-button" onclick="buyCustomSkin()">Buy</button>
+      </div>
+      <!-- Other Skin Cards ... -->
+    </div>
   </div>
   
   <div class="airdrop-popup" id="earnPopup">
@@ -3716,8 +3761,9 @@
     // Function to display skins in the popup
     function displaySkins() {
       const skinCardsContainer = document.getElementById('skinCardsContainer');
-      skinCardsContainer.innerHTML = ''; // Clear previous content
+      skinCardsContainer.innerHTML = ''; // Clear the container
 
+      // Display predefined skins
       skins.forEach(skin => {
         const skinCard = document.createElement('div');
         skinCard.classList.add('skin-card');
@@ -3725,39 +3771,169 @@
         const skinImage = document.createElement('img');
         skinImage.src = skin.imageUrl;
         skinImage.alt = skin.name;
+        skinCard.appendChild(skinImage);
 
         const skinName = document.createElement('div');
         skinName.textContent = skin.name;
+        skinCard.appendChild(skinName);
 
         const skinPrice = document.createElement('div');
         skinPrice.classList.add('skin-price');
         skinPrice.textContent = `Price: ${numberWithCommas(skin.price)} clicks`;
+        skinCard.appendChild(skinPrice);
 
         const buyButton = document.createElement('button');
         if (!purchasedSkins.includes(skin.name)) {
-          // Skin not purchased
           buyButton.textContent = 'Buy';
           buyButton.addEventListener('click', () => buySkin(skin));
         } else if (equippedSkin === skin.name) {
-          // Skin purchased and equipped
           buyButton.textContent = 'Equipped';
-          buyButton.disabled = true; 
+          buyButton.disabled = true;
         } else {
-          // Skin purchased but not equipped
           buyButton.textContent = 'Equip';
           buyButton.addEventListener('click', () => equipSkin(skin));
         }
-
-        // Append elements to the skin card
-        skinCard.appendChild(skinImage);
-        skinCard.appendChild(skinName);
-        skinCard.appendChild(skinPrice);
         skinCard.appendChild(buyButton);
 
-        // Append the skin card to the container
         skinCardsContainer.appendChild(skinCard);
       });
+
+      // Dynamically create and display custom skin card
+      const customSkinCard = document.createElement('div');
+      customSkinCard.classList.add('skin-card', 'custom');
+      customSkinCard.id = 'customSkinCard';
+
+      const customSkinImage = document.createElement('img');
+      const customSkinImageUrl = localStorage.getItem('customSkinImageUrl'); 
+      if (customSkinImageUrl) {
+        customSkin.imageUrl = customSkinImageUrl;
+      } 
+
+      // Set the image source for the custom skin card
+      customSkinImage.src = customSkin.imageUrl || "https://cdn.midjourney.com/b875d6aa-8f9f-4ea4-b308-4fe7712c2ecd/0_0.png"; 
+      customSkinImage.alt = "Custom Skin";
+      customSkinCard.appendChild(customSkinImage);
+
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.id = 'customSkinUploader';
+      fileInput.accept = "image/*";
+      customSkinCard.appendChild(fileInput);
+
+      const customSkinName = document.createElement('div');
+      customSkinName.textContent = "Custom Skin";
+      customSkinCard.appendChild(customSkinName);
+
+      const customSkinPrice = document.createElement('div');
+      customSkinPrice.classList.add('skin-price');
+      customSkinPrice.textContent = `Price: ${numberWithCommas(customSkin.price)} clicks`;
+      customSkinCard.appendChild(customSkinPrice);
+
+      const customSkinBuyButton = document.createElement('button');
+      customSkinBuyButton.classList.add('upload-button');
+      customSkinBuyButton.onclick = buyCustomSkin;
+      customSkinBuyButton.addEventListener('click', () => {
+        if (customSkinPurchased) {
+          // If purchased, trigger equipCustomSkin (which will use updated image)
+          equipCustomSkin();
+        } else {
+          // If not purchased, trigger the file upload
+          document.getElementById('customSkinUploader').click(); 
+        }
+      });
+
+      if (customSkinPurchased) {
+        if (customSkinEquipped) {
+          customSkinBuyButton.textContent = 'Equipped';
+          customSkinBuyButton.disabled = true;
+          fileInput.disabled = true;
+        } else {
+          customSkinBuyButton.textContent = 'Equip';
+          customSkinBuyButton.disabled = false; // Enable the equip button
+          customSkinBuyButton.onclick = equipCustomSkin; // Set the onclick function
+          fileInput.disabled = true;
+        }
+      } else {
+        customSkinBuyButton.textContent = 'Buy';
+        fileInput.disabled = true;
+      }
+      customSkinCard.appendChild(customSkinBuyButton);
+
+      skinCardsContainer.appendChild(customSkinCard);
     }
+
+
+    const customSkin = {
+      name: "Custom Skin",
+      imageUrl: null, // Will be set when the user uploads an image
+      price: 1000000000, // 1 Billion
+      profit: 50000000 // 50 Million
+    };
+
+    let customSkinPurchased = localStorage.getItem('customSkinPurchased') === 'true';
+    let customSkinEquipped = localStorage.getItem('customSkinEquipped') === 'true';
+
+    function buyCustomSkin() {
+      if (customSkinPurchased) {
+        WebApp.showAlert("You've already purchased the custom skin!");
+        return;
+      }
+
+      if (clickCount >= customSkin.price) {
+        clickCount -= customSkin.price;
+        updateClickCount();
+        updateProfitPerHourSkins(customSkin.profit);
+        customSkinPurchased = true;
+        localStorage.setItem('customSkinPurchased', 'true');
+        document.getElementById('customSkinUploader').disabled = false;
+        WebApp.showAlert("Custom skin purchased! Now upload your image.");
+
+        // Equip the custom skin immediately after purchase
+        equipCustomSkin();
+      } else {
+        WebApp.showAlert("You don't have enough clicks to buy the custom skin!");
+      }
+    }
+
+    // Function to equip the custom skin
+    function equipCustomSkin() {
+      if (!customSkinPurchased) {
+        WebApp.showAlert("You need to purchase the custom skin first!");
+        return;
+      }
+
+      if (customSkin.imageUrl) {
+        equippedSkin = customSkin.name;
+        customSkinEquipped = true; 
+        localStorage.setItem('equippedSkin', equippedSkin);
+        localStorage.setItem('customSkinEquipped', 'true'); 
+        applySkin(customSkin.imageUrl);
+        displaySkins(); // Update the button states
+        WebApp.showAlert("Custom skin equipped!");
+      } else {
+        WebApp.showAlert("Please upload an image for your custom skin first.");
+      }
+    }
+
+    // Handle custom skin image upload
+    document.getElementById('customSkinUploader').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        customSkin.imageUrl = e.target.result;
+        localStorage.setItem('customSkinImageUrl', customSkin.imageUrl);
+
+        // If custom skin is currently equipped, reapply it
+        if (customSkinEquipped) { 
+          applySkin(customSkin.imageUrl); 
+        }
+
+        WebApp.showAlert("Custom skin image uploaded!");
+      }
+
+      reader.readAsDataURL(file);
+    });
 
     // Function to buy a skin
     function buySkin(skin) {
@@ -3790,10 +3966,18 @@
     
     // Function to equip a skin
     function equipSkin(skin) {
-      equippedSkin = skin.name; 
+      equippedSkin = skin.name;
       localStorage.setItem('equippedSkin', equippedSkin);
-      applySkin(skin.imageUrl);
+
+      // Check if it's the custom skin and if an image is uploaded
+      if (skin.name === "Custom Skin" && customSkin.imageUrl) { 
+        customSkinEquipped = true;
+        localStorage.setItem('customSkinEquipped', 'true');
+      }
+
+      applySkin(skin.imageUrl); // Apply the skin
       displaySkins(); // Update the button states
+      WebApp.showAlert(`${skin.name} skin equipped!`);
     }
 
     // Function to apply the selected skin
