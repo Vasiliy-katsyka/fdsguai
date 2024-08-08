@@ -3596,16 +3596,20 @@
     
     // Function to open the popup
     function openPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closePopup());
       document.getElementById('popup').style.display = 'block';
       updateUpgradeCosts();
     }
 
     // Function to close the popup
     function closePopup() {
+      WebApp.BackButton.hide();
       document.getElementById('popup').style.display = 'none';
     }
     
     function closeAirdropPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('popup').style.display = 'none';
     }
     let youtubeBonusClaimed = localStorage.getItem('youtubeBonusClaimed') === 'true';
@@ -3757,12 +3761,15 @@
 
     // Function to open the skins popup
     function openSkinsPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeSkinsPopup());
       document.getElementById('skinsPopup').style.display = 'block';
       displaySkins();
     }
 
     // Function to close the skins popup
     function closeSkinsPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('skinsPopup').style.display = 'none';
     }
 
@@ -4048,12 +4055,15 @@
 
     // Function to open the league popup
     function openLeaguePopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeLeaguePopup());
       updateLeagueData();
       document.getElementById('leaguePopup').style.display = 'block';
     }
 
     // Function to close the league popup
     function closeLeaguePopup() {
+      WebApp.BackButton.hide();
       document.getElementById('leaguePopup').style.display = 'none';
     }
 
@@ -4087,15 +4097,20 @@
 
     // Function to open the earn popup
     function earnClick() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeEarnPopup());
       document.getElementById('earnPopup').style.display = 'block';
     }
 
     // Function to close the earn popup
     function closeEarnPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('earnPopup').style.display = 'none';
     }
 
     function openSettingsPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeSettingsPopup());
       document.getElementById('settingsPopup').style.display = 'block';
     }
 
@@ -4187,11 +4202,14 @@
     }
     // Function to open the legal info popup
     function openLegalInfoPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeLegalInfoPopup());
       document.getElementById('legalInfoPopup').style.display = 'block';
     }
 
     // Function to close the legal info popup
     function closeLegalInfoPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('legalInfoPopup').style.display = 'none';
     }
 
@@ -4321,12 +4339,15 @@
 
     // Function to open the Mining popup
     function openMiningPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeMiningPopup());
       document.getElementById('miningPopup').style.display = 'block';
       updateMiningCardPrices(); // Update card prices when popup opens
     }
 
     // Function to close the Mining popup
     function closeMiningPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('miningPopup').style.display = 'none';
     }
 
@@ -5009,11 +5030,14 @@
 
     // Function to open the Airdrop popup
     function openAirdrop() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeAirdropPopup());
       document.getElementById('airdropPopup').style.display = 'block';
     }
 
     // Function to close the Airdrop popup
     function closeAirdropPopup() {
+      WebApp.BackButton.hide();
       document.getElementById('airdropPopup').style.display = 'none';
     }
     
@@ -5475,7 +5499,8 @@
     loadClickCount(); // Call this function to load clickCount from localStorage
     addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI updateACC
-
+    WebApp.SettingsButton.isVisible = true;
+    WebApp.SettingsButton.onClick(openSettingsPopup);
     updateRewardDisplay();
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
