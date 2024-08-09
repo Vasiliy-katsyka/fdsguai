@@ -1866,6 +1866,16 @@
       </div>
 
       <div class="theme-option">
+        <label for="gradientColor1" id="gradientColor1Label">Gradient Color 1:</label>
+        <input type="color" id="gradientColor1" value="#ffdd00">
+      </div>
+
+      <div class="theme-option">
+        <label for="gradientColor2" id="gradientColor2Label">Gradient Color 2:</label>
+        <input type="color" id="gradientColor2" value="#000000">
+      </div>
+
+      <div class="theme-option">
         <label for="backgroundImageUploader" id="backgroundImageLabel">Background Image:</label>
         <input type="file" id="backgroundImageUploader" accept="image/*">
       </div>
@@ -5248,6 +5258,8 @@
 
     // Theme Customization
     let headerColor = localStorage.getItem('headerColor') || '#000000';
+    let gradientColor1 = localStorage.getItem('gradientColor1') || '#ffdd00';
+    let gradientColor2 = localStorage.getItem('gradientColor2') || '#000000';
     let backgroundImage = localStorage.getItem('backgroundImage') || null;
     let bottomMenuImage = localStorage.getItem('bottomMenuImage') || null;
     let currentGeneratingTarget = null; // To know where to apply the AI image
@@ -5255,6 +5267,8 @@
     function openThemePopup() {
       document.getElementById('themePopup').style.display = 'block';
       // Set current values in the popup
+      document.getElementById('gradientColor1').value = gradientColor1;
+      document.getElementById('gradientColor2').value = gradientColor2;
       document.getElementById('headerColor').value = headerColor; 
     }
 
@@ -5265,6 +5279,11 @@
     function applyTheme() {
       headerColor = document.getElementById('headerColor').value;
       localStorage.setItem('headerColor', headerColor);
+
+      gradientColor1 = document.getElementById('gradientColor1').value;
+      gradientColor2 = document.getElementById('gradientColor2').value;
+      localStorage.setItem('gradientColor1', gradientColor1);
+      localStorage.setItem('gradientColor2', gradientColor2);
 
       // Apply background image if set
       if (backgroundImage) {
@@ -5418,7 +5437,9 @@
     }
 
     function loadTheme() {
-      headerColor = localStorage.getItem('headerColor') || '#000000'; // Load header color
+      headerColor = localStorage.getItem('headerColor') || '#000000'; // Load header color     
+      gradientColor1 = localStorage.getItem('gradientColor1') || '#ffdd00';
+      gradientColor2 = localStorage.getItem('gradientColor2') || '#000000';
       backgroundImage = localStorage.getItem('backgroundImage') || null; // Load background image
       bottomMenuImage = localStorage.getItem('bottomMenuImage') || null; // Load bottom menu image
 
@@ -5433,6 +5454,10 @@
       // Apply bottom menu image if available
       if (bottomMenuImage) {
         document.querySelector('.menu-container').style.backgroundImage = `url(${bottomMenuImage})`;
+      }
+
+      if ((gradientColor1 !== '#ffdd00') || (gradientColor2 !== '#000000')) {
+        document.body.style.background = `linear-gradient(0deg, ${gradientColor1} 60%, ${gradientColor2} 100%)`;
       }
     }
 
