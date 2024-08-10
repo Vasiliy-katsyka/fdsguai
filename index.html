@@ -47,6 +47,7 @@
       backdrop-filter: blur(99px);
       position: relative;
       width: 100%;
+      z-index: 1;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -1299,6 +1300,29 @@
     .skins-popup .skin-card .upload-button:hover {
       background-color: #4b0082;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: 0; 
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      border-radius: 50%;
+      opacity: 0.6; /* 40% opacity */
+      pointer-events: none; /* Make them not touchable */
+      z-index: 2; /* Place them behind everything except the container */
+      animation: bubbleUp 3s linear forwards; /* Add animation */
+    }
+
+    @keyframes bubbleUp {
+      0% {
+        transform: translateY(0); 
+      }
+      100% {
+        transform: translateY(-1500%);
+        opacity: 0; /* Fade out at the top */
+      }
     }
   </style>
 </head>
@@ -5316,7 +5340,8 @@
         document.querySelector('.menu-container').style.backgroundImage = `url(${bottomMenuImage})`;
       } else {
         // Set default background if no image is uploaded or generated
-        document.querySelector('.menu-container').style.backgroundImage = `#ffffff url(https://cdn.midjourney.com/4cd2f462-fe7c-4c75-906f-0594c8ccbea8/0_0.png) center center/cover no-repeat`;
+        document.querySelector('.menu-container').style.backgroundImage = `#ffffff url(https://cdn.midjourney.com/4cd2f462-fe7c-4c75-90
+        6f-0594c8ccbea8/0_0.png) center center/cover no-repeat`;
       }
 
       // ... apply other theme settings ... 
@@ -5478,6 +5503,49 @@
         document.body.style.background = `linear-gradient(0deg, ${gradientColor1} 60%, ${gradientColor2} 100%)`;
       }
     }
+    const bubbleTextures = [
+      //'https://i.pinimg.com/originals/b9/01/b9/b901b91bf4a2396b130074202bb6cada.png',
+      //'https://static.vecteezy.com/system/resources/thumbnails/020/951/520/small/realistic-transparent-3d-bubbles-underwater-soap-bubbles-vector-illustration-png.png',
+      'https://parspng.com/wp-content/uploads/2022/07/bubblepng.parspng.com-2.png',
+      //'https://www.freeiconspng.com/thumbs/bubbles-png/white-bubble-png-23.png',
+      //'https://www.freepnglogos.com/uploads/bubbles/transparent-bubble-clip-art-creation-creatures-4.png'
+    ];
+
+    function randint(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Function to create a bubble
+    function createBubble() {
+      let bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+
+      // Randomize bubble position (left)
+      bubble.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+
+      // Randomize bubble size
+      let bubbleSize = Math.random() * 30 + 20; // Size between 20px and 50px
+      bubble.style.width = bubbleSize + 'px';
+      bubble.style.height = bubbleSize + 'px';
+
+      // Choose a random texture
+      let randomTextureIndex = Math.floor(Math.random() * bubbleTextures.length);
+      bubble.style.backgroundImage = `url(${bubbleTextures[randomTextureIndex]})`;
+
+      // Add the bubble to the page
+      document.body.appendChild(bubble);
+
+      // Automatically remove the bubble after the animation completes
+      setTimeout(() => {
+        document.body.removeChild(bubble);
+      }, 15000); // 3 seconds for the animation
+    }
+
+    // Spawn bubbles every 1 second
+    timeOut = randint(100, 900)
+    setInterval(createBubble, timeOut);
 
     // Store the last time the page was updated in localStorage
     let lastUpdateTime = new Date().getTime();
