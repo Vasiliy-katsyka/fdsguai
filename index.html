@@ -5273,7 +5273,7 @@
         resultMessage = `You won! Your bet was ${betAmount} clicks, and you won ${betAmount * 3} clicks!`;
         clickCount += betAmount * 3;
         document.getElementById('votingResultPopup').style.background = 'linear-gradient(to bottom, #00FF00, #000000)'; 
-        WebApp.setHeaderColor('green');  
+        WebApp.setHeaderColor('#008000');  
       } else {
         if (betAmount === 0) {
           resultMessage = `You won! Since you betted 0, you got 1 click!`;
@@ -5283,7 +5283,7 @@
           clickCount -= betAmount; // Deduct bet amount if lost
         }
         document.getElementById('votingResultPopup').style.background = 'linear-gradient(to bottom, #FF0000, #000000)'; 
-        WebApp.setHeaderColor('red'); 
+        WebApp.setHeaderColor('#FF0000'); 
       }
       document.getElementById('resultMessage').textContent = resultMessage;
       updateClickCount();
