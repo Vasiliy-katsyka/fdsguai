@@ -804,7 +804,7 @@
       color: #ffae00; /* Gold text */
       padding: 20px;
       border-radius: 5px;
-      z-index: 10;
+      z-index: 1000;
       display: none;
       overflow: auto; /* Allow scrolling if content exceeds height */
       flex-direction: column;
@@ -1323,6 +1323,87 @@
         transform: translateY(-1500%);
         opacity: 0; /* Fade out at the top */
       }
+    }
+
+    .voting-popup {
+      /* ... existing popup styles ... */
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .voting-popup h2 {
+      /* ... existing h2 styles ... */
+      margin-bottom: 20px;
+    }
+
+    .voting-cards {
+      display: flex;
+      justify-content: space-around;
+      width: 80%; /* Adjust as needed */
+      margin-bottom: 20px;
+      margin-right: 10px;
+    }
+
+    .voting-card {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      border: 2px solid #ffae00; /* Yellow border */
+      border-radius: 15px;
+      padding: 15px;
+      cursor: pointer;
+      text-align: center;
+      width: 100px; /* Adjust as needed */
+      height: 150px; /* Adjust as needed */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: relative;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .voting-card:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .voting-card h3 {
+      /* ... existing h3 styles ... */
+      margin-top: 0;
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .voting-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .voting-popup input[type="number"] {
+      /* ... existing input styles ... */
+      width: 100px;
+    }
+
+    .voting-popup,
+    .voting-result-popup {
+      /* ... other popup styles ... */
+      position: fixed; /* Position the popups fixed on the screen */
+      top: 0;
+      left: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center; /* Center text horizontally */
     }
   </style>
 </head>
@@ -2002,6 +2083,7 @@
         <div class="airdrop-item"><button class="earn-button" id="gasButton" onclick="gasPump()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-btc</title><path d="M17.06 11.57C17.65 10.88 18 10 18 9C18 7.14 16.73 5.57 15 5.13V3H13V5H11V3H9V5H6V7H8V17H6V19H9V21H11V19H13V21H15V19C17.21 19 19 17.21 19 15C19 13.55 18.22 12.27 17.06 11.57M10 7H14C15.1 7 16 7.9 16 9S15.1 11 14 11H10V7M15 17H10V13H15C16.1 13 17 13.9 17 15S16.1 17 15 17Z" /></svg><span id="TradeLabel">Trade on GasPump</span> | +<span id="gasReward">100k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="telegramButton" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg><span id="subscribeTelegramLabel">Subscribe Telegram</span> | +<span id="telegramReward">1k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="xButton" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg><span id="subscribeXLabel">Subscribe X (Twitter)</span> | +<span id="xReward">5k</span></button></div>
+        <div class="airdrop-item"><button class="earn-button" id="voteButton" onclick="openVotingPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>heart-circle-outline</title><path d="M12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22M12,4C7.14,4 4,7.14 4,12C4,16.86 7.14,20 12,20C16.86,20 20,16.86 20,12C20,7.14 16.86,4 12,4M11,17L12,18L13,17H11Z" /></svg><span id="voteLabel">Vote</span> | +<span id="voteReward">100</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-cowboy-hat</title><path d="M20 22H4V20C4 17.8 7.6 16 12 16S20 17.8 20 20M8 9H16V10C16 12.2 14.2 14 12 14S8 12.2 8 10M19 4C18.4 4 18 4.4 18 5V6H16.5L15.1 3C15 2.8 14.9 2.6 14.7 2.5C14.2 2 13.4 1.9 12.7 2.2L12 2.4L11.3 2.1C10.6 1.8 9.8 1.9 9.3 2.4C9.1 2.6 9 2.8 8.9 3L7.5 6H6V5C6 4.4 5.6 4 5 4S4 4.4 4 5V6C4 7.1 4.9 8 6 8H18C19.1 8 20 7.1 20 6V5C20 4.5 19.6 4 19 4Z" /></svg><span id="inviteFriendLabel">Invite Friend </span>     | +<span id="referralReward">20k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="gameButton" onclick="openLobsterCatchPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>nintendo-game-boy</title><path d="M7 1C5.9 1 5 1.9 5 3V21C5 22.11 5.9 23 7 23H14C16.76 23 19 20.76 19 18V3C19 1.9 18.11 1 17 1H7M8 4H16V11H8V4M9 14H10V16H12V17H10V19H9V17H7V16H9V14M16 15C16.55 15 17 15.45 17 16C17 16.55 16.55 17 16 17C15.45 17 15 16.55 15 16C15 15.45 15.45 15 16 15M14 17C14.55 17 15 17.45 15 18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18C13 17.45 13.45 17 14 17Z" /></svg><span id="gameLabel">Game</span>               | +<span id="gameReward">10k</span></button></div>
         <div class="airdrop-item"><button class="earn-button" id="dailyRewardButton" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg><span id="dailyRewardLabel">Daily Reward</span>   | +<span id="dailyRewardAmount">10k</span></button></div>
@@ -2052,6 +2134,33 @@
       </div>
       <p class="from" id="leagueFromLabel">From <span id="leagueRequirement"></span></p>
       <p class="info" id="leagueInfoMessage">⚠ If trophy image is not changing, wait a bit time or check internet connection</p>
+    </div>
+
+    <div class="popup" id="votingPopup">
+      <button class="close-button" onclick="closeVotingPopup()">×</button>
+      <h2 id="votingQuestion"></h2>
+      <div class="voting-cards">
+        <div class="voting-card" onclick="placeBet('Ed Sheeran')">
+          <h3 id="edSheeranTitle">Ed Sheeran</h3>
+          <img src="https://cdn.midjourney.com/6b6b7626-f796-475f-9e9f-0f56f20e8921/0_0.png" alt="Ed Sheeran">
+        </div>
+        <div class="voting-card" onclick="placeBet('Dua Lipa')">
+          <h3 id="duaLipaTitle">Dua Lipa</h3>
+          <img src="https://cdn.midjourney.com/00d69f33-0889-4fa5-853a-c7b27ba5a051/0_1.png" alt="Dua Lipa"> 
+        </div>
+        <div class="voting-card" onclick="placeBet('Taylor Swift')">
+          <h3 id="taylorSwiftTitle">Taylor Swift</h3>
+          <img src="https://cdn.midjourney.com/7c40e3d4-9df9-4555-82ab-0da884035305/0_3.png" alt="Taylor Swift"> 
+        </div>
+      </div>
+      <input type="number" id="betAmount" min="0" placeholder="Bet amount (clicks)">
+      <button class="button" onclick="confirmBet()">Confirm Bet</button>
+    </div>
+  
+    <div class="popup" id="votingResultPopup">
+      <button class="close-button" onclick="closeVotingResultPopup()">×</button>
+      <h2 id="resultTitle"></h2>
+      <p id="resultMessage"></p>
     </div>
   <script>
     const dailyCombo = ["usa", "dubai", "ton"];
@@ -4829,6 +4938,7 @@
 
     function openLobsterCatchPopup() {
       document.getElementById('lobsterCatchPopup').style.display = 'block';
+      closeEarnPopup();
       startGame(); // Start the game when the popup opens
     }
 
@@ -5096,6 +5206,95 @@
     function closeAirdropPopup() {
       WebApp.BackButton.hide();
       document.getElementById('airdropPopup').style.display = 'none';
+    }
+    
+    // voting
+    const votingCards = ["Ed Sheeran", "Dua Lipa", "Taylor Swift"];
+    let currentVotingCard = null; // Track the selected card
+
+    // Function to open the voting popup
+    function openVotingPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeVotingPopup());
+      closeEarnPopup();
+      document.getElementById('votingPopup').style.display = 'block';
+      document.getElementById('votingQuestion').textContent = "Which of these artists is most popular with lobsters?";
+      document.getElementById('betAmount').value = 0; // Set the bet to 0 by default
+    }
+
+    // Function to close the voting popup
+    function closeVotingPopup() {
+      WebApp.BackButton.hide();
+      document.getElementById('votingPopup').style.display = 'none';
+    }
+
+    // Function to place a bet (when the user clicks on a card)
+    function placeBet(card) {
+      // Remove any existing green dashed border from the previously selected card
+      if (currentVotingCard) {
+        const previousCardElement = document.querySelector(`.voting-card[onclick="placeBet('${currentVotingCard}')"]`);
+        if (previousCardElement) {
+          previousCardElement.style.borderColor = ''; // Reset border color
+          previousCardElement.style.borderStyle = ''; // Reset border style
+        }
+      }
+
+      // Add green dashed border to the selected card
+      const selectedCardElement = document.querySelector(`.voting-card[onclick="placeBet('${card}')"]`);
+      selectedCardElement.style.borderColor = '#00FF00'; 
+      selectedCardElement.style.borderStyle = 'dashed';
+      currentVotingCard = card;
+    }
+
+    // Function to confirm the bet
+    function confirmBet() {
+      let betAmount = parseInt(document.getElementById('betAmount').value);
+      if (isNaN(betAmount)) {
+        betAmount = 0;
+      }
+
+      if (currentVotingCard) {
+        closeVotingPopup();
+        showVotingResult(currentVotingCard, betAmount);
+      } else {
+        WebApp.showAlert("Please select an artist first!");
+      }
+    }
+
+    // Function to show the voting result popup
+    function showVotingResult(selectedCard, betAmount) {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeVotingResultPopup());
+      document.getElementById('votingResultPopup').style.display = 'block';
+
+      let winningCard = votingCards[Math.floor(Math.random() * votingCards.length)];
+      let resultMessage = "";
+      if (selectedCard === winningCard) {
+        resultMessage = `You won! Your bet was ${betAmount} clicks, and you won ${betAmount * 3} clicks!`;
+        clickCount += betAmount * 3;
+        document.getElementById('votingResultPopup').style.background = 'linear-gradient(to bottom, #00FF00, #000000)'; 
+        WebApp.setHeaderColor('green');  
+      } else {
+        if (betAmount === 0) {
+          resultMessage = `You won! Since you betted 0, you got 1 click!`;
+          clickCount += 1; // Add 1 click for a 0 bet
+        } else {
+          resultMessage = `You lost! The winner was ${winningCard}.`;
+          clickCount -= betAmount; // Deduct bet amount if lost
+        }
+        document.getElementById('votingResultPopup').style.background = 'linear-gradient(to bottom, #FF0000, #000000)'; 
+        WebApp.setHeaderColor('red'); 
+      }
+      document.getElementById('resultMessage').textContent = resultMessage;
+      updateClickCount();
+      document.getElementById('resultTitle').textContent = `Results`;
+    }
+
+    // Function to close the voting result popup
+    function closeVotingResultPopup() {
+      WebApp.BackButton.hide();
+      WebApp.setHeaderColor(localStorage.getItem('headerColor'));
+      document.getElementById('votingResultPopup').style.display = 'none';
     }
     
     function loadClickCount() {
