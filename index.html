@@ -2153,7 +2153,10 @@
           <img src="https://cdn.midjourney.com/7c40e3d4-9df9-4555-82ab-0da884035305/0_3.png" alt="Taylor Swift"> 
         </div>
       </div>
-      <input type="number" id="betAmount" min="0" placeholder="Bet amount (clicks)">
+      <div class="bet-input-container">
+        <input type="number" id="betAmount" min="0" placeholder="Bet amount (clicks)">
+        <button class="button" id="maxBetButton" onclick="betMax()">MAX</button>
+      </div>
       <button class="button" onclick="confirmBet()">Confirm Bet</button>
     </div>
   
@@ -5228,6 +5231,14 @@
       document.getElementById('votingPopup').style.display = 'none';
     }
 
+    function removeCommas(str) {
+      return str.replace(/,/g, ''); 
+    }
+
+    function betMax() {
+      document.getElementById('betAmount').value = clickCount; 
+    }
+
     // Function to place a bet (when the user clicks on a card)
     function placeBet(card) {
       // Remove any existing green dashed border from the previously selected card
@@ -5270,7 +5281,7 @@
       let winningCard = votingCards[Math.floor(Math.random() * votingCards.length)];
       let resultMessage = "";
       if (selectedCard === winningCard) {
-        resultMessage = `You won! Your bet was ${betAmount} clicks, and you won ${betAmount * 3} clicks!`;
+        resultMessage = `You won! Your bet was ${numberWithCommas(betAmount)} clicks, and you won ${numberWithCommas(betAmount * 3)} clicks!`;
         clickCount += betAmount * 3;
         document.getElementById('votingResultPopup').style.background = 'linear-gradient(to bottom, #00FF00, #000000)'; 
         WebApp.setHeaderColor('#008000');  
