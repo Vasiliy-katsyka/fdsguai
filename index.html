@@ -4742,7 +4742,7 @@
       localStorage.setItem('lastUpdateTime', lastUpdateTime);
 
       // Only show the popup if the flag is true
-      if (offlineEarnings > 0) { 
+      if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
         WebApp.showAlert("You earned " + offlineEarnings + " clicks offline!");
       }
     }
@@ -5798,16 +5798,17 @@
     
     let currentTranslations = loadTranslations(); 
     updateTranslatedText(); 
+    let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
     updateLeague();
     loadClickCount(); // Call this function to load clickCount from localStorage
+    addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI updateACC
     WebApp.SettingsButton.isVisible = true;
     WebApp.SettingsButton.onClick(openSettingsPopup);
     updateRewardDisplay();
-    addEarnPerHour();
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
     setInterval(addEarnPerHour, 1000);
