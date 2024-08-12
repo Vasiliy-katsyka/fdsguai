@@ -4742,9 +4742,8 @@
       localStorage.setItem('lastUpdateTime', lastUpdateTime);
 
       // Only show the popup if the flag is true
-      if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
-        showOfflineEarningsPopup(offlineEarnings);
-        showOfflineEarningsPopupFlag = false; // Reset the flag *after* showing the popup
+      if (offlineEarnings > 0) { 
+        WebApp.showAlert("You earned " + offlineEarnings + " clicks offline!");
       }
     }
     
@@ -5450,26 +5449,6 @@
       updateRewardDisplay(); 
     }
 
-    // Function to update Earn popup button labels
-    function updateRewardDisplay() {
-      document.getElementById('youtubeButton').textContent = 
-        currentTranslations.subscribeYoutubeLabel + ' | +' + numberWithCommas(getRewardAmount(5000)); 
-      document.getElementById('telegramButton').textContent = 
-        currentTranslations.subscribeTelegramLabel + ' | +' + numberWithCommas(getRewardAmount(1000)); 
-      document.getElementById('xButton').textContent = 
-        currentTranslations.subscribeXLabel + ' | +' + numberWithCommas(getRewardAmount(5000)); 
-      document.getElementById('refButton').textContent = 
-        currentTranslations.inviteFriendLabel + ' | +' + numberWithCommas(getRewardAmount(20000));
-      document.getElementById('gameButton').textContent = 
-        currentTranslations.gameLabel + ' | +' + numberWithCommas(getRewardAmount(10000));
-      document.getElementById('dailyRewardButton').textContent = 
-        currentTranslations.dailyRewardLabel + ' | +' + numberWithCommas(getRewardAmount(10000)); 
-      document.getElementById('watchAdButton').textContent = 
-        currentTranslations.watchAdLabel + ' | +' + numberWithCommas(getRewardAmount(10000)); 
-      document.querySelector('[onclick="postStory()"]').textContent = // Assuming you have the Post Story button in your HTML
-        currentTranslations.postStoryLabel + ' | +' + numberWithCommas(getRewardAmount(1000000));
-    }
-
     // Function to post story
     async function postStory() {
       if (storyBonusClaimed) {
@@ -5819,17 +5798,16 @@
     
     let currentTranslations = loadTranslations(); 
     updateTranslatedText(); 
-    let showOfflineEarningsPopupFlag = false;
     // Initialize the game
     updateClickCount();
     updateProfitPerHour();
     updateLeague();
     loadClickCount(); // Call this function to load clickCount from localStorage
-    addEarnPerHour(); 
     updateDailyRewardUI(); // Initial UI updateACC
     WebApp.SettingsButton.isVisible = true;
     WebApp.SettingsButton.onClick(openSettingsPopup);
     updateRewardDisplay();
+    addEarnPerHour();
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
     setInterval(addEarnPerHour, 1000);
