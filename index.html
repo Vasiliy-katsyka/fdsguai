@@ -2140,17 +2140,17 @@
       <button class="close-button" onclick="closeVotingPopup()">×</button>
       <h2 id="votingQuestion"></h2>
       <div class="voting-cards">
-        <div class="voting-card" onclick="placeBet('Ed Sheeran')">
-          <h3 id="edSheeranTitle">Ed Sheeran</h3>
-          <img src="https://cdn.midjourney.com/6b6b7626-f796-475f-9e9f-0f56f20e8921/0_0.png" alt="Ed Sheeran">
+        <div class="voting-card" onclick="placeBet('Fish')">
+          <h3 id="edSheeranTitle">Fish</h3>
+          <img src="https://cdn.midjourney.com/39405193-784f-4030-9b95-9f72b1917ebb/0_1.png" alt="Fish">
         </div>
-        <div class="voting-card" onclick="placeBet('Dua Lipa')">
-          <h3 id="duaLipaTitle">Dua Lipa</h3>
-          <img src="https://cdn.midjourney.com/00d69f33-0889-4fa5-853a-c7b27ba5a051/0_1.png" alt="Dua Lipa"> 
+        <div class="voting-card" onclick="placeBet('Crabs')">
+          <h3 id="duaLipaTitle">Crabs</h3>
+          <img src="https://cdn.midjourney.com/d0f860d3-8b1e-40a7-b18a-96b3b77e9402/0_3.png" alt="Crabs"> 
         </div>
-        <div class="voting-card" onclick="placeBet('Taylor Swift')">
-          <h3 id="taylorSwiftTitle">Taylor Swift</h3>
-          <img src="https://cdn.midjourney.com/7c40e3d4-9df9-4555-82ab-0da884035305/0_3.png" alt="Taylor Swift"> 
+        <div class="voting-card" onclick="placeBet('Mussels')">
+          <h3 id="taylorSwiftTitle">Mussels</h3>
+          <img src="https://cdn.midjourney.com/f6692472-516c-40f8-908a-4a30f81fb940/0_0.png" alt="Mussels"> 
         </div>
       </div>
       <div class="bet-input-container">
@@ -5212,7 +5212,7 @@
     }
     
     // voting
-    const votingCards = ["Ed Sheeran", "Dua Lipa", "Taylor Swift"];
+    const votingCards = ["Fish", "Crabs", "Mussels"];
     let currentVotingCard = null; // Track the selected card
 
     // Function to open the voting popup
@@ -5221,7 +5221,7 @@
       WebApp.BackButton.onClick(closeVotingPopup());
       closeEarnPopup();
       document.getElementById('votingPopup').style.display = 'block';
-      document.getElementById('votingQuestion').textContent = "Which of these artists is most popular with lobsters?";
+      document.getElementById('votingQuestion').textContent = "What lobsters eat?";
       document.getElementById('betAmount').value = 0; // Set the bet to 0 by default
     }
 
