@@ -1859,6 +1859,20 @@
             </div>
           </div>
           <div class="mining-card">
+            <img src="https://pbs.twimg.com/profile_images/1808089461768531969/20Nu5XE7_400x400.jpg" alt="Card image" />
+            <h3 id="starTitle">Stars Integration</h3>
+            <div class="card-info">
+              <span id="starProfit">Profit/hour: <a class="gold-text">+4000 clicks</a></span>
+              <span class="card-price" id="starPrice">Price: 35000 clicks</span>
+              <span class="card-level" id="starLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('star')">Buy</button>
+            <div class="timer-overlay" id="starTimerOverlay">
+              <span class="timer-text" id="starTimer">30</span>
+              <div class="spinner" id="starSpinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
             <img src="https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" alt="Card image" />
             <h3 id="edTitle">Ed Sheeran</h3>
             <div class="card-info">
@@ -3497,6 +3511,12 @@
         price: 15000,
         level: 0,
         imageUrl: "https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" 
+      },
+      star {
+        profitPerHour: 4000,
+	price: 35000,
+	level: 0.
+	imageUrl: "https://pbs.twimg.com/profile_images/1808089461768531969/20Nu5XE7_400x400.jpg"
       },
       usa: {
         profitPerHour: 2000, 
