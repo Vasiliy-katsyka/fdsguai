@@ -4756,6 +4756,23 @@
       return urlParams.get('friend');
     }
 
+const urlParam = new URLSearchParams(window.location.search);
+const userClaimedRefBonus = localStorage.getItem(userClaimedRefBonus);
+if (urlParam.get('ref') {
+  const ref = urlParams.get('ref'); 
+  if (ref === "Hyid9") {
+     if (!userClaimedRefBonus) {
+       clickCount += 100000;
+       updateClickCount();
+       WebApp.showAlert("Since you opened referral link, you got 100k clicks!");
+       localStorage.setItem(userClaimedRefBonus, true);
+     }
+     else {
+       WebApp.showAlert("You opened bonus link, but you didn't recieve anything because you already claimed this bonus!");
+     }
+  }
+}
+	  
     // Function to handle referral clicks
     function handleReferralClick() {
       const telegramUserID = getTelegramUserID();
