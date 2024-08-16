@@ -4757,19 +4757,36 @@
     }
 
 const urlParam = new URLSearchParams(window.location.search);
-const userClaimedRefBonus = localStorage.getItem(userClaimedRefBonus);
-if (urlParam.get('ref') {
+const userClaimedRefBonus = localStorage.getItem('userClaimedRefBonus'); // Use a key for local storage
+
+if (urlParam.get('ref')) {
   const ref = urlParam.get('ref'); 
+
+  // Check for purchase bonus
+  if (ref.startsWith("JiXZy0olpixMMh")) { 
+    const binaryStars = ref.substring("JiXZy0olpixMMh".length); 
+    const stars = parseInt(binaryStars, 2);
+
+    if (!userClaimedRefBonus) {
+      clickCount += stars * 100000; 
+      updateClickCount();
+      WebApp.showAlert(`You got ${stars * 100000} clicks from your purchase!`);
+      localStorage.setItem('userClaimedRefBonus', true);
+    } else {
+      WebApp.showAlert("You already claimed your purchase bonus.");
+    }
+  }
+
+  // Check for donation bonus (should be separate from purchase)
   if (ref === "Hyid9") {
-     if (!userClaimedRefBonus) {
-       clickCount += 100000;
-       updateClickCount();
-       WebApp.showAlert("Since you opened referral link, you got 100k clicks!");
-       localStorage.setItem(userClaimedRefBonus, true);
-     }
-     else {
-       WebApp.showAlert("You opened bonus link, but you didn't recieve anything because you already claimed this bonus!");
-     }
+    if (!userClaimedRefBonus) {
+      clickCount += 100000;
+      updateClickCount();
+      WebApp.showAlert("Since you opened referral link, you got 100k clicks!");
+      localStorage.setItem('userClaimedRefBonus', true);
+    } else {
+      WebApp.showAlert("You already claimed your donation bonus.");
+    }
   }
 }
 	  
