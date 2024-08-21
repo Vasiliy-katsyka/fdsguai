@@ -3855,8 +3855,12 @@
           clickMultiplier += (upgradeIndex + 1) * upgradeAmount;
           upgradeLevel[upgradeIndex] += upgradeAmount;
           updateClickCount();
-          updateUpgradeCosts();
+          updateUpgradeCosts(upgradeAmount);
+          WebApp.showAlert(`You successfully purchased ${upgradeAmount} clicks!`);
           break;
+        } else {
+          let costToEarn = (upgradeCosts[upgradeIndex] * upgradeAmount) - clickCount;
+          WebApp.showAlert(`You don't have enough clicks! Earn ${numberWithCommas(costToEarn)} clicks more!`); 
         }
         upgradeIndex++;
       }
@@ -3877,10 +3881,11 @@
     }
 
     // Function to update upgrade costs
-    function updateUpgradeCosts() {
+    function updateUpgradeCosts(upgradeAmount = 1) { // Add upgradeAmount parameter, default to 1
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000);
-        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000); // Base cost
+        upgradeCosts[i] *= Math.pow(1.2, upgradeLevel[i]); // Add exponential growth based on level
+        document.getElementById(`upgradeCost${i + 1}`).textContent = `Cost: ${numberWithCommas(upgradeCosts[i] * upgradeAmount)} clicks`; // Update display
       }
     }
     
