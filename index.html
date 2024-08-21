@@ -1571,7 +1571,7 @@
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
       <h2 id="miningPopupTitle">Mining</h2>
-      <div class="daily-combo-container">
+      <!--<div class="daily-combo-container">
         <div class="daily-combo-title" id="dailyComboTitle">Daily combo</div>
         <div class="combo-cards">
           <div class="combo-card" id="comboCard1">?</div>
@@ -1582,7 +1582,7 @@
           <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="20" height="20">
           <span>+5,000,000</span>
         </div>
-      </div>
+      </div>-->
       <div class="mining-tabs">
         <button class="mining-button active" id="marketsTabButton" onclick="showMiningTab('markets')">Markets</button>
         <button class="mining-button" id="teamTabButton" onclick="showMiningTab('team')">Team</button>
@@ -3844,7 +3844,7 @@
       WebApp.showAlert("You have claimed the gas pump bonus! You recieved 100,000 clicks!");
     }
 
-    // Function to handle click upgrade
+    // Function to handle click upgradep
     function upgradeClick() {
       let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
       let upgradeIndex = 0;
@@ -4414,7 +4414,7 @@
           localStorage.removeItem('lastUpdateTime');
           localStorage.removeItem('lastRewardClaimTime');
           localStorage.removeItem('dailyRewardIndex');
-          localStorage.removeItem('collectedComboCards');
+          //localStorage.removeItem('collectedComboCards');
           localStorage.removeItem('dailyComboCollected');
           localStorage.removeItem('youtubeBonusClaimed');
           localStorage.removeItem('telegramBonusClaimed');
@@ -4652,43 +4652,6 @@
       collectedComboCards = JSON.parse(localStorage.getItem('collectedComboCards'));
     }
 
-    // Function to reset daily combo data in localStorage at 17:00 UTC+0
-    function resetDailyCombo() {
-      localStorage.setItem('collectedComboCards', JSON.stringify([]));
-      localStorage.setItem('dailyComboCollected', 'false');
-
-      // Reset the combo card container display
-      for (let i = 1; i <= dailyCombo.length; i++) {
-        const comboCardId = `comboCard${i}`;
-        document.getElementById(comboCardId).innerHTML = '?';
-      }
-      
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 1; // Make reward fully visible
-      comboRewardElement.style.backgroundColor = ''; // Remove any background color
-      const checkMark = document.createElement('span'); // Remove any existing checkmark
-      checkMark.innerHTML = '✔'; // HTML code for checkmark
-      checkMark.style.color = 'green'; 
-      checkMark.style.marginLeft = '5px'; 
-      comboRewardElement.appendChild(checkMark);
-    }
-
-    // Set up daily reset timer
-    const now = new Date();
-    const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0); // 17:00 UTC+0
-
-    // Calculate time until reset
-    let timeUntilReset = resetTime.getTime() - now.getTime();
-
-    // If reset time has already passed today, set reset for tomorrow
-    if (timeUntilReset < 0) {
-      resetTime.setDate(resetTime.getDate() + 1); 
-      timeUntilReset = resetTime.getTime() - now.getTime();
-    }
-
-    // Set timeout to reset daily combo data
-    setTimeout(resetDailyCombo, timeUntilReset);
-
     // Function to add "earn per hour" to click count
     function buyCard(cardType) {
       if (clickCount >= miningCards[cardType].price) {
@@ -4705,48 +4668,7 @@
         startCooldownTimer(cardType);
         WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
         // Check if the purchased card is part of the daily combo
-        if (dailyCombo.includes(cardType)) {
-          WebApp.showAlert("You found a combo card!");
-          // Add the card type to the collected combo cards array
-          collectedComboCards.push(cardType);
-          
-          localStorage.setItem('collectedComboCards', JSON.stringify(collectedComboCards));
 
-          // Update the combo container with the card image and name
-          for (let i = 0; i < collectedComboCards.length; i++) { // Use collectedComboCards
-            const cardTypeToUpdate = collectedComboCards[i];
-            const comboCardId = `comboCard${i + 1}`;
-            const comboCardElement = document.getElementById(comboCardId); 
-            const cardImageElement = document.createElement('img'); 
-            cardImageElement.src = miningCards[cardTypeToUpdate].imageUrl;
-            cardImageElement.style.width = "40px";
-            cardImageElement.style.height = "40px";
-            comboCardElement.innerHTML = ''; 
-            comboCardElement.appendChild(cardImageElement);
-          }
-
-          // Check for Complete Combo After Loop:
-          if (collectedComboCards.length === dailyCombo.length) {
-            clickCount += 5000000;
-            updateClickCount();
-            WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
-            localStorage.setItem('dailyComboCollected', 'true');
-
-            // Reset Combo Cards After Applying Bonus
-            collectedComboCards = []; 
-
-            const comboRewardElement = document.querySelector('.combo-reward');
-            comboRewardElement.style.opacity = 0.5; // Make reward semi-transparent
-            comboRewardElement.style.backgroundColor = '#ccc'; // Add a grayed-out background
-
-            // Reset the combo card container display
-            for (let i = 1; i <= dailyCombo.length; i++) {
-              const comboCardId = `comboCard${i}`;
-              document.getElementById(comboCardId).innerHTML = '?'; 
-            }
-          }
-          
-        }
       } else if (cardCooldown[cardType]) {
         WebApp.showAlert("Please wait for the cooldown timer to expire.");
       } else {
@@ -5926,14 +5848,6 @@
     coin.addEventListener('touchend', () => {
       isClicking = false;
     });
-
-    // Load daily combo collected status from localStorage
-    if (localStorage.getItem('dailyComboCollected') === 'true') {
-      // If combo was already collected today, disable the reward visually
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 0.5;
-      comboRewardElement.style.backgroundColor = '#ccc';
-    }
     
     if (localStorage.getItem('skinProfitPerHour')) {
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
