@@ -4655,7 +4655,8 @@
         let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); 
         document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`;
         const cardProfit = miningCards[cardType].profitPerHour * miningCards[cardType].level;
-        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(cardProfit)} clicks`;
+        const profitElement = document.getElementById(`${cardType}Profit`);
+        profitElement.innerHTML = `Profit/hour: <span class="gold-text">+${numberWithCommas(cardProfit)} clicks</span>`; 
       }
     }
 
