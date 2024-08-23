@@ -4741,6 +4741,21 @@
       document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
     }
 
+    function numberWithCommas1(x) {
+      if (x < 100000) {
+        return x.toLocaleString(); // Format with commas for thousands separators
+      } else {
+        const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
+
+        let i = 0;
+        while (x >= 1000 && i < units.length - 1) {
+          x /= 1000;
+          i++;
+        }
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1B or greater
+      }
+    }
+
     // Function to calculate and update profit per hour
     function updateProfitPerHour() {
       let totalProfit = 0;
@@ -4758,7 +4773,7 @@
       // Add skin profit to the total
       totalProfit += skinProfitPerHour; 
 
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas1(totalProfit); 
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
@@ -5096,17 +5111,6 @@
 
       document.getElementById('languageSelect').value = language; // Set the dropdown
       return translations[language];
-    }
-
-    // Function to save the selected language
-    function saveLanguage() {
-      let selectedLanguage = document.getElementById('languageSelect').value;
-      localStorage.setItem('language', selectedLanguage);
-      WebApp.showAlert("Language saved!");
-
-      // Reload the translations (or update your UI)
-      currentTranslations = loadTranslations(); 
-      updateTranslatedText(); 
     }
 
     // Function to translate text elements
