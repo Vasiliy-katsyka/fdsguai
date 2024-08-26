@@ -635,6 +635,44 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .task-item {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      border: 2px solid #ffae00; /* Yellow border */
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .task-item .earn-button {
+      width: auto; /* Allow button to adjust to content */
+    }
+
+    .task-check {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: #00ff11; /* Green background */
+      border-radius: 50%;
+      margin-left: 10px; /* Add space between button and checkmark */
+      display: none; /* Initially hidden */
+    }
+
+    .task-check.completed {
+      display: inline-block; /* Show the checkmark if the task is completed */
+    }
+
+    /* Style for the checkmark */
+    .task-check svg {
+      width: 15px;
+      height: 15px;
+      fill: #fff; /* White fill for the checkmark */
+      margin-top: 3px;
+    }
+
     .airdrop-popup {
       position: fixed;
       width: 100%;
@@ -694,9 +732,11 @@
     }
 
     .airdrop-popup h2 {
-      font-size: 48px;
-      margin-top: 20px;
-      text-align: center; 
+      font-size: 28px; /* Adjust font size as needed */
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px; /* Adjust spacing as needed */
     }
     
     .airdrop-popup p {
@@ -1112,6 +1152,12 @@
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
+      height: 200px; /* Increased height */
+    }
+
+    .skin-description {
+      font-size: 12px; /* Smaller font size for the description */
+      margin-bottom: 5px;
     }
 
     .skins-popup .skin-card img {
@@ -1428,7 +1474,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
       </button>
     </div>
-    <div class="title" id="gameTitle">LobsterCoin</div>
+    <div class="title" id="gameTitle">LobsterCoin <span id="eighteenPlusLabel" style="display: none;">18+</span></div>
     <!-- <span class="x-text">Ed Sheeran x </span> -->
   </div>
 
@@ -1531,7 +1577,7 @@
     <div class="popup" id="miningPopup">
       <button class="close-button" onclick="closeMiningPopup()">×</button>
       <h2 id="miningPopupTitle">Mining</h2>
-      <div class="daily-combo-container">
+      <!--<div class="daily-combo-container">
         <div class="daily-combo-title" id="dailyComboTitle">Daily combo</div>
         <div class="combo-cards">
           <div class="combo-card" id="comboCard1">?</div>
@@ -1542,7 +1588,7 @@
           <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" alt="Coin Texture" width="20" height="20">
           <span>+5,000,000</span>
         </div>
-      </div>
+      </div>-->
       <div class="mining-tabs">
         <button class="mining-button active" id="marketsTabButton" onclick="showMiningTab('markets')">Markets</button>
         <button class="mining-button" id="teamTabButton" onclick="showMiningTab('team')">Team</button>
@@ -1845,17 +1891,31 @@
         <!-- Specials Tab Cards -->
         <div class="mining-container" id="specialsTab" style="display: none">
           <div class="mining-card">
-            <img src="https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" alt="Card image" />
-            <h3 id="olympicTitle">Olympic Games START</h3>
+            <img src="https://cdn.midjourney.com/38a76a7a-3500-4e1c-befb-10ee43a03043/0_0.png" alt="Card image" />
+            <h3 id="durovTitle">Pavel Durov Arrested</h3>
             <div class="card-info">
-              <span id="olProfit">Profit/hour: <a class="gold-text">+6000 clicks</a></span>
-              <span class="card-price" id="olPrice">Price: 15000 clicks</span>
-              <span class="card-level" id="olLevel">Level: 0</span>
+              <span id="durovProfit">Profit/hour: <a class="gold-text">+50000 clicks</a></span>
+              <span class="card-price" id="durovPrice">Price: 4000 clicks</span>
+              <span class="card-level" id="durovLevel">Level: 0</span>
             </div>
-            <button class="buy-button" onclick="buyCard('ol')">Buy</button>
-            <div class="timer-overlay" id="olTimerOverlay">
-              <span class="timer-text" id="olTimer">30</span>
-              <div class="spinner" id="olSpinner"></div>
+            <button class="buy-button" onclick="buyCard('durov')">Buy</button>
+            <div class="timer-overlay" id="durovTimerOverlay">
+              <span class="timer-text" id="durovTimer">30</span>
+              <div class="spinner" id="durovSpinner"></div>
+            </div>
+          </div>
+          <div class="mining-card">
+            <img src="https://cdn.midjourney.com/0807afad-4c91-416a-abe3-eb0524d1a38f/0_0.png" alt="Card image" />
+            <h3 id="deadpoolTitle">Deadpool & Wolverine</h3>
+            <div class="card-info">
+              <span id="deadpoolProfit">Profit/hour: <a class="gold-text">+10000 clicks</a></span>
+              <span class="card-price" id="deadpoolPrice">Price: 40000 clicks</span>
+              <span class="card-level" id="deadpoolLevel">Level: 0</span>
+            </div>
+            <button class="buy-button" onclick="buyCard('deadpool')">Buy</button>
+            <div class="timer-overlay" id="deadpoolTimerOverlay">
+              <span class="timer-text" id="deadpoolTimer">30</span>
+              <div class="spinner" id="deadpoolSpinner"></div>
             </div>
           </div>
           <div class="mining-card">
@@ -1952,12 +2012,22 @@
         <option value="pl">Polish</option>
       </select>
       <button class="menu-button" id="saveLanguageButton" onclick="saveLanguage()">Save Language</button>
-      <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
-      <button class="menu-button" id="legalInfoButton" onclick="openLegalInfoPopup()">Legal Info</button>
+      <button class="menu-button" id="privacyButton" onclick="openPrivacyPopup()">Privacy</button> 
       <input type="text" id="promoCode" placeholder="Enter promo code">
       <button class="menu-button" id="applyPromoCodeButton" onclick="applyPromoCode()">Apply Promo Code</button>
       <button class="menu-button" id="themeButton" onclick="openThemePopup()">Theme</button> 
       <buttpn class="menu-button" id="giftButton">Gift Clicks</button>
+    </div>
+
+    <div class="popup privacy-popup" id="privacyPopup">
+      <button class="close-button" onclick="closePrivacyPopup()">×</button>
+      <h2 id="privacyPopupTitle">Privacy Settings</h2>
+      <div class="eighteen-plus-toggle">
+        <label for="eighteenPlusToggle" id="eighteenPlusToggleLabel">18+ Content:</label>
+        <input type="checkbox" id="eighteenPlusToggle" onclick="toggleEighteenPlus()">
+      </div>
+      <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
+      <!-- ... Existing privacy settings options ... -->
     </div>
 
     <!-- Theme Customization Popup -->
@@ -2020,6 +2090,7 @@
       </div>
     </div>
   </div>
+
   <div class="airdrop-popup" id="airdropPopup">
     <button class="close-button" onclick="closeAirdropPopup()">×</button>
     <!-- <img src="https://cdn.midjourney.com/6a5f34ab-267b-49af-97c5-1f3c56043c7e/0_2.png" alt="Lobster Swimming in Money" width="100%" height="auto"> -->
@@ -2073,33 +2144,63 @@
   </div>
   
   <div class="airdrop-popup" id="earnPopup">
-      <button class="close-button" onclick="closeEarnPopup()">×</button>
-      <div class="logo-1">
-        <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
+    <button class="close-button" onclick="closeEarnPopup()">×</button>
+    <div class="logo-1">
+      <img src="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" alt="LobsterCoin Logo">
+    </div>
+    <h2 id="earnClicksTitle">Earn Clicks</h2>
+    <div class="airdrop-content"> 
+      <div class="task-item" id="youtubeTask">
+        <button class="earn-button" id="youtubeButton" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg><span id="subscribeYoutubeLabel">Subscribe YouTube</span>  | +<span id="youtubeReward">5k</span></button>
+        <span class="task-check" id="youtubeCheck"></span>
       </div>
-      <h2 id="earnClicksTitle">Earn Clicks</h2>
-      <div class="airdrop-content"> 
-        <div class="airdrop-item"><button class="earn-button" id="youtubeButton" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg><span id="subscribeYoutubeLabel">Subscribe YouTube</span>  | +<span id="youtubeReward">5k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="gasButton" onclick="gasPump()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-btc</title><path d="M17.06 11.57C17.65 10.88 18 10 18 9C18 7.14 16.73 5.57 15 5.13V3H13V5H11V3H9V5H6V7H8V17H6V19H9V21H11V19H13V21H15V19C17.21 19 19 17.21 19 15C19 13.55 18.22 12.27 17.06 11.57M10 7H14C15.1 7 16 7.9 16 9S15.1 11 14 11H10V7M15 17H10V13H15C16.1 13 17 13.9 17 15S16.1 17 15 17Z" /></svg><span id="TradeLabel">Trade on GasPump</span> | +<span id="gasReward">100k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="telegramButton" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg><span id="subscribeTelegramLabel">Subscribe Telegram</span> | +<span id="telegramReward">1k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="xButton" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg><span id="subscribeXLabel">Subscribe X (Twitter)</span> | +<span id="xReward">5k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="voteButton" onclick="openVotingPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>heart-circle-outline</title><path d="M12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22M12,4C7.14,4 4,7.14 4,12C4,16.86 7.14,20 12,20C16.86,20 20,16.86 20,12C20,7.14 16.86,4 12,4M11,17L12,18L13,17H11Z" /></svg><span id="voteLabel">Vote</span> | +<span id="voteReward">100</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="refButton" onclick="refButtonClick()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-cowboy-hat</title><path d="M20 22H4V20C4 17.8 7.6 16 12 16S20 17.8 20 20M8 9H16V10C16 12.2 14.2 14 12 14S8 12.2 8 10M19 4C18.4 4 18 4.4 18 5V6H16.5L15.1 3C15 2.8 14.9 2.6 14.7 2.5C14.2 2 13.4 1.9 12.7 2.2L12 2.4L11.3 2.1C10.6 1.8 9.8 1.9 9.3 2.4C9.1 2.6 9 2.8 8.9 3L7.5 6H6V5C6 4.4 5.6 4 5 4S4 4.4 4 5V6C4 7.1 4.9 8 6 8H18C19.1 8 20 7.1 20 6V5C20 4.5 19.6 4 19 4Z" /></svg><span id="inviteFriendLabel">Invite Friend </span>     | +<span id="referralReward">20k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="gameButton" onclick="openLobsterCatchPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>nintendo-game-boy</title><path d="M7 1C5.9 1 5 1.9 5 3V21C5 22.11 5.9 23 7 23H14C16.76 23 19 20.76 19 18V3C19 1.9 18.11 1 17 1H7M8 4H16V11H8V4M9 14H10V16H12V17H10V19H9V17H7V16H9V14M16 15C16.55 15 17 15.45 17 16C17 16.55 16.55 17 16 17C15.45 17 15 16.55 15 16C15 15.45 15.45 15 16 15M14 17C14.55 17 15 17.45 15 18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18C13 17.45 13.45 17 14 17Z" /></svg><span id="gameLabel">Game</span>               | +<span id="gameReward">10k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="dailyRewardButton" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg><span id="dailyRewardLabel">Daily Reward</span>   | +<span id="dailyRewardAmount">10k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" id="watchAdButton" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg><span id="watchAdLabel">Watch Ad</span>   | +<span id="adReward">10k</span></button></div>
-        <div class="airdrop-item"><button class="earn-button" onclick="postStory()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-plus</title><path d="M19,19H5V5H19M14,14V8H8V14H14M12,10H10V12H12V10M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,18H19V16H17V18M17,14H19V12H17V14M17,10H19V8H17V10Z" /></svg><span id="postStoryLabel">Post Story</span> | +<span id="storyReward">1M</span></button></div>
-        <div class="airdrop-item">
-          <button class="earn-button" id="premiumButton" onclick="claimPremiumBonus()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <title>star-circle-outline</title>
-              <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
-            </svg>
-            <span id="premiumBonusLabel">Premium Bonus</span> | +<span id="premiumReward">50k</span>
-          </button>
-        </div>
+      <div class="task-item" id="gasTask">
+        <button class="earn-button" id="gasButton" onclick="gasPump()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-btc</title><path d="M17.06 11.57C17.65 10.88 18 10 18 9C18 7.14 16.73 5.57 15 5.13V3H13V5H11V3H9V5H6V7H8V17H6V19H9V21H11V19H13V21H15V19C17.21 19 19 17.21 19 15C19 13.55 18.22 12.27 17.06 11.57M10 7H14C15.1 7 16 7.9 16 9S15.1 11 14 11H10V7M15 17H10V13H15C16.1 13 17 13.9 17 15S16.1 17 15 17Z" /></svg><span id="TradeLabel">Trade on GasPump</span> | +<span id="gasReward">100k</span></button>
+        <span class="task-check" id="gasCheck"></span>
+      </div>
+      <div class="task-item" id="telegramTask">
+        <button class="earn-button" id="telegramButton" onclick="subscribeTelegram()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>send</title><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" /></svg><span id="subscribeTelegramLabel">Subscribe Telegram</span> | +<span id="telegramReward">1k</span></button>
+        <span class="task-check" id="telegramCheck"></span>
+      </div>
+      <div class="task-item" id="votingTask">
+        <button class="earn-button" id="votingButton" onclick="openVotingPopup()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>poll</title><path d="M11.99,2C6.47,2 2,6.48 2,12C2,17.52 6.47,22 11.99,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 11.99,2M12,20C7.6,20 4,16.4 4,12C4,7.6 7.6,4 12,4C16.4,4 20,7.6 20,12C20,16.4 16.4,20 12,20M12,6A4,4 0 0,1 16,10V12H18V10A4,4 0 0,1 22,6C22,2.69 19.31,0 16,0H8C4.69,0 2,2.69 2,6V12H4V10A4,4 0 0,1 8,6C8,2.69 11.69,0 16,0Z" /></svg>
+          <span id="votingLabel">Vote</span> | +<span id="votingReward">10k</span> 
+        </button>
+        <span class="task-check" id="votingCheck"></span> 
+      </div>
+      <div class="task-item" id="xTask">
+        <button class="earn-button" id="xButton" onclick="subscribeX()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>twitter</title><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg><span id="subscribeXLabel">Subscribe X (Twitter)</span> | +<span id="xReward">5k</span></button>
+        <span class="task-check" id="xCheck"></span>
+      </div>
+      <div class="task-item" id="dailyRewardTask">
+        <button class="earn-button" id="dailyRewardButton" onclick="openDailyRewardsPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>calendar-badge-outline</title><path d="M19.5 16C17.6 16 16 17.6 16 19.5S17.6 23 19.5 23 23 21.4 23 19.5 21.4 16 19.5 16M14 19.5C14 19.33 14 19.17 14.03 19H5V9H19V14.03C19.17 14 19.33 14 19.5 14C20 14 20.5 14.08 21 14.21V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H14.21C14.08 20.5 14 20 14 19.5M5 5H19V7H5V5Z" /></svg><span id="dailyRewardLabel">Daily Reward</span>   | +<span id="dailyRewardAmount">10k</span></button>
+        <span class="task-check" id="dailyRewardCheck"></span>
+      </div>
+      <div class="task-item" id="watchAdTask">
+        <button class="earn-button" id="watchAdButton" onclick="showAd()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg><span id="watchAdLabel">Watch Ad</span>   | +<span id="adReward">10k</span></button>
+        <span class="task-check" id="watchAdCheck"></span>
+      </div>
+      <div class="task-item" id="postStoryTask">
+        <button class="earn-button" onclick="postStory()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>image-plus</title><path d="M19,19H5V5H19M14,14V8H8V14H14M12,10H10V12H12V10M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M17,18H19V16H17V18M17,14H19V12H17V14M17,10H19V8H17V10Z" /></svg><span id="postStoryLabel">Post Story</span> | +<span id="storyReward">1M</span></button>
+        <span class="task-check" id="storyCheck"></span>
+      </div>
+      <div class="task-item" id="gasTask">
+        <button class="earn-button" id="gasButton" onclick="gasPump()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-btc</title><path d="M17.06 11.57C17.65 10.88 18 10 18 9C18 7.14 16.73 5.57 15 5.13V3H13V5H11V3H9V5H6V7H8V17H6V19H9V21H11V19H13V21H15V19C17.21 19 19 17.21 19 15C19 13.55 18.22 12.27 17.06 11.57M10 7H14C15.1 7 16 7.9 16 9S15.1 11 14 11H10V7M15 17H10V13H15C16.1 13 17 13.9 17 15S16.1 17 15 17Z" /></svg><span id="TradeLabel">Trade on GasPump</span> | +<span id="gasReward">100k</span></button>
+        <span class="task-check" id="gasCheck"></span>
+      </div>
+      <div class="task-item">
+        <button class="earn-button" id="premiumButton" onclick="claimPremiumBonus()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>star-circle-outline</title>
+            <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+          </svg>
+          <span id="premiumBonusLabel">Premium Bonus</span> | +<span id="premiumReward">50k</span>
+        </button>
+        <span class="task-check" id="premiumCheck"></span>
       </div>
     </div>
+  </div>
 
     <div class="popup" id="giftPopup">
       <button class="close-button" onclick="closeGiftPopup()">×</button>
@@ -3492,11 +3593,17 @@
         level: 0,
         imageUrl: "https://cdn.midjourney.com/e90db955-acb9-4317-b6ca-29b2354997d1/0_2.png" 
       },
-      ol: {
-        profitPerHour: 5000,
-        price: 15000,
+      deadpool: {
+        profitPerHour: 10000,
+        price: 40000,
         level: 0,
-        imageUrl: "https://cdn.midjourney.com/9b772ec2-df70-415d-a9c7-c1e2dab2dc0e/0_2.png" 
+        imageUrl: "https://cdn.midjourney.com/0807afad-4c91-416a-abe3-eb0524d1a38f/0_0.png" 
+      },
+      durov: {
+        profitPerHour: 50000,
+        price: 4000,
+        level: 0,
+        imageUrl: "https://cdn.midjourney.com/38a76a7a-3500-4e1c-befb-10ee43a03043/0_0.png" 
       },
       usa: {
         profitPerHour: 2000, 
@@ -3772,7 +3879,7 @@
       WebApp.showAlert("You have claimed the gas pump bonus! You recieved 100,000 clicks!");
     }
 
-    // Function to handle click upgrade
+    // Function to handle click upgradep
     function upgradeClick() {
       let upgradeAmount = parseInt(document.getElementById('upgradeAmount').value);
       let upgradeIndex = 0;
@@ -3783,8 +3890,12 @@
           clickMultiplier += (upgradeIndex + 1) * upgradeAmount;
           upgradeLevel[upgradeIndex] += upgradeAmount;
           updateClickCount();
-          updateUpgradeCosts();
+          updateUpgradeCosts(upgradeAmount);
+          WebApp.showAlert(`You successfully purchased ${upgradeAmount} clicks!`);
           break;
+        } else {
+          let costToEarn = (upgradeCosts[upgradeIndex] * upgradeAmount) - clickCount;
+          WebApp.showAlert(`You don't have enough clicks! Earn ${numberWithCommas(costToEarn)} clicks more!`); 
         }
         upgradeIndex++;
       }
@@ -3805,10 +3916,11 @@
     }
 
     // Function to update upgrade costs
-    function updateUpgradeCosts() {
+    function updateUpgradeCosts(upgradeAmount = 1) { // Add upgradeAmount parameter, default to 1
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000);
-        document.getElementById(`upgradeCost${i + 1}`).textContent = 'Cost: ' + numberWithCommas(upgradeCosts[i]) + ' clicks'; // Format upgradeCosts
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000); // Base cost
+        upgradeCosts[i] *= Math.pow(1.2, upgradeLevel[i]); // Add exponential growth based on level
+        document.getElementById(`upgradeCost${i + 1}`).textContent = `Cost: ${numberWithCommas(upgradeCosts[i] * upgradeAmount)} clicks`; // Update display
       }
     }
     
@@ -3817,117 +3929,193 @@
         name: "Blue Lobster",
         imageUrl: "https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png",
         price: 5000000,
-        profit: 10000
+        profit: 10000,
+        description: "Classic and elegant" 
       },
       {
         name: "Red Lobster",
         imageUrl: "https://cdn.midjourney.com/f8b7e805-5ebc-41c0-a4a1-cbd2ac24c9f2/0_0.png", 
         price: 5000000,
-        profit: 10000
+        profit: 10000,
+        description: "Bold and fiery" 
       },
       {
         name: "Gold Lobster",
         imageUrl: "https://cdn.midjourney.com/96891e32-c9ef-43f8-8104-93da6e8c7daf/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Rich and luxurious" 
       },
       {
         name: "Diamond Lobster",
         imageUrl: "https://cdn.midjourney.com/0a03ed09-e2dd-41a3-bbd8-0ff3d5d91507/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Sparkling and precious" 
       },
       {
         name: "Astronaut Lobster",
         imageUrl: "https://cdn.midjourney.com/7c3e6459-c45a-4fab-82a7-69e3ece6e5cf/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Space-age explorer" 
       },
       {
         name: "Doggy Lobster",
         imageUrl: "https://cdn.midjourney.com/beb1ea2c-514c-4a54-a3f5-8b3daebe5b44/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Loyal and playful" 
       },
       {
         name: "Tropical Lobster",
         imageUrl: "https://cdn.midjourney.com/e597bcc8-2276-4b4c-a3b2-bcff1c406b4d/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Colorful and vibrant" 
+      },
+      {
+        name: "Deadpool",
+        imageUrl: "https://cdn.midjourney.com/8192873f-770a-47a4-a180-6475209d7d4d/0_1.png", 
+        price: 10000000,
+        profit: 100000,
+        description: "Mercenary with a mouth" 
+      },
+      {
+        name: "Wolverine",
+        imageUrl: "https://cdn.midjourney.com/84bdd2ce-5bd3-47a6-b1e7-7ea581b68873/0_1.png",
+        price: 10000000,
+        profit: 100000,
+        description: "Claws of fury" 
       },
       {
         name: "Baby Lobster",
         imageUrl: "https://cdn.midjourney.com/95aa818e-5ed0-40a7-a5c4-faa827c2d91a/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Cute and cuddly" 
       },
       {
         name: "Fat Lobster",
         imageUrl: "https://cdn.midjourney.com/6bf72376-9332-489c-8d31-0e84a4a6f85f/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Plump and happy" 
       },
       {
         name: "Cutty Lobster",
         imageUrl: "https://cdn.midjourney.com/ff09764a-f72c-4892-aa42-36e9ad04a4f4/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Sharp and stylish" 
       },      
       {
         name: "Turtle Lobster",
         imageUrl: "https://cdn.midjourney.com/50f8984d-c53e-4392-ba38-a09ecef8fad2/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Shell-shocked and cool" 
       },
       {
         name: "Boss Lobster",
         imageUrl: "https://cdn.midjourney.com/976e086a-ec5b-4d88-a1de-05b3257d056d/0_1.png",
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "King of the crustaceans" 
+      },
+      {
+        name: "Minion",
+        imageUrl: "https://cdn.midjourney.com/d55ff8da-c419-4635-b5a2-bb53ced7fc66/0_1.png",
+        price: 50000000,
+        profit: 500000,
+        description: "Banana-loving friend" 
       },
       {
         name: "Spider Lobster",
         imageUrl: "https://cdn.midjourney.com/36932d16-6134-4dc6-a3cb-bfb877017652/0_3.png", 
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "Eight-legged terror" 
       },      
       {
         name: "Olympic Lobster",
         imageUrl: "https://cdn.midjourney.com/d95e2bc9-9deb-45ea-ad82-14eaab3b448f/0_0.png", 
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "Ready for the games" 
       },
       {
         name: "Lobster Queen",
         imageUrl: "https://cdn.midjourney.com/18e100ed-5fce-411b-ac48-2040313a1496/0_3.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Queen of the sea" 
       },
       {
         name: "Snoop Dogg Lobster",
         imageUrl: "https://cdn.midjourney.com/a8ff7fd5-2d3d-4a8d-83ac-0412d18a5170/0_0.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Smokin' and chillin'" 
       },
       {
         name: "Lobster AI (Orange)",
         imageUrl: "https://cdn.midjourney.com/5cfdf705-1db6-4d9a-9e17-d3f8ac8b5929/0_2.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Orange AI lobster" 
       },
       {
         name: "Lobster AI (White)",
         imageUrl: "https://cdn.midjourney.com/62048c31-7d98-4afc-8cbd-b99b13fc9454/0_2.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "White AI lobster" 
+      },
+      {
+        name: "Alien",
+        imageUrl: "https://cdn.midjourney.com/c5e48f0c-7b8b-49eb-a97a-994ce5cfb5d1/0_3.png", 
+        price: 100000000,
+        profit: 5000000,
+        description: "Extraterrestrial visitor" 
+      },
+      {
+        name: "Pennywise",
+        imageUrl: "https://cdn.midjourney.com/c22a8a1a-d1c1-444b-9d5d-9eb01d82fb93/0_2.png", 
+        price: 100000000,
+        profit: 5000000,
+        description: "Creepy and sinister" 
       },
       {
         name: "Green Lobster",
         imageUrl: "https://cdn.midjourney.com/2f59d315-0d67-429b-a2fd-67aca0722dcf/0_3.png",
         price: 1000000000,
-        profit: 50000000
-      }
+        profit: 50000000,
+        description: "Vibrant and mysterious" 
+      },
+      {
+        name: "Golden Lobster",
+        imageUrl: "https://cdn.midjourney.com/0bf948f3-e7ca-4906-b0f2-e75cd319d451/0_1.png",
+        price: 2000000000,
+        profit: 100000000,
+        description: "Luxurious and rare" 
+      },
+      {
+        name: "Dark Lobster",
+        imageUrl: "https://cdn.midjourney.com/d265a77d-aa45-44da-a39d-7d91ae5632fa/0_0.png",
+        price: 2000000000,
+        profit: 100000000,
+        description: "Mysterious and powerful" 
+      },
+      {
+        name: "Elon Musk",
+        imageUrl: "https://cdn.midjourney.com/ad2ef7b4-7b2e-4707-b446-aed6be13914b/0_3.png",
+        price: 2000000000,
+        profit: 100000000,
+        description: "Inspired by the tech icon" 
+      },
     ];
+
 
     // Load purchased skins from localStorage
     let purchasedSkins = localStorage.getItem('purchasedSkins') ? JSON.parse(localStorage.getItem('purchasedSkins')) : [];
@@ -3947,7 +4135,73 @@
       document.getElementById('skinsPopup').style.display = 'none';
     }
 
-    // Function to display skins in the popup
+    // ... Existing JavaScript code ...
+
+    // Privacy Settings
+    let eighteenPlusEnabled = localStorage.getItem('eighteenPlusEnabled') === 'true';
+
+    function openPrivacyPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closePrivacyPopup());
+      document.getElementById('privacyPopup').style.display = 'block';
+
+      // Set the checkbox state based on eighteenPlusEnabled
+      document.getElementById('eighteenPlusToggle').checked = eighteenPlusEnabled;
+    }
+
+    function closePrivacyPopup() {
+      WebApp.BackButton.hide();
+      document.getElementById('privacyPopup').style.display = 'none';
+    }
+
+    function toggleEighteenPlus() {
+      eighteenPlusEnabled = !eighteenPlusEnabled;
+      localStorage.setItem('eighteenPlusEnabled', eighteenPlusEnabled);
+      updateEighteenPlusLabel();
+      displaySkins(); // Update skins to show/hide 18+ content
+    }
+
+    function updateEighteenPlusLabel() {
+      if (eighteenPlusEnabled) {
+        document.getElementById('eighteenPlusLabel').style.display = 'inline';
+      } else {
+        document.getElementById('eighteenPlusLabel').style.display = 'none';
+      }
+    }
+
+    // Add 18+ skins
+    const eighteenPlusSkins = [
+      {
+        name: "Gays",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/60700_12.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Gay lobsters"
+      },
+      {
+        name: "Sea Penis",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/adfd31c31b5ae4d39c05c5ad506306ab.30.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Sea penis"
+      },
+      {
+        name: "Sea Woman",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/dfz0vl9-833a1989-7e44-4c45-89cc-3eb90b26e802.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Lobster woman"
+      },
+      {
+        name: "Beach",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/dgmm02q-87c931fa-fb78-4542-b7fa-c0e2966950da.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Beach lobster"
+      }
+    ];
+
+    // Modify displaySkins to include 18+ skins when enabled
     function displaySkins() {
       const skinCardsContainer = document.getElementById('skinCardsContainer');
       skinCardsContainer.innerHTML = ''; // Clear the container
@@ -3965,6 +4219,11 @@
         const skinName = document.createElement('div');
         skinName.textContent = skin.name;
         skinCard.appendChild(skinName);
+
+        const skinDescription = document.createElement('div');
+        skinDescription.classList.add('skin-description');
+        skinDescription.textContent = skin.description; // Add the description
+        skinCard.appendChild(skinDescription);
 
         const skinPrice = document.createElement('div');
         skinPrice.classList.add('skin-price');
@@ -4013,6 +4272,11 @@
       customSkinName.textContent = "Custom Skin";
       customSkinCard.appendChild(customSkinName);
 
+      const customSkinDescription = document.createElement('div');
+      customSkinDescription.classList.add('skin-description');
+      customSkinDescription.textContent = "Your custom skin"; 
+      customSkinCard.appendChild(customSkinDescription); // Add description
+
       const customSkinPrice = document.createElement('div');
       customSkinPrice.classList.add('skin-price');
       customSkinPrice.textContent = `Price: ${numberWithCommas(customSkin.price)} clicks`;
@@ -4024,21 +4288,10 @@
       customSkinBuyButton.addEventListener('click', () => {
         if (customSkinPurchased) {
           // If purchased, trigger equipCustomSkin (which will use updated image)
-          equipCustomSkin();
+          equipCustomSkin(); 
         } else {
-          customSkinBuyButton.textContent = 'Buy';
-          
-
-          // Attach the click listener here, AFTER customSkinPurchased is potentially updated
-          customSkinBuyButton.addEventListener('click', () => {
-            if (customSkinPurchased) {
-              // If purchased, trigger equipCustomSkin (which will use updated image)
-              equipCustomSkin(); 
-            } else {
-              // If not purchased, trigger the file upload
-              document.getElementById('customSkinUploader').click();
-            }
-          }); 
+          // If not purchased, trigger the file upload
+          document.getElementById('customSkinUploader').click();
         }
       });
 
@@ -4058,7 +4311,51 @@
       customSkinCard.appendChild(customSkinBuyButton);
 
       skinCardsContainer.appendChild(customSkinCard);
+
+      // Display 18+ skins if enabled
+      if (eighteenPlusEnabled) {
+        eighteenPlusSkins.forEach(skin => {
+          const skinCard = document.createElement('div');
+          skinCard.classList.add('skin-card');
+
+          const skinImage = document.createElement('img');
+          skinImage.src = skin.imageUrl;
+          skinImage.alt = skin.name;
+          skinCard.appendChild(skinImage);
+
+          const skinName = document.createElement('div');
+          skinName.textContent = skin.name;
+          skinCard.appendChild(skinName);
+
+          const skinDescription = document.createElement('div');
+          skinDescription.classList.add('skin-description');
+          skinDescription.textContent = skin.description; 
+          skinCard.appendChild(skinDescription);
+
+          const skinPrice = document.createElement('div');
+          skinPrice.classList.add('skin-price');
+          skinPrice.textContent = `Price: ${numberWithCommas(skin.price)} clicks`;
+          skinCard.appendChild(skinPrice);
+
+          const buyButton = document.createElement('button');
+          if (!purchasedSkins.includes(skin.name)) {
+            buyButton.textContent = 'Buy';
+            buyButton.addEventListener('click', () => buySkin(skin));
+          } else if (equippedSkin === skin.name) {
+            buyButton.textContent = 'Equipped';
+            buyButton.disabled = true;
+          } else {
+            buyButton.textContent = 'Equip';
+            buyButton.addEventListener('click', () => equipSkin(skin));
+          }
+          skinCard.appendChild(buyButton);
+
+          skinCardsContainer.appendChild(skinCard);
+        });
+      }
     }
+
+// ... Existing JavaScript code ...
 
 
     const customSkin = {
@@ -4307,7 +4604,7 @@
           localStorage.removeItem('lastUpdateTime');
           localStorage.removeItem('lastRewardClaimTime');
           localStorage.removeItem('dailyRewardIndex');
-          localStorage.removeItem('collectedComboCards');
+          //localStorage.removeItem('collectedComboCards');
           localStorage.removeItem('dailyComboCollected');
           localStorage.removeItem('youtubeBonusClaimed');
           localStorage.removeItem('telegramBonusClaimed');
@@ -4536,7 +4833,8 @@
         let price = Math.round(miningCards[cardType].price * (1 + 0.35 * miningCards[cardType].level)); 
         document.getElementById(`${cardType}Price`).textContent = `$${numberWithCommas(price)} clicks`;
         const cardProfit = miningCards[cardType].profitPerHour * miningCards[cardType].level;
-        document.getElementById(`${cardType}Profit`).textContent = `Profit/hour: +${numberWithCommas(cardProfit)} clicks`;
+        const profitElement = document.getElementById(`${cardType}Profit`);
+        profitElement.innerHTML = `Profit/hour: <span class="gold-text">+${numberWithCommas(cardProfit)} clicks</span>`; 
       }
     }
 
@@ -4544,43 +4842,6 @@
     if (localStorage.getItem('collectedComboCards')) {
       collectedComboCards = JSON.parse(localStorage.getItem('collectedComboCards'));
     }
-
-    // Function to reset daily combo data in localStorage at 17:00 UTC+0
-    function resetDailyCombo() {
-      localStorage.setItem('collectedComboCards', JSON.stringify([]));
-      localStorage.setItem('dailyComboCollected', 'false');
-
-      // Reset the combo card container display
-      for (let i = 1; i <= dailyCombo.length; i++) {
-        const comboCardId = `comboCard${i}`;
-        document.getElementById(comboCardId).innerHTML = '?';
-      }
-      
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 1; // Make reward fully visible
-      comboRewardElement.style.backgroundColor = ''; // Remove any background color
-      const checkMark = document.createElement('span'); // Remove any existing checkmark
-      checkMark.innerHTML = '✔'; // HTML code for checkmark
-      checkMark.style.color = 'green'; 
-      checkMark.style.marginLeft = '5px'; 
-      comboRewardElement.appendChild(checkMark);
-    }
-
-    // Set up daily reset timer
-    const now = new Date();
-    const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0); // 17:00 UTC+0
-
-    // Calculate time until reset
-    let timeUntilReset = resetTime.getTime() - now.getTime();
-
-    // If reset time has already passed today, set reset for tomorrow
-    if (timeUntilReset < 0) {
-      resetTime.setDate(resetTime.getDate() + 1); 
-      timeUntilReset = resetTime.getTime() - now.getTime();
-    }
-
-    // Set timeout to reset daily combo data
-    setTimeout(resetDailyCombo, timeUntilReset);
 
     // Function to add "earn per hour" to click count
     function buyCard(cardType) {
@@ -4598,48 +4859,7 @@
         startCooldownTimer(cardType);
         WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
         // Check if the purchased card is part of the daily combo
-        if (dailyCombo.includes(cardType)) {
-          WebApp.showAlert("You found a combo card!");
-          // Add the card type to the collected combo cards array
-          collectedComboCards.push(cardType);
-          
-          localStorage.setItem('collectedComboCards', JSON.stringify(collectedComboCards));
 
-          // Update the combo container with the card image and name
-          for (let i = 0; i < collectedComboCards.length; i++) { // Use collectedComboCards
-            const cardTypeToUpdate = collectedComboCards[i];
-            const comboCardId = `comboCard${i + 1}`;
-            const comboCardElement = document.getElementById(comboCardId); 
-            const cardImageElement = document.createElement('img'); 
-            cardImageElement.src = miningCards[cardTypeToUpdate].imageUrl;
-            cardImageElement.style.width = "40px";
-            cardImageElement.style.height = "40px";
-            comboCardElement.innerHTML = ''; 
-            comboCardElement.appendChild(cardImageElement);
-          }
-
-          // Check for Complete Combo After Loop:
-          if (collectedComboCards.length === dailyCombo.length) {
-            clickCount += 5000000;
-            updateClickCount();
-            WebApp.showAlert("Congratulations! You collected the daily combo and earned 5,000,000 clicks!");
-            localStorage.setItem('dailyComboCollected', 'true');
-
-            // Reset Combo Cards After Applying Bonus
-            collectedComboCards = []; 
-
-            const comboRewardElement = document.querySelector('.combo-reward');
-            comboRewardElement.style.opacity = 0.5; // Make reward semi-transparent
-            comboRewardElement.style.backgroundColor = '#ccc'; // Add a grayed-out background
-
-            // Reset the combo card container display
-            for (let i = 1; i <= dailyCombo.length; i++) {
-              const comboCardId = `comboCard${i}`;
-              document.getElementById(comboCardId).innerHTML = '?'; 
-            }
-          }
-          
-        }
       } else if (cardCooldown[cardType]) {
         WebApp.showAlert("Please wait for the cooldown timer to expire.");
       } else {
@@ -4703,6 +4923,21 @@
       document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
     }
 
+    function numberWithCommas1(x) {
+      if (x < 100000) {
+        return x.toLocaleString(); // Format with commas for thousands separators
+      } else {
+        const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
+
+        let i = 0;
+        while (x >= 1000 && i < units.length - 1) {
+          x /= 1000;
+          i++;
+        }
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1B or greater
+      }
+    }
+
     // Function to calculate and update profit per hour
     function updateProfitPerHour() {
       let totalProfit = 0;
@@ -4720,7 +4955,7 @@
       // Add skin profit to the total
       totalProfit += skinProfitPerHour; 
 
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas1(totalProfit); 
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
@@ -4753,36 +4988,39 @@
       return urlParams.get('friend');
     }
 
+    // Get the referral code from the URL
+    function getReferralCode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('ref');
+    }
+
+    // Function to handle referral clicks
+
     // Function to handle referral clicks
     function handleReferralClick() {
-      const telegramUserID = getTelegramUserID();
-      if (telegramUserID) {
-	    clickCount += 20000;
-        // Send a request to your server to update the referred user's clicks
-        fetch('https://d9e3-88-93-184-116.ngrok-free.app/api/referrals', {
-          method: 'POST', 
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            telegramUserID: telegramUserID
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            // Referral successful, add clicks to the referred user's account
-            clickCount += 20000; 
-            updateClickCount();
-            WebApp.showAlert('Referral bonus applied! +20,000 clicks');
-          } else {
-            // Handle referral error
-            WebApp.showAlert('Referral bonus application failed. Please try again later.');
+      const referralCode = getReferralCode();
+      if (referralCode) {
+        // Handle Hyid9 referral
+        if (referralCode === "Hyid9") {
+          clickCount += getRewardAmount(100000); // Add 100k clicks
+          updateClickCount();
+          WebApp.showAlert('Referral bonus applied! +100,000 clicks');
+        } 
+        // Handle JiXZy0olpixMMh referral (with binary stars)
+        else if (referralCode.includes("JiXZy0olpixMMh")) { 
+          const binary = referralCode.split("MMh")[1];
+          const decimal = parseInt(binary, 2) * 100000; // Convert binary to decimal
+
+          // Error handling
+          if (isNaN(decimal)) {
+            WebApp.showAlert("Invalid referral code.");
+            return; // Exit the function if the conversion fails
           }
-        })
-        .catch(error => {
-          // Handle network error
-          WebApp.showAlert('Network error: Unable to connect to the referral server.');
-        });
+
+          clickCount += getRewardAmount(decimal);
+          updateClickCount();
+          WebApp.showAlert('Referral bonus applied! +' + decimal + ' clicks');
+        }
       }
     }
 
@@ -4797,8 +5035,7 @@
       return `https://t.me/lobster_coin_bot/lobstercoin?friend=${telegramUserID}`;
     }
 
-    const refButton = document.getElementById('refButton'); 
-    refButton.addEventListener('click', refButtonClick); 
+    const refButton = document.getElementById('refButton');
 
     // Modify existing button with ID "refButton"
     function refButtonClick() {
@@ -5060,17 +5297,6 @@
       return translations[language];
     }
 
-    // Function to save the selected language
-    function saveLanguage() {
-      let selectedLanguage = document.getElementById('languageSelect').value;
-      localStorage.setItem('language', selectedLanguage);
-      WebApp.showAlert("Language saved!");
-
-      // Reload the translations (or update your UI)
-      currentTranslations = loadTranslations(); 
-      updateTranslatedText(); 
-    }
-
     // Function to translate text elements
     function translateElement(elementId, translationKey) {
       let element = document.getElementById(elementId);
@@ -5087,6 +5313,16 @@
       // ... (add more translateElement calls for other UI elements) ...
       // Update the Earn popup buttons as well:
       updateRewardDisplay();
+    }
+
+    // Add task completion checkmarks 
+    function addTaskCheck(taskId, isCompleted) {
+      const taskCheckElement = document.getElementById(`${taskId}Check`);
+      if (isCompleted) {
+        taskCheckElement.classList.add('completed');
+      } else {
+        taskCheckElement.classList.remove('completed');
+      }
     }
 
 
@@ -5451,10 +5687,6 @@
 
     // Function to post story
     async function postStory() {
-      if (storyBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
-        return; // Exit the function if the bonus is already claimed
-      }
       try {
         const storyImageURL = "https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/templates/story-text.jpg?raw=true";
         console.log(storyImageURL); // Check if the URL is generated correctly
@@ -5640,7 +5872,7 @@
     function getRewardAmount(baseReward) {
       let multiplier = 1;
       let balance = clickCount;
-      while (balance >= 100000) {
+      while (balance >= 1000000) {
         balance /= 100;
         multiplier *= 10;
         if (multiplier >= 100000000000) { // Cap the multiplier at 100 billion
@@ -5655,12 +5887,11 @@
       document.getElementById('youtubeReward').textContent = numberWithCommas(getRewardAmount(5000));
       document.getElementById('telegramReward').textContent = numberWithCommas(getRewardAmount(1000));
       document.getElementById('xReward').textContent = numberWithCommas(getRewardAmount(5000));
-      document.getElementById('referralReward').textContent = numberWithCommas(getRewardAmount(20000));
-      document.getElementById('gameReward').textContent = numberWithCommas(getRewardAmount(10000));
       document.getElementById('dailyRewardAmount').textContent = numberWithCommas(getRewardAmount(10000));
       document.getElementById('adReward').textContent = numberWithCommas(getRewardAmount(10000));
       document.getElementById('storyReward').textContent = numberWithCommas(getRewardAmount(1000000));
       document.getElementById('gasReward').textContent = numberWithCommas(getRewardAmount(100000));
+      document.getElementById('votingReward').textContent = numberWithCommas(getRewardAmount(10000));
     }
 
     function loadTheme() {
@@ -5739,13 +5970,63 @@
 
     let elapsedTime = new Date().getTime() - lastUpdateTime;
     
+    function updateMiningCardLevels() {
+      // Iterate through each mining card type
+      for (const cardType in miningCards) {
+        // Get the level from localStorage using the cardType as part of the key
+        let level = localStorage.getItem(`miningCardLevel${cardType}`);
+        // If a level is found in localStorage, parse it as an integer
+        if (level !== null) {
+          miningCards[cardType].level = parseInt(level);
+        } else {
+          // If no level is found, set it to 0 (default)
+          miningCards[cardType].level = 0;
+        }
+
+        // Update the UI to display the loaded or default level
+        document.getElementById(`${cardType}Level`).textContent = `Level: ${miningCards[cardType].level}`;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-      updateMiningCardPrices();
+      updateMiningCardPrices(); 
+      updateMiningCardLevels(); // Load levels from localStorage
       loadTheme();
     });
 
     // Update click count every second
 	  setInterval(addEarnPerHour, 1000);
+
+    // Load task completion statuses from localStorage
+    if (localStorage.getItem('youtubeBonusClaimed') === 'true') {
+      addTaskCheck('youtube', true);
+    }
+    if (localStorage.getItem('telegramBonusClaimed') === 'true') {
+      addTaskCheck('telegram', true);
+    }
+    if (localStorage.getItem('xBonusClaimed') === 'true') {
+      addTaskCheck('x', true);
+    }
+    if (localStorage.getItem('storyBonusClaimed') === 'true') {
+      addTaskCheck('story', true);
+    }
+    if (localStorage.getItem('premiumBonusClaimed') === 'true') {
+      addTaskCheck('premium', true);
+    }
+
+    // Add "Daily Tasks" and "Tasks List" labels
+    let tasksList = document.querySelector('.airdrop-content');
+    
+    const dailyTasksHeading = document.createElement('h3');
+    dailyTasksHeading.textContent = 'Daily Tasks';
+    dailyTasksHeading.classList.add('task-heading');
+    tasksList.appendChild(dailyTasksHeading); // Add the heading before the daily reward
+
+    // Add Tasks List heading
+    const tasksListHeading = document.createElement('h3');
+    tasksListHeading.textContent = 'Tasks List';
+    tasksListHeading.classList.add('task-heading');
+    tasksList.appendChild(tasksListHeading); // Add the heading before other tasks
 
     // Update localStorage with the current time on page load
     localStorage.setItem('lastUpdateTime', new Date().getTime());
@@ -5782,14 +6063,6 @@
     coin.addEventListener('touchend', () => {
       isClicking = false;
     });
-
-    // Load daily combo collected status from localStorage
-    if (localStorage.getItem('dailyComboCollected') === 'true') {
-      // If combo was already collected today, disable the reward visually
-      const comboRewardElement = document.querySelector('.combo-reward');
-      comboRewardElement.style.opacity = 0.5;
-      comboRewardElement.style.backgroundColor = '#ccc';
-    }
     
     if (localStorage.getItem('skinProfitPerHour')) {
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
