@@ -1474,7 +1474,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
       </button>
     </div>
-    <div class="title" id="gameTitle">LobsterCoin <span id="eighteenPlusLabel" style="display: none;">18+</span></div>
+    <div class="title" id="gameTitle">LobsterCoin</div>
     <!-- <span class="x-text">Ed Sheeran x </span> -->
   </div>
 
@@ -4157,16 +4157,7 @@
     function toggleEighteenPlus() {
       eighteenPlusEnabled = !eighteenPlusEnabled;
       localStorage.setItem('eighteenPlusEnabled', eighteenPlusEnabled);
-      updateEighteenPlusLabel();
       displaySkins(); // Update skins to show/hide 18+ content
-    }
-
-    function updateEighteenPlusLabel() {
-      if (eighteenPlusEnabled) {
-        document.getElementById('eighteenPlusLabel').style.display = 'inline';
-      } else {
-        document.getElementById('eighteenPlusLabel').style.display = 'none';
-      }
     }
 
     // Add 18+ skins
