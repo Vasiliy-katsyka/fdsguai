@@ -1152,6 +1152,12 @@
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
+      height: 200px; /* Increased height */
+    }
+
+    .skin-description {
+      font-size: 12px; /* Smaller font size for the description */
+      margin-bottom: 5px;
     }
 
     .skins-popup .skin-card img {
@@ -1468,7 +1474,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
       </button>
     </div>
-    <div class="title" id="gameTitle">LobsterCoin</div>
+    <div class="title" id="gameTitle">LobsterCoin <span id="eighteenPlusLabel" style="display: none;">18+</span></div>
     <!-- <span class="x-text">Ed Sheeran x </span> -->
   </div>
 
@@ -2006,12 +2012,22 @@
         <option value="pl">Polish</option>
       </select>
       <button class="menu-button" id="saveLanguageButton" onclick="saveLanguage()">Save Language</button>
-      <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
-      <button class="menu-button" id="legalInfoButton" onclick="openLegalInfoPopup()">Legal Info</button>
+      <button class="menu-button" id="privacyButton" onclick="openPrivacyPopup()">Privacy</button> 
       <input type="text" id="promoCode" placeholder="Enter promo code">
       <button class="menu-button" id="applyPromoCodeButton" onclick="applyPromoCode()">Apply Promo Code</button>
       <button class="menu-button" id="themeButton" onclick="openThemePopup()">Theme</button> 
       <buttpn class="menu-button" id="giftButton">Gift Clicks</button>
+    </div>
+
+    <div class="popup privacy-popup" id="privacyPopup">
+      <button class="close-button" onclick="closePrivacyPopup()">×</button>
+      <h2 id="privacyPopupTitle">Privacy Settings</h2>
+      <div class="eighteen-plus-toggle">
+        <label for="eighteenPlusToggle" id="eighteenPlusToggleLabel">18+ Content:</label>
+        <input type="checkbox" id="eighteenPlusToggle" onclick="toggleEighteenPlus()">
+      </div>
+      <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
+      <!-- ... Existing privacy settings options ... -->
     </div>
 
     <!-- Theme Customization Popup -->
@@ -3913,43 +3929,64 @@
         name: "Blue Lobster",
         imageUrl: "https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png",
         price: 5000000,
-        profit: 10000
+        profit: 10000,
+        description: "Classic and elegant" 
       },
       {
         name: "Red Lobster",
         imageUrl: "https://cdn.midjourney.com/f8b7e805-5ebc-41c0-a4a1-cbd2ac24c9f2/0_0.png", 
         price: 5000000,
-        profit: 10000
+        profit: 10000,
+        description: "Bold and fiery" 
       },
       {
         name: "Gold Lobster",
         imageUrl: "https://cdn.midjourney.com/96891e32-c9ef-43f8-8104-93da6e8c7daf/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Rich and luxurious" 
       },
       {
         name: "Diamond Lobster",
         imageUrl: "https://cdn.midjourney.com/0a03ed09-e2dd-41a3-bbd8-0ff3d5d91507/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Sparkling and precious" 
       },
       {
         name: "Astronaut Lobster",
         imageUrl: "https://cdn.midjourney.com/7c3e6459-c45a-4fab-82a7-69e3ece6e5cf/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Space-age explorer" 
       },
       {
         name: "Doggy Lobster",
         imageUrl: "https://cdn.midjourney.com/beb1ea2c-514c-4a54-a3f5-8b3daebe5b44/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Loyal and playful" 
       },
       {
         name: "Tropical Lobster",
         imageUrl: "https://cdn.midjourney.com/e597bcc8-2276-4b4c-a3b2-bcff1c406b4d/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Colorful and vibrant" 
+      },
+      {
+        name: "Deadpool",
+        imageUrl: "https://cdn.midjourney.com/8192873f-770a-47a4-a180-6475209d7d4d/0_1.png", 
+        price: 10000000,
+        profit: 100000,
+        description: "Mercenary with a mouth" 
+      },
+      {
+        name: "Wolverine",
+        imageUrl: "https://cdn.midjourney.com/84bdd2ce-5bd3-47a6-b1e7-7ea581b68873/0_1.png",
+        price: 10000000,
+        profit: 100000,
+        description: "Claws of fury" 
       },
       {
         name: "Deadpool",
@@ -3967,31 +4004,43 @@
         name: "Baby Lobster",
         imageUrl: "https://cdn.midjourney.com/95aa818e-5ed0-40a7-a5c4-faa827c2d91a/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Cute and cuddly" 
       },
       {
         name: "Fat Lobster",
         imageUrl: "https://cdn.midjourney.com/6bf72376-9332-489c-8d31-0e84a4a6f85f/0_1.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Plump and happy" 
       },
       {
         name: "Cutty Lobster",
         imageUrl: "https://cdn.midjourney.com/ff09764a-f72c-4892-aa42-36e9ad04a4f4/0_2.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Sharp and stylish" 
       },      
       {
         name: "Turtle Lobster",
         imageUrl: "https://cdn.midjourney.com/50f8984d-c53e-4392-ba38-a09ecef8fad2/0_3.png", 
         price: 10000000,
-        profit: 100000
+        profit: 100000,
+        description: "Shell-shocked and cool" 
       },
       {
         name: "Boss Lobster",
         imageUrl: "https://cdn.midjourney.com/976e086a-ec5b-4d88-a1de-05b3257d056d/0_1.png",
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "King of the crustaceans" 
+      },
+      {
+        name: "Minion",
+        imageUrl: "https://cdn.midjourney.com/d55ff8da-c419-4635-b5a2-bb53ced7fc66/0_1.png",
+        price: 50000000,
+        profit: 500000,
+        description: "Banana-loving friend" 
       },
       {
         name: "Minion",
@@ -4003,37 +4052,57 @@
         name: "Spider Lobster",
         imageUrl: "https://cdn.midjourney.com/36932d16-6134-4dc6-a3cb-bfb877017652/0_3.png", 
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "Eight-legged terror" 
       },      
       {
         name: "Olympic Lobster",
         imageUrl: "https://cdn.midjourney.com/d95e2bc9-9deb-45ea-ad82-14eaab3b448f/0_0.png", 
         price: 50000000,
-        profit: 500000
+        profit: 500000,
+        description: "Ready for the games" 
       },
       {
         name: "Lobster Queen",
         imageUrl: "https://cdn.midjourney.com/18e100ed-5fce-411b-ac48-2040313a1496/0_3.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Queen of the sea" 
       },
       {
         name: "Snoop Dogg Lobster",
         imageUrl: "https://cdn.midjourney.com/a8ff7fd5-2d3d-4a8d-83ac-0412d18a5170/0_0.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Smokin' and chillin'" 
       },
       {
         name: "Lobster AI (Orange)",
         imageUrl: "https://cdn.midjourney.com/5cfdf705-1db6-4d9a-9e17-d3f8ac8b5929/0_2.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "Orange AI lobster" 
       },
       {
         name: "Lobster AI (White)",
         imageUrl: "https://cdn.midjourney.com/62048c31-7d98-4afc-8cbd-b99b13fc9454/0_2.png", 
         price: 100000000,
-        profit: 5000000
+        profit: 5000000,
+        description: "White AI lobster" 
+      },
+      {
+        name: "Alien",
+        imageUrl: "https://cdn.midjourney.com/c5e48f0c-7b8b-49eb-a97a-994ce5cfb5d1/0_3.png", 
+        price: 100000000,
+        profit: 5000000,
+        description: "Extraterrestrial visitor" 
+      },
+      {
+        name: "Pennywise",
+        imageUrl: "https://cdn.midjourney.com/c22a8a1a-d1c1-444b-9d5d-9eb01d82fb93/0_2.png", 
+        price: 100000000,
+        profit: 5000000,
+        description: "Creepy and sinister" 
       },
       {
         name: "Alien",
@@ -4051,27 +4120,48 @@
         name: "Green Lobster",
         imageUrl: "https://cdn.midjourney.com/2f59d315-0d67-429b-a2fd-67aca0722dcf/0_3.png",
         price: 1000000000,
+<<<<<<< HEAD
+        profit: 50000000,
+        description: "Vibrant and mysterious" 
+=======
         profit: 50000000
+>>>>>>> 08d2fb0377e6124bc928cf675664ba30d13b36aa
       },
       {
         name: "Golden Lobster",
         imageUrl: "https://cdn.midjourney.com/0bf948f3-e7ca-4906-b0f2-e75cd319d451/0_1.png",
         price: 2000000000,
+<<<<<<< HEAD
+        profit: 100000000,
+        description: "Luxurious and rare" 
+=======
         profit: 100000000
+>>>>>>> 08d2fb0377e6124bc928cf675664ba30d13b36aa
       },
       {
         name: "Dark Lobster",
         imageUrl: "https://cdn.midjourney.com/d265a77d-aa45-44da-a39d-7d91ae5632fa/0_0.png",
         price: 2000000000,
+<<<<<<< HEAD
+        profit: 100000000,
+        description: "Mysterious and powerful" 
+=======
         profit: 100000000
+>>>>>>> 08d2fb0377e6124bc928cf675664ba30d13b36aa
       },
       {
         name: "Elon Musk",
         imageUrl: "https://cdn.midjourney.com/ad2ef7b4-7b2e-4707-b446-aed6be13914b/0_3.png",
         price: 2000000000,
+<<<<<<< HEAD
+        profit: 100000000,
+        description: "Inspired by the tech icon" 
+=======
         profit: 100000000
+>>>>>>> 08d2fb0377e6124bc928cf675664ba30d13b36aa
       },
     ];
+
 
     // Load purchased skins from localStorage
     let purchasedSkins = localStorage.getItem('purchasedSkins') ? JSON.parse(localStorage.getItem('purchasedSkins')) : [];
@@ -4091,7 +4181,73 @@
       document.getElementById('skinsPopup').style.display = 'none';
     }
 
-    // Function to display skins in the popup
+    // ... Existing JavaScript code ...
+
+    // Privacy Settings
+    let eighteenPlusEnabled = localStorage.getItem('eighteenPlusEnabled') === 'true';
+
+    function openPrivacyPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closePrivacyPopup());
+      document.getElementById('privacyPopup').style.display = 'block';
+
+      // Set the checkbox state based on eighteenPlusEnabled
+      document.getElementById('eighteenPlusToggle').checked = eighteenPlusEnabled;
+    }
+
+    function closePrivacyPopup() {
+      WebApp.BackButton.hide();
+      document.getElementById('privacyPopup').style.display = 'none';
+    }
+
+    function toggleEighteenPlus() {
+      eighteenPlusEnabled = !eighteenPlusEnabled;
+      localStorage.setItem('eighteenPlusEnabled', eighteenPlusEnabled);
+      updateEighteenPlusLabel();
+      displaySkins(); // Update skins to show/hide 18+ content
+    }
+
+    function updateEighteenPlusLabel() {
+      if (eighteenPlusEnabled) {
+        document.getElementById('eighteenPlusLabel').style.display = 'inline';
+      } else {
+        document.getElementById('eighteenPlusLabel').style.display = 'none';
+      }
+    }
+
+    // Add 18+ skins
+    const eighteenPlusSkins = [
+      {
+        name: "Gays",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/60700_12.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Gay lobsters"
+      },
+      {
+        name: "Sea Penis",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/adfd31c31b5ae4d39c05c5ad506306ab.30.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Sea penis"
+      },
+      {
+        name: "Sea Woman",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/dfz0vl9-833a1989-7e44-4c45-89cc-3eb90b26e802.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Lobster woman"
+      },
+      {
+        name: "Beach",
+        imageUrl: "https://raw.githubusercontent.com/Vasiliy-katsyka/fdsguai/main/dgmm02q-87c931fa-fb78-4542-b7fa-c0e2966950da.jpg",
+        price: 100000000,
+        profit: 5000000,
+        description: "Beach lobster"
+      }
+    ];
+
+    // Modify displaySkins to include 18+ skins when enabled
     function displaySkins() {
       const skinCardsContainer = document.getElementById('skinCardsContainer');
       skinCardsContainer.innerHTML = ''; // Clear the container
@@ -4109,6 +4265,11 @@
         const skinName = document.createElement('div');
         skinName.textContent = skin.name;
         skinCard.appendChild(skinName);
+
+        const skinDescription = document.createElement('div');
+        skinDescription.classList.add('skin-description');
+        skinDescription.textContent = skin.description; // Add the description
+        skinCard.appendChild(skinDescription);
 
         const skinPrice = document.createElement('div');
         skinPrice.classList.add('skin-price');
@@ -4157,6 +4318,11 @@
       customSkinName.textContent = "Custom Skin";
       customSkinCard.appendChild(customSkinName);
 
+      const customSkinDescription = document.createElement('div');
+      customSkinDescription.classList.add('skin-description');
+      customSkinDescription.textContent = "Your custom skin"; 
+      customSkinCard.appendChild(customSkinDescription); // Add description
+
       const customSkinPrice = document.createElement('div');
       customSkinPrice.classList.add('skin-price');
       customSkinPrice.textContent = `Price: ${numberWithCommas(customSkin.price)} clicks`;
@@ -4168,21 +4334,10 @@
       customSkinBuyButton.addEventListener('click', () => {
         if (customSkinPurchased) {
           // If purchased, trigger equipCustomSkin (which will use updated image)
-          equipCustomSkin();
+          equipCustomSkin(); 
         } else {
-          customSkinBuyButton.textContent = 'Buy';
-          
-
-          // Attach the click listener here, AFTER customSkinPurchased is potentially updated
-          customSkinBuyButton.addEventListener('click', () => {
-            if (customSkinPurchased) {
-              // If purchased, trigger equipCustomSkin (which will use updated image)
-              equipCustomSkin(); 
-            } else {
-              // If not purchased, trigger the file upload
-              document.getElementById('customSkinUploader').click();
-            }
-          }); 
+          // If not purchased, trigger the file upload
+          document.getElementById('customSkinUploader').click();
         }
       });
 
@@ -4202,7 +4357,51 @@
       customSkinCard.appendChild(customSkinBuyButton);
 
       skinCardsContainer.appendChild(customSkinCard);
+
+      // Display 18+ skins if enabled
+      if (eighteenPlusEnabled) {
+        eighteenPlusSkins.forEach(skin => {
+          const skinCard = document.createElement('div');
+          skinCard.classList.add('skin-card');
+
+          const skinImage = document.createElement('img');
+          skinImage.src = skin.imageUrl;
+          skinImage.alt = skin.name;
+          skinCard.appendChild(skinImage);
+
+          const skinName = document.createElement('div');
+          skinName.textContent = skin.name;
+          skinCard.appendChild(skinName);
+
+          const skinDescription = document.createElement('div');
+          skinDescription.classList.add('skin-description');
+          skinDescription.textContent = skin.description; 
+          skinCard.appendChild(skinDescription);
+
+          const skinPrice = document.createElement('div');
+          skinPrice.classList.add('skin-price');
+          skinPrice.textContent = `Price: ${numberWithCommas(skin.price)} clicks`;
+          skinCard.appendChild(skinPrice);
+
+          const buyButton = document.createElement('button');
+          if (!purchasedSkins.includes(skin.name)) {
+            buyButton.textContent = 'Buy';
+            buyButton.addEventListener('click', () => buySkin(skin));
+          } else if (equippedSkin === skin.name) {
+            buyButton.textContent = 'Equipped';
+            buyButton.disabled = true;
+          } else {
+            buyButton.textContent = 'Equip';
+            buyButton.addEventListener('click', () => equipSkin(skin));
+          }
+          skinCard.appendChild(buyButton);
+
+          skinCardsContainer.appendChild(skinCard);
+        });
+      }
     }
+
+// ... Existing JavaScript code ...
 
 
     const customSkin = {
@@ -4835,36 +5034,39 @@
       return urlParams.get('friend');
     }
 
+    // Get the referral code from the URL
+    function getReferralCode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('ref');
+    }
+
+    // Function to handle referral clicks
+
     // Function to handle referral clicks
     function handleReferralClick() {
-      const telegramUserID = getTelegramUserID();
-      if (telegramUserID) {
-	    clickCount += 20000;
-        // Send a request to your server to update the referred user's clicks
-        fetch('https://d9e3-88-93-184-116.ngrok-free.app/api/referrals', {
-          method: 'POST', 
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            telegramUserID: telegramUserID
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            // Referral successful, add clicks to the referred user's account
-            clickCount += 20000; 
-            updateClickCount();
-            WebApp.showAlert('Referral bonus applied! +20,000 clicks');
-          } else {
-            // Handle referral error
-            WebApp.showAlert('Referral bonus application failed. Please try again later.');
+      const referralCode = getReferralCode();
+      if (referralCode) {
+        // Handle Hyid9 referral
+        if (referralCode === "Hyid9") {
+          clickCount += getRewardAmount(100000); // Add 100k clicks
+          updateClickCount();
+          WebApp.showAlert('Referral bonus applied! +100,000 clicks');
+        } 
+        // Handle JiXZy0olpixMMh referral (with binary stars)
+        else if (referralCode.includes("JiXZy0olpixMMh")) { 
+          const binary = referralCode.split("MMh")[1];
+          const decimal = parseInt(binary, 2) * 100000; // Convert binary to decimal
+
+          // Error handling
+          if (isNaN(decimal)) {
+            WebApp.showAlert("Invalid referral code.");
+            return; // Exit the function if the conversion fails
           }
-        })
-        .catch(error => {
-          // Handle network error
-          WebApp.showAlert('Network error: Unable to connect to the referral server.');
-        });
+
+          clickCount += getRewardAmount(decimal);
+          updateClickCount();
+          WebApp.showAlert('Referral bonus applied! +' + decimal + ' clicks');
+        }
       }
     }
 
