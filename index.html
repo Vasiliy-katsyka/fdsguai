@@ -4197,8 +4197,8 @@
       const skinCardsContainer = document.getElementById('skinCardsContainer');
       skinCardsContainer.innerHTML = ''; // Clear the container
 
-      // Display predefined skins
-      skins.forEach(skin => {
+      // Function to create a skin card
+      function createSkinCard(skin) {
         const skinCard = document.createElement('div');
         skinCard.classList.add('skin-card');
 
@@ -4213,7 +4213,7 @@
 
         const skinDescription = document.createElement('div');
         skinDescription.classList.add('skin-description');
-        skinDescription.textContent = skin.description; // Add the description
+        skinDescription.textContent = skin.description; 
         skinCard.appendChild(skinDescription);
 
         const skinPrice = document.createElement('div');
@@ -4235,114 +4235,29 @@
         skinCard.appendChild(buyButton);
 
         skinCardsContainer.appendChild(skinCard);
-      });
+      }
+
+      // Display predefined skins
+      skins.forEach(createSkinCard); // Call the createSkinCard function for each skin
 
       // Dynamically create and display custom skin card
-      const customSkinCard = document.createElement('div');
-      customSkinCard.classList.add('skin-card', 'custom');
-      customSkinCard.id = 'customSkinCard';
-
-      const customSkinImage = document.createElement('img');
-      const customSkinImageUrl = localStorage.getItem('customSkinImageUrl'); 
-      if (customSkinImageUrl) {
-        customSkin.imageUrl = customSkinImageUrl;
-      } 
-
-      // Set the image source for the custom skin card
-      customSkinImage.src = customSkin.imageUrl || "https://cdn.midjourney.com/b875d6aa-8f9f-4ea4-b308-4fe7712c2ecd/0_0.png"; 
-      customSkinImage.alt = "Custom Skin";
-      customSkinCard.appendChild(customSkinImage);
-
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.id = 'customSkinUploader';
-      fileInput.accept = "image/*";
-      customSkinCard.appendChild(fileInput); // Add fileInput to customSkinCard
-
-      const customSkinName = document.createElement('div');
-      customSkinName.textContent = "Custom Skin";
-      customSkinCard.appendChild(customSkinName);
-
-      const customSkinDescription = document.createElement('div');
-      customSkinDescription.classList.add('skin-description');
-      customSkinDescription.textContent = "Your custom skin"; 
-      customSkinCard.appendChild(customSkinDescription); // Add description
-
-      const customSkinPrice = document.createElement('div');
-      customSkinPrice.classList.add('skin-price');
-      customSkinPrice.textContent = `Price: ${numberWithCommas(customSkin.price)} clicks`;
-      customSkinCard.appendChild(customSkinPrice);
-
-      const customSkinBuyButton = document.createElement('button');
-      customSkinBuyButton.classList.add('upload-button');
-      customSkinBuyButton.onclick = buyCustomSkin;
-      customSkinBuyButton.addEventListener('click', () => {
-        if (customSkinPurchased) {
-          // If purchased, trigger equipCustomSkin (which will use updated image)
-          equipCustomSkin(); 
-        } else {
-          // If not purchased, trigger the file upload
-          document.getElementById('customSkinUploader').click();
-        }
-      });
-
-      if (customSkinPurchased) {
-        if (customSkinEquipped) {
-          customSkinBuyButton.textContent = 'Equipped';
-          customSkinBuyButton.disabled = true;
-        } else {
-          customSkinBuyButton.textContent = 'Equip';
-          customSkinBuyButton.disabled = false; // Enable the equip button
-          customSkinBuyButton.onclick = equipCustomSkin; // Set the onclick function
-        }
-      } else {
-        customSkinBuyButton.textContent = 'Buy';
-        fileInput.disabled = true;
-      }
-      customSkinCard.appendChild(customSkinBuyButton);
-
-      skinCardsContainer.appendChild(customSkinCard);
+      createSkinCard(customSkin); // Call the createSkinCard function for customSkin
 
       // Display 18+ skins if enabled
       if (eighteenPlusEnabled) {
-        eighteenPlusSkins.forEach(skin => {
-          const skinCard = document.createElement('div');
-          skinCard.classList.add('skin-card');
+        eighteenPlusSkins.forEach(createSkinCard); 
+        skins.push(...eighteenPlusSkins);
+      }
 
-          const skinImage = document.createElement('img');
-          skinImage.src = skin.imageUrl;
-          skinImage.alt = skin.name;
-          skinCard.appendChild(skinImage);
+      // Load equippedSkin after the 18+ skins are added 
+      equippedSkin = localStorage.getItem('equippedSkin') || null;
 
-          const skinName = document.createElement('div');
-          skinName.textContent = skin.name;
-          skinCard.appendChild(skinName);
-
-          const skinDescription = document.createElement('div');
-          skinDescription.classList.add('skin-description');
-          skinDescription.textContent = skin.description; 
-          skinCard.appendChild(skinDescription);
-
-          const skinPrice = document.createElement('div');
-          skinPrice.classList.add('skin-price');
-          skinPrice.textContent = `Price: ${numberWithCommas(skin.price)} clicks`;
-          skinCard.appendChild(skinPrice);
-
-          const buyButton = document.createElement('button');
-          if (!purchasedSkins.includes(skin.name)) {
-            buyButton.textContent = 'Buy';
-            buyButton.addEventListener('click', () => buySkin(skin));
-          } else if (equippedSkin === skin.name) {
-            buyButton.textContent = 'Equipped';
-            buyButton.disabled = true;
-          } else {
-            buyButton.textContent = 'Equip';
-            buyButton.addEventListener('click', () => equipSkin(skin));
-          }
-          skinCard.appendChild(buyButton);
-
-          skinCardsContainer.appendChild(skinCard);
-        });
+      // Re-equip the skin if it's available
+      if (equippedSkin) {
+        const skinToEquip = skins.find(skin => skin.name === equippedSkin);
+        if (skinToEquip) {
+          equipSkin(skinToEquip); // This will re-equip the selected skin after page reload
+        }
       }
     }
 
