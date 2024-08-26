@@ -4240,25 +4240,13 @@
       // Display predefined skins
       skins.forEach(createSkinCard); // Call the createSkinCard function for each skin
 
-      // Dynamically create and display custom skin card
-      createSkinCard(customSkin); // Call the createSkinCard function for customSkin
-
       // Display 18+ skins if enabled
       if (eighteenPlusEnabled) {
         eighteenPlusSkins.forEach(createSkinCard); 
-        skins.push(...eighteenPlusSkins);
       }
 
       // Load equippedSkin after the 18+ skins are added 
       equippedSkin = localStorage.getItem('equippedSkin') || null;
-
-      // Re-equip the skin if it's available
-      if (equippedSkin) {
-        const skinToEquip = skins.find(skin => skin.name === equippedSkin);
-        if (skinToEquip) {
-          equipSkin(skinToEquip); // This will re-equip the selected skin after page reload
-        }
-      }
     }
 
 // ... Existing JavaScript code ...
