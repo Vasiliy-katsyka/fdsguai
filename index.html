@@ -2028,10 +2028,10 @@
     <div class="popup privacy-popup" id="privacyPopup">
       <button class="close-button" onclick="closePrivacyPopup()">×</button>
       <h2 id="privacyPopupTitle">Privacy Settings</h2>
-      <div class="eighteen-plus-toggle">
+      <!--<div class="eighteen-plus-toggle">
         <label for="eighteenPlusToggle" id="eighteenPlusToggleLabel">18+ Content:</label>
         <input type="checkbox" id="eighteenPlusToggle" onclick="toggleEighteenPlus()">
-      </div>
+      </div>-->
       <button class="menu-button" id="clearDataButton" onclick="confirmClearData()">Clear Data</button>
       <!-- ... Existing privacy settings options ... -->
     </div>
@@ -2160,6 +2160,10 @@
         <button class="earn-button" id="youtubeButton" onclick="openYouTube()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg><span id="subscribeYoutubeLabel">Subscribe YouTube</span>  | +<span id="youtubeReward">5k</span></button>
         <span class="task-check" id="youtubeCheck"></span>
       </div>
+      <div class="task-item" id="adsTask">
+        <button class="earn-button" id="adsButton" onclick="check20ads()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg><span id="watchAdsLabel">Watch <span id="adsTaskCount">20</span> Ads</span><span id="adsWatched">0/20</span>   | +<span id="adsReward">2M</span></button>
+        <span class="task-check" id="adsCheck"></span>
+      </div>
       <div class="task-item" id="gasTask">
         <button class="earn-button" id="gasButton" onclick="gasPump()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-btc</title><path d="M17.06 11.57C17.65 10.88 18 10 18 9C18 7.14 16.73 5.57 15 5.13V3H13V5H11V3H9V5H6V7H8V17H6V19H9V21H11V19H13V21H15V19C17.21 19 19 17.21 19 15C19 13.55 18.22 12.27 17.06 11.57M10 7H14C15.1 7 16 7.9 16 9S15.1 11 14 11H10V7M15 17H10V13H15C16.1 13 17 13.9 17 15S16.1 17 15 17Z" /></svg><span id="TradeLabel">Trade on GasPump</span> | +<span id="gasReward">100k</span></button>
         <span class="task-check" id="gasCheck"></span>
@@ -2171,7 +2175,7 @@
       <div class="task-item" id="votingTask">
         <button class="earn-button" id="votingButton" onclick="openVotingPopup()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>poll</title><path d="M11.99,2C6.47,2 2,6.48 2,12C2,17.52 6.47,22 11.99,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 11.99,2M12,20C7.6,20 4,16.4 4,12C4,7.6 7.6,4 12,4C16.4,4 20,7.6 20,12C20,16.4 16.4,20 12,20M12,6A4,4 0 0,1 16,10V12H18V10A4,4 0 0,1 22,6C22,2.69 19.31,0 16,0H8C4.69,0 2,2.69 2,6V12H4V10A4,4 0 0,1 8,6C8,2.69 11.69,0 16,0Z" /></svg>
-          <span id="votingLabel">Vote</span> | +<span id="votingReward">10k</span> 
+          <span id="votingLabel">Voting</span> | +<span id="votingReward">10k</span> 
         </button>
         <span class="task-check" id="votingCheck"></span> 
       </div>
@@ -3724,8 +3728,123 @@
       }
     }
 
-    document.getElementById('loadingPopup').style.display = 'flex'; 
-   
+    if (localStorage.getItem('adTask') == null) {
+      localStorage.setItem('adTask', 20);
+    
+    }
+    rewardAds = getRewardAmount(localStorage.getItem('adTask') * 1000000);
+    localStorage.setItem('ad20Reward', rewardAds);
+
+    
+    function check20ads() {
+
+      if (localStorage.getItem('adTask') == 20) {
+        if (localStorage.getItem('adsWatched') >= 20) {
+          WebApp.showAlert(`You've watched 20 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 2000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 40)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${20 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 40) {
+        if (localStorage.getItem('adsWatched') >= 40) {
+          WebApp.showAlert(`You've watched 40 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 4000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 80)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${40 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 80) {
+        if (localStorage.getItem('adsWatched') >= 80) {
+          WebApp.showAlert(`You've watched 80 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 8000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 160)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${80 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 160) {
+        if (localStorage.getItem('adsWatched') >= 160) {
+          WebApp.showAlert(`You've watched 160 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 16000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 320)
+        }
+        else {  
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${160 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 320) {
+        if (localStorage.getItem('adsWatched') >= 320) {
+          WebApp.showAlert(`You've watched 320 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 32000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 640)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${320 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 640) {
+        if (localStorage.getItem('adsWatched') >= 640) {
+          WebApp.showAlert(`You've watched 640 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 64000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 1280)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${640 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 1280) {
+        if (localStorage.getItem('adsWatched') >= 1280) {
+          WebApp.showAlert(`You've watched 1280 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 128000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 2560)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${1280 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 2560) {
+        if (localStorage.getItem('adsWatched') >= 2560) {
+          WebApp.showAlert(`You've watched 2560 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 256000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 5120)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${2560 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      }
+      else if (localStorage.getItem('adTask') == 5120) {
+        if (localStorage.getItem('adsWatched') >= 5120) {
+          WebApp.showAlert(`You've watched 5120 ads! Here is your ${rewardAds} reward!`);
+          clickCount += 512000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 10240)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${5120 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      } else if (localStorage.getItem('adTask') == 10240) {
+        if (localStorage.getItem('adsWatched') >= 10000) {
+          WebApp.showAlert(`You've watched 10240 ads! Here is your ${getRewardAmount(1024000000)} reward!`);
+          clickCount += 1024000000;
+          updateClickCount();
+          localStorage.setItem('adTask', 777)
+        }
+        else {
+          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${10000 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+        }
+      }
+      else if (localStorage.getItem('adTask') == 777) {
+        WebApp.showAlert(`You've completed all ads tasks!`);
+      }
+    }
+
 	// Initialize Adsgram SDK
     const AdController = window.Adsgram.init({ blockId: "353" }); // Replace "353" with your actual block ID
 
@@ -3736,7 +3855,11 @@
           if (result.done) {
             clickCount += 10000; // Add 10k clicks
             updateClickCount();
-            WebApp.showAlert("You earned 10,000 clicks! Thanks for watching the ad.");
+            if (localStorage.getItem('adsWatched')) {
+              adsCount = localStorage.getItem('adsWatched');
+            }
+            localStorage.setItem('adsWatched', adsCount + 1);
+            WebApp.showAlert("You earned 10,000 clicks! Thanks for watching the ad. You have watched " + adsCount + " ads.");
           }
         })
         .catch(result => {
@@ -3748,9 +3871,25 @@
     WebApp.ready();
     WebApp.setHeaderColor('#005266');
     WebApp.setBackgroundColor('#00ff11');
-    // Hide loading screen after 4 seconds
-    let randomDelay = Math.floor(Math.random() * 5000) + 1000; // 1000-5000 milliseconds
-    setTimeout(() => {
+    // ... (rest of your code) ...
+
+    document.getElementById('loadingPopup').style.display = 'flex'; 
+
+    // Function to check if all images are loaded
+    function areImagesLoaded() {
+      const images = document.querySelectorAll('img');
+      let allLoaded = true;
+      images.forEach(image => {
+        if (!image.complete) {
+          allLoaded = false;
+        }
+      });
+      return allLoaded;
+    }
+
+    // Set a timer to check if all images are loaded
+    let loadingTimeout = setTimeout(() => {
+      // Close the loading popup after 20 seconds if images are not loaded
       document.getElementById('loadingPopup').style.display = 'none';
       WebApp.isVerticalSwipesEnabled = false;
       if (!WebApp.isExpanded) {
@@ -3760,7 +3899,29 @@
       WebApp.setHeaderColor('#000000');
       WebApp.setBackgroundColor('#000000');
       WebApp.disableVerticalSwipes();
-    }, randomDelay);
+    }, 20000); 
+
+    // Check if all images are loaded every 100ms
+    let imageLoadInterval = setInterval(() => {
+      if (areImagesLoaded()) {
+        // Clear the timeout and interval
+        clearTimeout(loadingTimeout);
+        clearInterval(imageLoadInterval);
+
+        // Hide the loading popup
+        document.getElementById('loadingPopup').style.display = 'none';
+        WebApp.isVerticalSwipesEnabled = false;
+        if (!WebApp.isExpanded) {
+          WebApp.expand();
+        }
+        WebApp.enableClosingConfirmation();
+        WebApp.setHeaderColor('#000000');
+        WebApp.setBackgroundColor('#000000');
+        WebApp.disableVerticalSwipes();
+      }
+    }, 100);
+
+// ... (rest of your code) ...
     
     function numberWithCommas(x) {
       const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
@@ -4149,7 +4310,7 @@
     // ... Existing JavaScript code ...
 
     // Privacy Settings
-    let eighteenPlusEnabled = localStorage.getItem('eighteenPlusEnabled') === 'true';
+    let eighteenPlusEnabled = localStorage.getItem('eighteenPlusEnabled');
 
     function openPrivacyPopup() {
       WebApp.BackButton.show();
@@ -4157,7 +4318,6 @@
       document.getElementById('privacyPopup').style.display = 'block';
 
       // Set the checkbox state based on eighteenPlusEnabled
-      document.getElementById('eighteenPlusToggle').checked = eighteenPlusEnabled;
     }
 
     function closePrivacyPopup() {
@@ -4864,6 +5024,8 @@
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
+    offrewcl = false;
+
     // Function to add "earn per hour" to click count
     function addEarnPerHour() {
       // Get profit per hour from localStorage
@@ -4882,8 +5044,8 @@
       localStorage.setItem('lastUpdateTime', lastUpdateTime);
 
       // Only show the popup if the flag is true
-      if (offlineEarnings > 0 && showOfflineEarningsPopupFlag) { 
-        WebApp.showAlert("You earned " + offlineEarnings + " clicks offline!");
+      if (offlineEarnings > 1 && offrewcl === false) { 
+        offrewcl = true;
       }
     }
     
@@ -5797,6 +5959,9 @@
       document.getElementById('storyReward').textContent = numberWithCommas(getRewardAmount(1000000));
       document.getElementById('gasReward').textContent = numberWithCommas(getRewardAmount(100000));
       document.getElementById('votingReward').textContent = numberWithCommas(getRewardAmount(10000));
+      document.getElementById('adsReward').textContent = localStorage.getItem('adsReward');
+      document.getElementById('adsWatched').textContent = localStorage.getItem('adsWatched');
+      document.getElementById('adsTaskCount').textContent = localStorage.getItem('adTask');
     }
 
     function loadTheme() {
