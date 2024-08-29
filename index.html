@@ -5959,7 +5959,7 @@
       document.getElementById('storyReward').textContent = numberWithCommas(getRewardAmount(1000000));
       document.getElementById('gasReward').textContent = numberWithCommas(getRewardAmount(100000));
       document.getElementById('votingReward').textContent = numberWithCommas(getRewardAmount(10000));
-      document.getElementById('adsReward').textContent = localStorage.getItem('adsReward');
+      document.getElementById('adsReward').textContent = numberWithCommas(getRewardAmount(localStorage.getItem('adTask') * 10000));
       document.getElementById('adsWatched').textContent = localStorage.getItem('adsWatched');
       document.getElementById('adsTaskCount').textContent = localStorage.getItem('adTask');
     }
@@ -6083,20 +6083,6 @@
     if (localStorage.getItem('premiumBonusClaimed') === 'true') {
       addTaskCheck('premium', true);
     }
-
-    // Add "Daily Tasks" and "Tasks List" labels
-    let tasksList = document.querySelector('.airdrop-content');
-    
-    const dailyTasksHeading = document.createElement('h3');
-    dailyTasksHeading.textContent = 'Daily Tasks';
-    dailyTasksHeading.classList.add('task-heading');
-    tasksList.appendChild(dailyTasksHeading); // Add the heading before the daily reward
-
-    // Add Tasks List heading
-    const tasksListHeading = document.createElement('h3');
-    tasksListHeading.textContent = 'Tasks List';
-    tasksListHeading.classList.add('task-heading');
-    tasksList.appendChild(tasksListHeading); // Add the heading before other tasks
 
     // Update localStorage with the current time on page load
     localStorage.setItem('lastUpdateTime', new Date().getTime());
