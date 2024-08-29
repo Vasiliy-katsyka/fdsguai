@@ -363,11 +363,18 @@
       color: #fff;
       opacity: 1;
       transition: transform 0.3s ease, opacity 0.5s ease;
+      animation: none; /* Remove default animation */
+      z-index: 1000;
     }
 
     .click-text.fly-up {
       transform: translateY(-100px); /* Only move up 100px */
       opacity: 0;
+    }
+
+    /* Style for bonus click text */
+    .click-text.bonus { 
+      color: #FFD700; /* Gold color */
     }
 
     .counter img {
@@ -4865,14 +4872,36 @@
     }
 
     // Function to show click text above the coin
-    function showClickText(clicks) {
-      let clickText = document.getElementById('clickText');
+    // Function to show click text above the coin
+    function showClickText(clicks, isBonus = false) { 
+      let clickText = document.createElement('div'); // Create new click text element
+      clickText.classList.add('click-text');
+      if (isBonus) {
+        clickText.classList.add('bonus'); // Add the 'bonus' class to the click-text
+      }
       clickText.textContent = `+${clicks}`;
-      clickText.classList.remove('fly-up');
 
+      // Get the coin's position
+      let coinRect = document.querySelector('.coin').getBoundingClientRect(); 
+
+      // Randomize the position within the coin's bounds
+      let randomX = Math.random() * coinRect.width + coinRect.left;
+      let randomY = Math.random() * coinRect.height + coinRect.top; 
+
+      // Set the click text's position
+      clickText.style.left = randomX + 'px';
+      clickText.style.top = randomY + 'px'; 
+
+      // Add click text to the page
+      document.body.appendChild(clickText);
+
+      // Apply the bubble animation (same as bubbles)
+      clickText.style.animation = 'bubbleUp 3s linear forwards';
+
+      // Automatically remove the click text after the animation completes
       setTimeout(() => {
-        clickText.classList.add('fly-up');
-      }, 100);
+        document.body.removeChild(clickText);
+      }, 3000); // 3 seconds for the animation
     }
 
     // Function to open the Mining popup
@@ -6091,29 +6120,38 @@
     const coin = document.querySelector('.coin');
     const clickText = document.getElementById('clickText');
     coin.addEventListener('touchstart', (event) => {
-      if (!isClicking) {
-        isClicking = true;
-        clickCount += clickMultiplier;
-        updateClickCount();
+      event.preventDefault(); // Prevent default touch behavior
 
-        // Get touch coordinates
-        let touchX = event.touches[0].clientX;
-        let touchY = event.touches[0].clientY;
+      // Check if the user is already clicking (prevents multiple clicks at once)
+      if (isClicking) {
+        return; 
+      }
+      isClicking = true;
 
-        // Position the click text
-        clickText.style.left = touchX + 'px'; // Adjust for coin's position if needed
-        clickText.style.top = touchY + 'px'; // Adjust for coin's position if needed
-        clickText.textContent = `+${clickMultiplier}`;
-        clickText.classList.remove('fly-up');
+      // Handle multiple clicks (iterate through touches)
+      for (let i = 0; i < event.touches.length; i++) {
+        let touchX = event.touches[i].clientX;
+        let touchY = event.touches[i].clientY;
+
+        // 23% chance of a bonus click
+        let isBonusClick = Math.random() < 0.23;
+
+        if (isBonusClick) {
+          clickCount += clickMultiplier * 2;
+          showClickText(clickMultiplier * 2, true); // Show bonus click text
+        } else {
+          clickCount += clickMultiplier;
+          showClickText(clickMultiplier); // Show regular click text
+        }
 
         clicksRemaining--;
         updateLimitBar();
-
-        setTimeout(() => {
-          isClicking = false;
-          clickText.classList.add('fly-up');
-        }, 100); 
       }
+
+      // Allow new clicks after a short delay
+      setTimeout(() => {
+        isClicking = false;
+      }, 100); 
     });
 
     coin.addEventListener('touchend', () => {
