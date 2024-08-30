@@ -6240,6 +6240,14 @@
     coin.addEventListener('touchend', () => {
       isClicking = false;
     });
+
+    coin.addEventListener('touchstart', () => {
+      coin.classList.add('active'); // Add a class for active state
+    });
+
+    coin.addEventListener('touchend', () => {
+      coin.classList.remove('active'); // Remove the class on touch end
+    });
     
     if (localStorage.getItem('skinProfitPerHour')) {
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
