@@ -79,11 +79,13 @@
       position: relative;
       margin-bottom: 10px;
       -webkit-tap-highlight-color: transparent;
+      transition: filter 0.1s ease;
       transition: transform 0.1s ease; /* Add a transition for the transform property */
     }
 
     .coin:active { /* Apply this style when the coin is being pressed */
-      transform: scale(0.99); /* Make the coin 99% of its original size */ 
+      transform: scale(0.97); /* Make the coin 99% of its original size */ 
+      filter: brightness(0.85);
     }
 
     .counter {
