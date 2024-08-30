@@ -96,8 +96,9 @@
     }
 
     .button {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: #fff;
       padding: 10px 20px;
       align-items: center;
       margin-top: 20px;
@@ -164,9 +165,10 @@
 
     input[type="number"],
     input[type="text"] {
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCWU8GKaQfO_YinjQUB4yWdl04yrIz_5xmyQ&s) center center/cover no-repeat;
-      color: #000;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
       font-size: 13px;
+      color: #fff;
       padding: 10px 20px;
       height: 12px;
       border: none;
@@ -179,7 +181,6 @@
 
     input[type="number"]:focus,
     input[type="text"]:focus {
-      background-color: #f0f0f0;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
@@ -237,7 +238,8 @@
     .upgrade-input {
       width: 50px;
       text-align: center;
-      aria-label="Upgrade amount";
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
     }
 
     .clicks-per-tap {
@@ -375,6 +377,7 @@
     /* Style for bonus click text */
     .click-text.bonus { 
       color: #FFD700; /* Gold color */
+      font-size: 48px;
     }
 
     .counter img {
@@ -1247,6 +1250,21 @@
       margin-bottom: 10px; /* Add some space below the selector */
     }
 
+    #bonusUpgradeType {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      color: white; /* Set text color to white for visibility */
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+      border-radius: 14px; /* Rounded corners */
+      padding: 8px 12px; /* Add some padding */
+      font-size: 16px; /* Adjust font size as needed */
+      appearance: none; /* Remove default select arrow in some browsers */
+      -webkit-appearance: none; /* Remove default select arrow in WebKit browsers */
+      cursor: pointer; /* Indicate that the selector is clickable */
+      width: 100%; /* Make the selector take up the full width of its container */
+      margin-bottom: 10px; /* Add some space below the selector */
+    }
+
     /* Optional: Style the dropdown arrow */
     #languageSelect::-ms-expand {
       display: none; /* Hide the default arrow in IE11 */
@@ -1441,6 +1459,8 @@
 
     .voting-popup input[type="number"] {
       /* ... existing input styles ... */
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
       width: 100px;
     }
 
@@ -1463,6 +1483,8 @@
       margin-buttom: 30px;
       fornt-size: 1rem;
     }
+
+    
   </style>
 </head>
 <body>
@@ -1571,6 +1593,16 @@
       </div>
       <input type="number" class="upgrade-input" id="upgradeAmount" min="1" value="1" aria-label="Upgrade amount">
       <button class="button" id="upgradeClicksButton" onclick="upgradeClick()">Upgrade Clicks</button>
+      <div class="upgrade">
+        <span id="bonusUpgradeLabel">Upgrade Bonus Clicks</span>
+        <select id="bonusUpgradeType">
+          <option value="chance">Chance for Bonus</option>
+          <option value="size">Bonus Size</option>
+        </select>
+      </div>
+      <input type="number" class="upgrade-input" id="bonusUpgradeAmount" min="1" value="1">
+      <button class="button" id="upgradeBonusButton" onclick="upgradeBonus()">Upgrade Bonus</button>
+      <span id="bonusUpgradeCost"></span>
     </div>
 
     <div class="popup" id="dailyRewardsPopup">
@@ -2287,6 +2319,10 @@
     const dailyCombo = ["usa", "dubai", "ton"];
     let skinProfitPerHour = 0;
     let profitPerHour = 0;
+    let bonusChance = 0.2; 
+    let bonusMultiplier = 2; 
+    let bonusUpgradeLevel = 0; 
+    let bonusUpgradeCost = 1000; 
     let collectedComboCards = []; 
     let clickCount = 0;
     let clickMultiplier = 1;
@@ -4030,7 +4066,23 @@
       WebApp.BackButton.show();
       WebApp.BackButton.onClick(closePopup());
       document.getElementById('popup').style.display = 'block';
-      updateUpgradeCosts();
+
+      // ... (Your existing HTML for upgrade costs) ...
+      /*document.getElementById('popup').innerHTML += `
+        <div class="upgrade">
+          <span id="bonusUpgradeLabel">Upgrade Bonus Clicks</span>
+          <select id="bonusUpgradeType">
+            <option value="chance">Chance for Bonus</option>
+            <option value="size">Bonus Size</option>
+          </select>
+        </div>
+        <input type="number" class="upgrade-input" id="bonusUpgradeAmount" min="1" value="1">
+        <button class="button" id="upgradeBonusButton" onclick="upgradeBonus()">Upgrade Bonus</button>
+        <span id="bonusUpgradeCost"></span>
+      `;*/
+
+      updateUpgradeCosts(); // Call updateUpgradeCosts AFTER adding HTML
+      updateBonusUpgradeCosts(); 
     }
 
     // Function to close the popup
@@ -4095,11 +4147,18 @@
     }
 
     // Function to update upgrade costs
-    function updateUpgradeCosts(upgradeAmount = 1) { // Add upgradeAmount parameter, default to 1
+    function updateUpgradeCosts(upgradeAmount = 1) {
       for (let i = 0; i < upgradeCosts.length; i++) {
-        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000); // Base cost
-        upgradeCosts[i] *= Math.pow(0.25, upgradeLevel[i]); // Add exponential growth based on level
-        document.getElementById(`upgradeCost${i + 1}`).textContent = `Cost: ${numberWithCommas(upgradeCosts[i] * upgradeAmount)} clicks`; // Update display
+        upgradeCosts[i] = 500 + (upgradeLevel[i] * 2000); // Base cost calculation
+
+        // Adjusted growth factor (now 1.15)
+        upgradeCosts[i] *= Math.pow(1.15, upgradeLevel[i]); // Adjust growth factor
+
+        // Round the price to the nearest whole number
+        upgradeCosts[i] = Math.round(upgradeCosts[i]); 
+
+        // Update display
+        document.getElementById(`upgradeCost${i + 1}`).textContent = `Cost: ${numberWithCommas(upgradeCosts[i] * upgradeAmount)} clicks`;
       }
     }
     
@@ -4427,8 +4486,33 @@
       equippedSkin = localStorage.getItem('equippedSkin') || null;
     }
 
-// ... Existing JavaScript code ...
+    function updateBonusUpgradeCosts() {
+      bonusUpgradeCost = 1000 + (bonusUpgradeLevel * 500); // Base cost + level multiplier
+      document.getElementById('bonusUpgradeCost').textContent = `Cost: ${numberWithCommas(bonusUpgradeCost)} clicks`;
+    }
 
+    function upgradeBonus() {
+      const upgradeType = document.getElementById('bonusUpgradeType').value;
+      const upgradeAmount = parseInt(document.getElementById('bonusUpgradeAmount').value);
+
+      if (clickCount >= bonusUpgradeCost * upgradeAmount) {
+        clickCount -= bonusUpgradeCost * upgradeAmount;
+        bonusUpgradeLevel += upgradeAmount;
+
+        if (upgradeType === 'chance') {
+          bonusChance += 0.05 * upgradeAmount; // Increase chance by 5% per upgrade
+          bonusChance = Math.min(bonusChance, 1); // Cap chance at 100%
+        } else if (upgradeType === 'size') {
+          bonusMultiplier += 0.5 * upgradeAmount; // Increase size by 0.5x per upgrade
+        }
+
+        updateClickCount();
+        updateBonusUpgradeCosts(); // Update the display
+        WebApp.showAlert("Bonus upgraded!");
+      } else {
+        WebApp.showAlert("You don't have enough clicks to upgrade this feature!");
+      }
+    }
 
     const customSkin = {
       name: "Custom Skin",
@@ -6120,39 +6204,36 @@
     const coin = document.querySelector('.coin');
     const clickText = document.getElementById('clickText');
     coin.addEventListener('touchstart', (event) => {
-      event.preventDefault(); // Prevent default touch behavior
+      event.preventDefault();
 
-      // Check if the user is already clicking (prevents multiple clicks at once)
       if (isClicking) {
-        return; 
+        return;
       }
       isClicking = true;
 
-      // Handle multiple clicks (iterate through touches)
       for (let i = 0; i < event.touches.length; i++) {
         let touchX = event.touches[i].clientX;
         let touchY = event.touches[i].clientY;
 
-        // 23% chance of a bonus click
-        let isBonusClick = Math.random() < 0.23;
+        let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
 
         if (isBonusClick) {
-          clickCount += clickMultiplier * 2;
-          showClickText(clickMultiplier * 2, true); // Show bonus click text
+          clickCount += clickMultiplier * bonusMultiplier; // Use updated bonusMultiplier
+          showClickText(clickMultiplier * bonusMultiplier, true, touchX, touchY); 
         } else {
           clickCount += clickMultiplier;
-          showClickText(clickMultiplier); // Show regular click text
+          showClickText(clickMultiplier, false, touchX, touchY);
         }
 
         clicksRemaining--;
         updateLimitBar();
       }
 
-      // Allow new clicks after a short delay
       setTimeout(() => {
         isClicking = false;
       }, 100); 
     });
+
 
     coin.addEventListener('touchend', () => {
       isClicking = false;
