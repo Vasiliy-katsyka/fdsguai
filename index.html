@@ -3717,6 +3717,18 @@
     if (localStorage.getItem('upgradeCosts')) {
       upgradeCosts = JSON.parse(localStorage.getItem('upgradeCosts'));
     }
+    if (localStorage.getItem('bonusChance')) {
+      bonusChance = parseFloat(localStorage.getItem('bonusChance')); // Parse as float
+    }
+    if (localStorage.getItem('bonusMultiplier')) {
+      bonusMultiplier = parseFloat(localStorage.getItem('bonusMultiplier')); // Parse as float
+    }
+    if (localStorage.getItem('bonusUpgradeLevel')) {
+      bonusUpgradeLevel = parseInt(localStorage.getItem('bonusUpgradeLevel'));
+    }
+    if (localStorage.getItem('bonusUpgradeCost')) {
+      bonusUpgradeCost = parseInt(localStorage.getItem('bonusUpgradeCost'));
+    }
     // Load mining card levels from localStorage
     for (const cardType in miningCards) {
       if (localStorage.getItem(`miningCardLevel${cardType}`)) {
@@ -4016,10 +4028,57 @@
     }
 
     // Function to handle coin click
-    function clickCoin() {
-      clickCount += clickMultiplier; // Increment clickCount *after* checking
+    function clickCoin(event) {
+      const touches = event.touches || event.changedTouches; // Support both touchstart and touchend events
+
+      if (touches) { // If the event has touches
+        for (let i = 0; i < touches.length; i++) {
+          let touchX = touches[i].clientX;
+          let touchY = touches[i].clientY;
+
+          let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
+
+          if (isBonusClick) {
+            clickCount += clickMultiplier * bonusMultiplier; // Use updated bonusMultiplier
+            showClickText(clickMultiplier * bonusMultiplier, true); 
+          } else {
+            clickCount += clickMultiplier;
+            showClickText(clickMultiplier, false);
+          }
+
+          clicksRemaining--;
+          updateLimitBar();
+
+          // Position the click text correctly
+          const clickText = document.querySelector('.click-text'); // Get the last created click text
+          if (clickText) { 
+            clickText.style.left = touchX + 'px'; 
+            clickText.style.top = touchY + 'px'; 
+          }
+        }
+      } else { // For non-touch devices, use event.clientX/clientY
+        let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
+
+        if (isBonusClick) {
+          clickCount += clickMultiplier * bonusMultiplier; // Use updated bonusMultiplier
+          showClickText(clickMultiplier * bonusMultiplier, true); 
+        } else {
+          clickCount += clickMultiplier;
+          showClickText(clickMultiplier, false);
+        }
+
+        clicksRemaining--;
+        updateLimitBar();
+
+        // Position the click text correctly
+        const clickText = document.querySelector('.click-text'); // Get the last created click text
+        if (clickText) { 
+          clickText.style.left = event.clientX + 'px'; 
+          clickText.style.top = event.clientY + 'px'; 
+        }
+      }
+
       updateClickCount();
-      showClickText(clickMultiplier);
     }
 
 
@@ -4491,6 +4550,8 @@
     function updateBonusUpgradeCosts() {
       bonusUpgradeCost = 1000 + (bonusUpgradeLevel * 500); // Base cost + level multiplier
       document.getElementById('bonusUpgradeCost').textContent = `Cost: ${numberWithCommas(bonusUpgradeCost)} clicks`;
+      // Save bonusUpgradeCost to localStorage
+      localStorage.setItem('bonusUpgradeCost', bonusUpgradeCost);
     }
 
     function upgradeBonus() {
@@ -4511,6 +4572,11 @@
         updateClickCount();
         updateBonusUpgradeCosts(); // Update the display
         WebApp.showAlert("Bonus upgraded!");
+
+        // Save updated values to localStorage
+        localStorage.setItem('bonusChance', bonusChance);
+        localStorage.setItem('bonusMultiplier', bonusMultiplier);
+        localStorage.setItem('bonusUpgradeLevel', bonusUpgradeLevel); // Save bonusUpgradeLevel
       } else {
         WebApp.showAlert("You don't have enough clicks to upgrade this feature!");
       }
@@ -4957,26 +5023,17 @@
       window.open("https://t.me/LobsterCoinAnnouncements");
     }
 
+
+    
     // Function to show click text above the coin
     // Function to show click text above the coin
-    function showClickText(clicks, isBonus = false) { 
+    function showClickText(clicks, isBonus = false) {
       let clickText = document.createElement('div'); // Create new click text element
       clickText.classList.add('click-text');
       if (isBonus) {
         clickText.classList.add('bonus'); // Add the 'bonus' class to the click-text
       }
       clickText.textContent = `+${clicks}`;
-
-      // Get the coin's position
-      let coinRect = document.querySelector('.coin').getBoundingClientRect(); 
-
-      // Randomize the position within the coin's bounds
-      let randomX = Math.random() * coinRect.width + coinRect.left;
-      let randomY = Math.random() * coinRect.height + coinRect.top; 
-
-      // Set the click text's position
-      clickText.style.left = randomX + 'px';
-      clickText.style.top = randomY + 'px'; 
 
       // Add click text to the page
       document.body.appendChild(clickText);
@@ -6145,7 +6202,6 @@
 
     // Spawn bubbles every 1 second
     timeOut = randint(100, 900)
-    setInterval(createBubble, timeOut);
 
     // Store the last time the page was updated in localStorage
     let lastUpdateTime = new Date().getTime();
@@ -6205,6 +6261,8 @@
     // Add event listener to the coin for mobile
     const coin = document.querySelector('.coin');
     const clickText = document.getElementById('clickText');
+    coin.addEventListener('click', clickCoin); // For non-touch devices
+    coin.addEventListener('touchstart', clickCoin); // For touch devices
     coin.addEventListener('touchstart', (event) => {
       event.preventDefault();
 
