@@ -4047,14 +4047,7 @@
           }
 
           clicksRemaining--;
-          updateLimitBar();
-
-          // Position the click text correctly
-          const clickText = document.querySelector('.click-text'); // Get the last created click text
-          if (clickText) { 
-            clickText.style.left = touchX + 'px'; 
-            clickText.style.top = touchY + 'px'; 
-          }
+          updateLimitBar(); 
         }
       } else { // For non-touch devices, use event.clientX/clientY
         let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
@@ -4068,14 +4061,7 @@
         }
 
         clicksRemaining--;
-        updateLimitBar();
-
-        // Position the click text correctly
-        const clickText = document.querySelector('.click-text'); // Get the last created click text
-        if (clickText) { 
-          clickText.style.left = event.clientX + 'px'; 
-          clickText.style.top = event.clientY + 'px'; 
-        }
+        updateLimitBar(); 
       }
 
       updateClickCount();
@@ -5026,14 +5012,24 @@
 
     
     // Function to show click text above the coin
-    // Function to show click text above the coin
-    function showClickText(clicks, isBonus = false) {
+    function showClickText(clicks, isBonus = false) { 
       let clickText = document.createElement('div'); // Create new click text element
       clickText.classList.add('click-text');
       if (isBonus) {
         clickText.classList.add('bonus'); // Add the 'bonus' class to the click-text
       }
       clickText.textContent = `+${clicks}`;
+
+      // Get the coin's position
+      let coinRect = document.querySelector('.coin').getBoundingClientRect(); 
+
+      // Randomize the position within the coin's bounds
+      let randomX = Math.random() * coinRect.width + coinRect.left;
+      let randomY = Math.random() * coinRect.height + coinRect.top; 
+
+      // Set the click text's position
+      clickText.style.left = randomX + 'px';
+      clickText.style.top = randomY + 'px'; 
 
       // Add click text to the page
       document.body.appendChild(clickText);
