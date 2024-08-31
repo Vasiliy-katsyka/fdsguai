@@ -1547,7 +1547,7 @@
     </div>
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
-    <div style="font-size: 18px; color: white; margin-top: 20px; display: flex; align-items: center; justify-content: center;">
+    <div style="font-size: 18px; color: white; margin-top: 14px; display: flex; align-items: center; justify-content: center;">
       <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="20" width="20"> 
       <span id="clicksRemaining"></span>
     </div>
@@ -4177,7 +4177,7 @@
 
     function regenerateClicks() {
       // Faster regeneration based on clicksPerMinuteLimit
-      const regenerationRate = Math.max(1, Math.floor(clicksPerMinuteLimit / 50)); // Adjust the division factor (50) for speed
+      const regenerationRate = Math.max(1, Math.floor(clicksPerMinuteLimit / 750)); // Adjust the division factor (50) for speed
       clicksRemaining = Math.min(clicksRemaining + regenerationRate, clicksPerMinuteLimit); 
       updateClicksRemaining(); 
     }
@@ -4928,42 +4928,15 @@
       if (confirm("Do you really want to completely delete your data?")) {
         if (confirm("Are you 100% sure?")) {
           // Clear all relevant localStorage items
-          localStorage.removeItem('clickCount');
-          localStorage.removeItem('clickMultiplier');
-          localStorage.removeItem('upgradeLevel');
-          localStorage.removeItem('upgradeCosts');
-          localStorage.removeItem('lastUpdateTime');
-          localStorage.removeItem('lastRewardClaimTime');
-          localStorage.removeItem('dailyRewardIndex');
-          //localStorage.removeItem('collectedComboCards');
-          localStorage.removeItem('dailyComboCollected');
-          localStorage.removeItem('youtubeBonusClaimed');
-          localStorage.removeItem('telegramBonusClaimed');
-          localStorage.removeItem('xBonusClaimed');
-          localStorage.removeItem('storyBonusClaimed');
-          localStorage.removeItem('premiumBonusClaimed');
-          localStorage.removeItem('language'); 
-          localStorage.removeItem('headerColor');
-          localStorage.removeItem('backgroundImage');
-          localStorage.removeItem('bottomMenuImage'); 
-          localStorage.removeItem('purchasedSkins');
-          localStorage.removeItem('equippedSkin');
-          localStorage.removeItem('customSkinPurchased');
-          localStorage.removeItem('customSkinEquipped');
-          localStorage.removeItem('customSkinImageUrl');
+          localStorage.clear(); // Use localStorage.clear() to remove all data
 
-          // Clear mining card levels
-          for (const cardType in miningCards) {
-            localStorage.removeItem(`miningCardLevel${cardType}`);
-          }
-
-          // Reset game variables
+          // Reset game variables (you'll likely need to include more variables here)
           clickCount = 0;
           clickMultiplier = 1;
           upgradeLevel = [0, 0, 0];
           upgradeCosts = [500, 1500, 5000];
-          profitPerHour = 0; // Reset profitPerHour
-          skinProfitPerHour = 0; // Reset skinProfitPerHour
+          profitPerHour = 0; 
+          skinProfitPerHour = 0;
           dailyRewardIndex = 0; 
           lastRewardClaimTime = 0; 
           collectedComboCards = []; 
@@ -4972,6 +4945,16 @@
           customSkinPurchased = false;
           customSkinEquipped = false;
           customSkin.imageUrl = null; 
+          clicksRemaining = 100; 
+          clicksPerMinuteLimit = 100;
+          limitBoostLevel = 0; 
+          limitBoostPrice = 1000; 
+          youtubeBonusClaimed = false;
+          telegramBonusClaimed = false;
+          xBonusClaimed = false;
+          storyBonusClaimed = false;
+          premiumBonusClaimed = false;
+          connectedWallet = null; 
 
           // Reset mining card levels
           for (const cardType in miningCards) {
@@ -4983,8 +4966,8 @@
           updateUpgradeCosts();
           updateMiningCardPrices();
           updateMiningCardLevels();
-          updateProfitPerHour(); // Make sure to update profit display
-          displaySkins(); // Refresh the skins popup to reflect changes
+          updateProfitPerHour(); 
+          displaySkins();
 
           // Reset any other relevant variables in your game
           // ... 
