@@ -1547,7 +1547,10 @@
     </div>
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
-    <div style="font-size: 18px; color: white; margin-top: 5px;">⚡<span id="clicksRemaining"></span></div>
+    <div style="font-size: 18px; color: white; margin-top: 40px; display: flex; align-items: center; justify-content: center;">
+      <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="20" width="20"> 
+      <span id="clicksRemaining"></span>
+    </div>
 
     <div class="menu-container">
       <button class="bottom-button" id="boostsButton" onclick="openPopup()">
@@ -1615,7 +1618,7 @@
         <span id="limitBoostLabel">Upgrade Click Limit</span>
         <span class="upgrade-cost" id="limitBoostCost">Cost: ${numberWithCommas(limitBoostPrice)} clicks</span>
       </div>
-      <button class="button" id="upgradeLimitButton" onclick="upgradeLimit()">Upgrade Limit</button>
+      <input type="number" class="upgrade-input" id="limitBoostAmount" min="1" value="1" aria-label="Upgrade amount"> <button class="button" id="upgradeLimitButton" onclick="upgradeLimit()">Upgrade Limit</button>
     </div>
 
     <div class="popup" id="dailyRewardsPopup">
@@ -4065,15 +4068,17 @@
 
     // Function to upgrade the click limit
     function upgradeLimit() {
-      if (clickCount >= limitBoostPrice) {
-        clickCount -= limitBoostPrice;
-        limitBoostLevel++;
+      const upgradeAmount = parseInt(document.getElementById('limitBoostAmount').value); 
+      if (clickCount >= limitBoostPrice * upgradeAmount) {
+        clickCount -= limitBoostPrice * upgradeAmount;
+        limitBoostLevel += upgradeAmount;
 
         // Save clicksPerMinuteLimit BEFORE updating the variable
         localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit); 
-        
 
-        clicksPerMinuteLimit += 100 * (limitBoostLevel + 1); // Increase limit based on level
+        // **Calculate the increase directly using limitBoostLevel**
+        const increaseAmount = upgradeAmount;
+        clicksPerMinuteLimit += increaseAmount; 
 
         updateClickCount();
 
@@ -4085,12 +4090,10 @@
 
         // Fill clicksRemaining to the maximum
         clicksRemaining = clicksPerMinuteLimit;
-        localStorage.setItem('clicksRemaining', clicksRemaining);
 
         updateClicksRemaining();
-        WebApp.showAlert("Click limit upgraded!");
+        WebApp.showAlert(`Click limit upgraded by ${numberWithCommas(increaseAmount)}!`); 
 
-        // Save limit boost price and level to localStorage
         localStorage.setItem('limitBoostPrice', limitBoostPrice);
         localStorage.setItem('limitBoostLevel', limitBoostLevel); 
       } else {
@@ -4173,7 +4176,9 @@
     setInterval(checkCoinState, 1000);
 
     function regenerateClicks() {
-      clicksRemaining = Math.min(clicksRemaining + 1, clicksPerMinuteLimit); 
+      // Faster regeneration based on clicksPerMinuteLimit
+      const regenerationRate = Math.max(1, Math.floor(clicksPerMinuteLimit / 50)); // Adjust the division factor (50) for speed
+      clicksRemaining = Math.min(clicksRemaining + regenerationRate, clicksPerMinuteLimit); 
       updateClicksRemaining(); 
     }
 
