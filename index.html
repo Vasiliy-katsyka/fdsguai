@@ -88,6 +88,11 @@
       filter: brightness(0.85);
     }
 
+    .coin.active {
+      transform: scale(0.95); /* Adjust the scale value as needed */
+      filter: brightness(0.85); /* Adjust the brightness value as needed */
+    }
+
     .counter {
       font-size: 50px;
       margin-top: 20px;
@@ -1499,7 +1504,7 @@
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p id="versionText" style="position: absolute; bottom: 20px;">v1.70</p>
+    <p id="loadingPercentage" style="font-size: 2rem; margin-top: 20px;"></p> <p id="versionText" style="position: absolute; bottom: 20px;">v1.70</p>
   </div>
 
   <div class="title-container">
@@ -1542,6 +1547,7 @@
     </div>
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
+    <div style="font-size: 18px; color: white; margin-top: 40px;">⚡<span id="clicksRemaining"></span></div>
 
     <div class="menu-container">
       <button class="bottom-button" id="boostsButton" onclick="openPopup()">
@@ -1605,6 +1611,11 @@
       <input type="number" class="upgrade-input" id="bonusUpgradeAmount" min="1" value="1">
       <button class="button" id="upgradeBonusButton" onclick="upgradeBonus()">Upgrade Bonus</button>
       <span id="bonusUpgradeCost"></span>
+      <div class="upgrade">
+        <span id="limitBoostLabel">Upgrade Click Limit</span>
+        <span class="upgrade-cost" id="limitBoostCost">Cost: ${numberWithCommas(limitBoostPrice)} clicks</span>
+      </div>
+      <button class="button" id="upgradeLimitButton" onclick="upgradeLimit()">Upgrade Limit</button>
     </div>
 
     <div class="popup" id="dailyRewardsPopup">
@@ -2341,8 +2352,8 @@
    	let fakeLobsterPenalty = 0.7; 
    	let clicksRemaining = 100; 
     let clicksPerMinuteLimit = 100; 
+    let limitBoostPrice = 1000; 
     let limitBoostLevel = 0;
-    let limitBoostPrice = 1000;
     let isClicking = false;
     var WebApp = window.Telegram.WebApp;
  
@@ -3729,6 +3740,18 @@
     if (localStorage.getItem('bonusUpgradeCost')) {
       bonusUpgradeCost = parseInt(localStorage.getItem('bonusUpgradeCost'));
     }
+    if (localStorage.getItem('clicksRemaining')) {
+      clicksRemaining = parseInt(localStorage.getItem('clicksRemaining'));
+    }
+    if (localStorage.getItem('clicksPerMinuteLimit')) {
+      clicksPerMinuteLimit = parseInt(localStorage.getItem('clicksPerMinuteLimit'));
+    }
+    if (localStorage.getItem('limitBoostLevel')) {
+      limitBoostLevel = parseInt(localStorage.getItem('limitBoostLevel'));
+    }
+    if (localStorage.getItem('limitBoostPrice')) {
+      limitBoostPrice = parseInt(localStorage.getItem('limitBoostPrice'));
+    }
     // Load mining card levels from localStorage
     for (const cardType in miningCards) {
       if (localStorage.getItem(`miningCardLevel${cardType}`)) {
@@ -3935,13 +3958,16 @@
     // Function to check if all images are loaded
     function areImagesLoaded() {
       const images = document.querySelectorAll('img');
-      let allLoaded = true;
+      let loadedCount = 0;
       images.forEach(image => {
-        if (!image.complete) {
-          allLoaded = false;
+        if (image.complete) {
+          loadedCount++;
         }
       });
-      return allLoaded;
+      const percentage = Math.round((loadedCount / images.length) * 100);
+      // Update the loading percentage text element
+      document.getElementById('loadingPercentage').textContent = `${percentage}%`; 
+      return loadedCount === images.length;
     }
 
     // Set a timer to check if all images are loaded
@@ -3980,6 +4006,8 @@
 
 // ... (rest of your code) ...
     
+
+
     function numberWithCommas(x) {
       const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
 
@@ -4027,43 +4055,133 @@
       localStorage.setItem('upgradeCosts', JSON.stringify(upgradeCosts));
     }
 
+    function updateClicksRemaining() {
+      document.getElementById('clicksRemaining').textContent = `${clicksRemaining}/${clicksPerMinuteLimit}`;
+    }
+
+    function updateLimitBoostCost() {
+      document.getElementById('limitBoostCost').textContent = `Cost: ${numberWithCommas(limitBoostPrice)} clicks`;
+    }
+
+    // Function to upgrade the click limit
+    function upgradeLimit() {
+      if (clickCount >= limitBoostPrice) {
+        clickCount -= limitBoostPrice;
+        limitBoostLevel++;
+
+        // Save clicksPerMinuteLimit BEFORE updating the variable
+        localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit); 
+        
+
+        clicksPerMinuteLimit += 100 * (limitBoostLevel + 1); // Increase limit based on level
+
+        updateClickCount();
+
+        // Double the price AFTER upgrading the limit
+        limitBoostPrice *= 2; 
+
+        // Update the cost display
+        updateLimitBoostCost();
+
+        // Fill clicksRemaining to the maximum
+        clicksRemaining = clicksPerMinuteLimit;
+        localStorage.setItem('clicksRemaining', clicksRemaining);
+
+        updateClicksRemaining();
+        WebApp.showAlert("Click limit upgraded!");
+
+        // Save limit boost price and level to localStorage
+        localStorage.setItem('limitBoostPrice', limitBoostPrice);
+        localStorage.setItem('limitBoostLevel', limitBoostLevel); 
+      } else {
+        WebApp.showAlert("You don't have enough clicks to upgrade the click limit!");
+      }
+    }
+
     // Function to handle coin click
     function clickCoin(event) {
-      const touches = event.touches || event.changedTouches; // Support both touchstart and touchend events
+      const touches = event.touches || event.changedTouches; 
 
-      if (touches) { // If the event has touches
+      if (touches) {
         for (let i = 0; i < touches.length; i++) {
           let touchX = touches[i].clientX;
           let touchY = touches[i].clientY;
 
-          let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
-
-          if (isBonusClick) {
-            clickCount += clickMultiplier * bonusMultiplier; // Use updated bonusMultiplier
-            showClickText(clickMultiplier * bonusMultiplier, true); 
-          } else {
-            clickCount += clickMultiplier;
-            showClickText(clickMultiplier, false);
+          // **Check if clicks remaining is 0 or less BEFORE processing clicks**
+          if (clicksRemaining <= localStorage.getItem('clickMultiplier')) {
+            WebApp.showAlert('Tap limit reached! Wait for the timer to reset.');
+            return; // Prevent further clicks
           }
 
-          clicksRemaining--;
-          updateLimitBar(); 
+          // **Process the click ONLY if clicksRemaining is greater than 0**
+          let isBonusClick = Math.random() < bonusChance;
+
+          if (isBonusClick) {
+            clickCount += clickMultiplier * bonusMultiplier;
+            showClickText(clickMultiplier * bonusMultiplier, true, touchX, touchY); 
+          } else {
+            clickCount += clickMultiplier;
+            showClickText(clickMultiplier, false, touchX, touchY);
+          }
+
+          clicksRemaining -= clickMultiplier; // Subtract click multiplier from remaining clicks
+          updateClicksRemaining(); 
         }
-      } else { // For non-touch devices, use event.clientX/clientY
-        let isBonusClick = Math.random() < bonusChance; // Use updated bonusChance
+      } else {
+        // **Check if clicks remaining is 0 or less BEFORE processing clicks**
+        if (clicksRemaining <= localStorage.getItem('clickMultiplier')) {
+          WebApp.showAlert('Tap limit reached! Wait for the timer to reset.');
+          return; // Prevent further clicks
+        }
+
+        // **Process the click ONLY if clicksRemaining is greater than 0**
+        let isBonusClick = Math.random() < bonusChance; 
 
         if (isBonusClick) {
-          clickCount += clickMultiplier * bonusMultiplier; // Use updated bonusMultiplier
+          clickCount += clickMultiplier * bonusMultiplier;
           showClickText(clickMultiplier * bonusMultiplier, true); 
         } else {
           clickCount += clickMultiplier;
           showClickText(clickMultiplier, false);
         }
+
+        clicksRemaining -= clickMultiplier; // Subtract click multiplier from remaining clicks
+        updateClicksRemaining(); 
       }
 
       updateClickCount();
+
+      // **Reset clicksRemaining to 0 if it becomes negative**
+      if (clicksRemaining < 0) {
+        clicksRemaining = 0; 
+        updateClicksRemaining();
+      }
     }
 
+    function checkCoinState() {
+      const coin = document.querySelector('.coin');
+      if (clicksRemaining < localStorage.getItem('clickMultiplier')) {
+        setTimeout(() => { // Add a slight delay
+          coin.classList.add('active');
+        }, 10); // Adjust the delay value as needed
+      } else {
+        coin.classList.remove('active');
+      }
+    }
+
+    // Call checkCoinState every second
+    setInterval(checkCoinState, 1000);
+
+    function regenerateClicks() {
+      clicksRemaining = Math.min(clicksRemaining + 1, clicksPerMinuteLimit); 
+      updateClicksRemaining(); 
+    }
+
+    // Call regenerateClicks every second
+    setInterval(regenerateClicks, 1000);
+
+    // Update clicks remaining on page load
+    updateClicksRemaining();
 
     function updateLeague() {
       if (clickCount <= 1000) {
@@ -4127,6 +4245,7 @@
 
       updateUpgradeCosts(); // Call updateUpgradeCosts AFTER adding HTML
       updateBonusUpgradeCosts(); 
+      updateLimitBoostCost();
     }
 
     // Function to close the popup
@@ -5010,34 +5129,37 @@
     
     // Function to show click text above the coin
     function showClickText(clicks, isBonus = false) { 
-      let clickText = document.createElement('div'); // Create new click text element
-      clickText.classList.add('click-text');
-      if (isBonus) {
-        clickText.classList.add('bonus'); // Add the 'bonus' class to the click-text
-      }
-      clickText.textContent = `+${clicks}`;
+      if (clicksRemaining > localStorage.getItem('clickMultiplier')) { // Only display click text if there are clicks remaining
+        let clickText = document.createElement('div'); 
+        clickText.classList.add('click-text');
+        if (isBonus) {
+          clickText.classList.add('bonus'); 
+        }
+        clickText.textContent = `+${clicks}`;
 
-      // Get the coin's position
-      let coinRect = document.querySelector('.coin').getBoundingClientRect(); 
 
-      // Randomize the position within the coin's bounds
-      let randomX = Math.random() * coinRect.width + coinRect.left;
-      let randomY = Math.random() * coinRect.height + coinRect.top; 
+        // Get the coin's position
+        let coinRect = document.querySelector('.coin').getBoundingClientRect(); 
 
-      // Set the click text's position
-      clickText.style.left = randomX + 'px';
-      clickText.style.top = randomY + 'px'; 
+        // Randomize the position within the coin's bounds
+        let randomX = Math.random() * coinRect.width + coinRect.left;
+        let randomY = Math.random() * coinRect.height + coinRect.top; 
 
-      // Add click text to the page
-      document.body.appendChild(clickText);
+        // Set the click text's position
+        clickText.style.left = randomX + 'px';
+        clickText.style.top = randomY + 'px'; 
 
-      // Apply the bubble animation (same as bubbles)
-      clickText.style.animation = 'bubbleUp 3s linear forwards';
+        // Add click text to the page
+        document.body.appendChild(clickText);
 
-      // Automatically remove the click text after the animation completes
-      setTimeout(() => {
-        document.body.removeChild(clickText);
-      }, 3000); // 3 seconds for the animation
+        // Apply the bubble animation (same as bubbles)
+        clickText.style.animation = 'bubbleUp 3s linear forwards';
+
+        // Automatically remove the click text after the animation completes
+        setTimeout(() => {
+          document.body.removeChild(clickText);
+        }, 3000); // 3 seconds for the animation
+      }  
     }
 
     // Function to open the Mining popup
@@ -6226,6 +6348,7 @@
       updateMiningCardPrices(); 
       updateMiningCardLevels(); // Load levels from localStorage
       loadTheme();
+      updateLimitBoostCost();
     });
 
     // Update click count every second
