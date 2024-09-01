@@ -1547,7 +1547,7 @@
     </div>
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
-    <div style="font-size: 18px; color: white; margin-top: 14px; display: flex; align-items: center; justify-content: center;">
+    <div style="font-size: 18px; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: center;">
       <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="20" width="20"> 
       <span id="clicksRemaining"></span>
     </div>
@@ -4069,6 +4069,7 @@
     // Function to upgrade the click limit
     function upgradeLimit() {
       const upgradeAmount = parseInt(document.getElementById('limitBoostAmount').value); 
+      limitBoostPrice = localStorage.getItem('limitBoostPrice');
       if (clickCount >= limitBoostPrice * upgradeAmount) {
         clickCount -= limitBoostPrice * upgradeAmount;
         limitBoostLevel += upgradeAmount;
@@ -4077,13 +4078,19 @@
         localStorage.setItem('clicksPerMinuteLimit', clicksPerMinuteLimit); 
 
         // **Calculate the increase directly using limitBoostLevel**
-        const increaseAmount = upgradeAmount;
+        const increaseAmount = upgradeAmount * 100;
         clicksPerMinuteLimit += increaseAmount; 
 
         updateClickCount();
 
         // Double the price AFTER upgrading the limit
-        limitBoostPrice *= 2; 
+        limitBoostPrice = 1000 + (limitBoostLevel * 500); // Base cost calculation
+        limitBoostPrice *= Math.pow(1.15, limitBoostLevel); // Adjust growth factor
+
+        // Round the price to the nearest whole number
+        limitBoostPrice = Math.round(limitBoostPrice);
+
+        localStorage.setItem('limitBoostPart', limitBoostPrice);
 
         // Update the cost display
         updateLimitBoostCost();
@@ -4177,7 +4184,7 @@
 
     function regenerateClicks() {
       // Faster regeneration based on clicksPerMinuteLimit
-      const regenerationRate = Math.max(1, Math.floor(clicksPerMinuteLimit / 750)); // Adjust the division factor (50) for speed
+      const regenerationRate = Math.max(1, Math.floor(clicksPerMinuteLimit / 1000)); // Adjust the division factor (50) for speed
       clicksRemaining = Math.min(clicksRemaining + regenerationRate, clicksPerMinuteLimit); 
       updateClicksRemaining(); 
     }
