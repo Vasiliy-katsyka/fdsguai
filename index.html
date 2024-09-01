@@ -4070,8 +4070,8 @@
     function upgradeLimit() {
       const upgradeAmount = parseInt(document.getElementById('limitBoostAmount').value); 
       limitBoostPrice = localStorage.getItem('limitBoostPrice');
-      if (clickCount >= limitBoostPrice * upgradeAmount) {
-        clickCount -= limitBoostPrice * upgradeAmount;
+      if (clickCount >= limitBoostPrice) {
+        clickCount -= limitBoostPrice;
         limitBoostLevel += upgradeAmount;
 
         // Save clicksPerMinuteLimit BEFORE updating the variable
