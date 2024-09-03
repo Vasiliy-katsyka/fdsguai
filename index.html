@@ -6422,6 +6422,12 @@
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
       updateProfitPerHour(); // Update the profit display on page load
     }
+
+    function resetClicksRemaining() {
+      clicksRemaining = clicksPerMinuteLimit;
+      updateClicksRemaining(); // Update the display
+    }
+    window.addEventListener('load', resetClicksRemaining); 
     
     let currentTranslations = loadTranslations(); 
     updateTranslatedText(); 
