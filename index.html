@@ -4238,7 +4238,7 @@
     // Function to open the popup
     function openPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closePopup());
+      WebApp.BackButton.onClick(closePopup);
       document.getElementById('popup').style.display = 'block';
 
       // ... (Your existing HTML for upgrade costs) ...
@@ -4263,11 +4263,13 @@
     // Function to close the popup
     function closePopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('popup').style.display = 'none';
     }
     
     function closeAirdropPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('popup').style.display = 'none';
     }
     let youtubeBonusClaimed = localStorage.getItem('youtubeBonusClaimed') === 'true';
@@ -4537,7 +4539,7 @@
     // Function to open the skins popup
     function openSkinsPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeSkinsPopup());
+      WebApp.BackButton.onClick(closeSkinsPopup);
       document.getElementById('skinsPopup').style.display = 'block';
       displaySkins();
     }
@@ -4545,6 +4547,7 @@
     // Function to close the skins popup
     function closeSkinsPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('skinsPopup').style.display = 'none';
     }
 
@@ -4555,7 +4558,7 @@
 
     function openPrivacyPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closePrivacyPopup());
+      WebApp.BackButton.onClick(closePrivacyPopup);
       document.getElementById('privacyPopup').style.display = 'block';
 
       // Set the checkbox state based on eighteenPlusEnabled
@@ -4563,6 +4566,7 @@
 
     function closePrivacyPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('privacyPopup').style.display = 'none';
     }
 
@@ -4866,7 +4870,7 @@
     // Function to open the league popup
     function openLeaguePopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeLeaguePopup());
+      WebApp.BackButton.onClick(closeLeaguePopup);
       updateLeagueData();
       document.getElementById('leaguePopup').style.display = 'block';
     }
@@ -4874,6 +4878,7 @@
     // Function to close the league popup
     function closeLeaguePopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('leaguePopup').style.display = 'none';
     }
 
@@ -4908,25 +4913,27 @@
     // Function to open the earn popup
     function earnClick() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeEarnPopup());
+      WebApp.BackButton.onClick(closeEarnPopup);
       document.getElementById('earnPopup').style.display = 'block';
     }
 
     // Function to close the earn popup
     function closeEarnPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('earnPopup').style.display = 'none';
     }
 
     function openSettingsPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeSettingsPopup());
+      WebApp.BackButton.onClick(closeSettingsPopup);
       document.getElementById('settingsPopup').style.display = 'block';
     }
 
     // Function to close the settings popup
     function closeSettingsPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('settingsPopup').style.display = 'none';
     }
 
@@ -4997,13 +5004,14 @@
     // Function to open the legal info popup
     function openLegalInfoPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeLegalInfoPopup());
+      WebApp.BackButton.onClick(closeLegalInfoPopup);
       document.getElementById('legalInfoPopup').style.display = 'block';
     }
 
     // Function to close the legal info popup
     function closeLegalInfoPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('legalInfoPopup').style.display = 'none';
     }
 
@@ -5160,14 +5168,26 @@
     // Function to open the Mining popup
     function openMiningPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeMiningPopup());
+      WebApp.BackButton.onClick(closeMiningPopup);
       document.getElementById('miningPopup').style.display = 'block';
-      updateMiningCardPrices(); // Update card prices when popup opens
+
+      // Load mining card levels from localStorage
+      for (const cardType in miningCards) {
+        let storedLevel = localStorage.getItem(`miningCardLevel${cardType}`);
+        if (storedLevel !== null) {
+          miningCards[cardType].level = parseInt(storedLevel);
+        }
+      }
+
+      // Update the profit and level display in the UI
+      updateMiningCardPrices();
+      updateMiningCardLevels(); // Update level display AFTER loading from localStorage
     }
 
     // Function to close the Mining popup
     function closeMiningPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('miningPopup').style.display = 'none';
     }
 
@@ -5195,11 +5215,17 @@
       if (clickCount >= miningCards[cardType].price) {
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
-        profitPerHour += miningCards[cardType].profitPerHour * miningCards[cardType].level; 
+        
+        // Calculate total profit per hour (add to existing profit)
+        profitPerHour += miningCards[cardType].profitPerHour * miningCards[cardType].level;
+        
+        // Save total profit per hour to localStorage
         localStorage.setItem('profitPerHour', profitPerHour);
+
+        // Update the UI
         updateProfitPerHour();
-        updateClickCount(); // Update click count to trigger profit per hour update
-        updateMiningCardPrices(); // Update prices and profit per hour
+        updateClickCount(); 
+        updateMiningCardPrices(); 
         updateMiningCardLevels();
         cardCooldown[cardType] = 30; 
         showCardCooldown(cardType);
@@ -5302,7 +5328,7 @@
       // Add skin profit to the total
       totalProfit += skinProfitPerHour; 
 
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas1(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
@@ -5786,13 +5812,14 @@
     // Function to open the Airdrop popup
     function openAirdrop() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeAirdropPopup());
+      WebApp.BackButton.onClick(closeAirdropPopup);
       document.getElementById('airdropPopup').style.display = 'block';
     }
 
     // Function to close the Airdrop popup
     function closeAirdropPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('airdropPopup').style.display = 'none';
     }
     
@@ -5803,7 +5830,7 @@
     // Function to open the voting popup
     function openVotingPopup() {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeVotingPopup());
+      WebApp.BackButton.onClick(closeVotingPopup);
       closeEarnPopup();
       document.getElementById('votingPopup').style.display = 'block';
       document.getElementById('votingQuestion').textContent = "Which of these artists is most popular with lobsters?";
@@ -5813,6 +5840,7 @@
     // Function to close the voting popup
     function closeVotingPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       document.getElementById('votingPopup').style.display = 'none';
     }
 
@@ -5860,7 +5888,7 @@
     // Function to show the voting result popup
     function showVotingResult(selectedCard, betAmount) {
       WebApp.BackButton.show();
-      WebApp.BackButton.onClick(closeVotingResultPopup());
+      WebApp.BackButton.onClick(closeVotingResultPopup);
       document.getElementById('votingResultPopup').style.display = 'block';
 
       let winningCard = votingCards[Math.floor(Math.random() * votingCards.length)];
@@ -5889,6 +5917,7 @@
     // Function to close the voting result popup
     function closeVotingResultPopup() {
       WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
       WebApp.setHeaderColor(localStorage.getItem('headerColor'));
       document.getElementById('votingResultPopup').style.display = 'none';
     }
@@ -6322,20 +6351,9 @@
     let elapsedTime = new Date().getTime() - lastUpdateTime;
     
     function updateMiningCardLevels() {
-      // Iterate through each mining card type
       for (const cardType in miningCards) {
-        // Get the level from localStorage using the cardType as part of the key
-        let level = localStorage.getItem(`miningCardLevel${cardType}`);
-        // If a level is found in localStorage, parse it as an integer
-        if (level !== null) {
-          miningCards[cardType].level = parseInt(level);
-        } else {
-          // If no level is found, set it to 0 (default)
-          miningCards[cardType].level = 0;
-        }
-
-        // Update the UI to display the loaded or default level
         document.getElementById(`${cardType}Level`).textContent = `Level: ${miningCards[cardType].level}`;
+        localStorage.setItem(`miningCardLevel${cardType}`, miningCards[cardType].level);
       }
     }
 
