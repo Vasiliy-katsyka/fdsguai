@@ -5843,22 +5843,19 @@
       }
     }
 
-    // Function to open the Airdrop popup
     function openAirdrop() {
-      WebApp.BackButton.show(); 
+      WebApp.BackButton.show();
       WebApp.BackButton.onClick(closeAirdropPopup);
       document.getElementById('airdropPopup').style.display = 'block';
 
       // Show the "Claim Airdrop" button
-      WebApp.MainButton.show({
-        text: 'Claim Airdrop',
-        hasShineEffect: true,
-        color: '#ffff00', // Yellow
-        textColor: '#fff', // White
-        onClick: openAirdroppingPopup
-      });
+      WebApp.MainButton.show(); 
+      WebApp.MainButton.text = 'Claim Airdrop';
+      WebApp.MainButton.hasShineEffect = true;
+      WebApp.MainButton.color = '#ffff00'; // Yellow
+      WebApp.MainButton.textColor = '#fff'; // White
+      WebApp.MainButton.onClick = openAirdroppingPopup;
     }
-
 
     function openAirdroppingPopup() {
       WebApp.BackButton.show(); 
@@ -5866,25 +5863,26 @@
       WebApp.HeaderColor = "#fff";
       document.getElementById('airdroppingPopup').style.display = 'block';
       document.getElementById('airdropAmount').textContent = `${clickCount} / 100k $LOB`;
-      WebApp.MainButton.hide();
-      WebApp.MainButton.show({
-        text: 'Claim to Wallet',
-        hasShineEffect: true,
-        color: '#ffff00', // Yellow
-        textColor: '#fff', // White
-        onClick: claimToWallet,
-        isActive: false, 
-        position: 'left'
-      });
-      WebApp.SecondaryButton.show({
-        text: 'Get TON',
-        hasShineEffect: true,
-        color: '#111', // Yellow
-        textColor: '#444', // White
-        onClick: getton,
-        isActive: false, 
-        position: 'right'
-      });
+
+      // Hide and then show the MainButton to update its properties
+      WebApp.MainButton.hide(); 
+
+      WebApp.MainButton.show();
+      WebApp.MainButton.text = "Claim to Wallet";
+      WebApp.MainButton.color = '#ffff00'; // Yellow
+      WebApp.MainButton.textColor = '#fff'; // White
+      WebApp.MainButton.onClick = claimToWallet;
+      WebApp.MainButton.isActive = false;
+      WebApp.MainButton.position = 'left';
+
+      // Show the SecondaryButton with updated properties
+      WebApp.SecondaryButton.show();
+      WebApp.SecondaryButton.text = "Get TON";
+      WebApp.SecondaryButton.color = '#111'; // Black
+      WebApp.SecondaryButton.textColor = '#444'; // Dark gray
+      WebApp.SecondaryButton.onClick = getton; // Assuming you have a getton function
+      WebApp.SecondaryButton.isActive = false;
+      WebApp.SecondaryButton.position = 'right';
     }
 
     function getton() {
