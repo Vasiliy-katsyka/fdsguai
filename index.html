@@ -2189,8 +2189,8 @@
       <span id="airdropAmount"></span>
     </div>
     <p style="margin-top: 20px;">Claim will be availible later, after listing</p>
-    <button class="claim-button" id="getTonButton" onclick="getton()">Get Ton For Gas Fees</button> 
-    <!--<button class="claim-button" id="claimToWalletButton" onclick="claimToWallet()" disabled>Claim to Wallet</button> -->
+    <!--<button class="claim-button" id="getTonButton" onclick="getton()">Get Ton For Gas Fees</button> 
+    <!-<button class="claim-button" id="claimToWalletButton" onclick="claimToWallet()" disabled>Claim to Wallet</button> -->
   </div>
 
   <div class="airdrop-popup" id="airdropPopup">
@@ -5850,7 +5850,7 @@
       document.getElementById('airdropPopup').style.display = 'block';
 
       // Show the "Claim Airdrop" button
-      WebApp.BottomButton.show({
+      WebApp.MainButton.show({
         text: 'Claim Airdrop',
         hasShineEffect: true,
         color: '#ffff00', // Yellow
@@ -5866,8 +5866,8 @@
       WebApp.HeaderColor = "#fff";
       document.getElementById('airdroppingPopup').style.display = 'block';
       document.getElementById('airdropAmount').textContent = `${clickCount} / 100k $LOB`;
-      WebApp.Buttom.hide();
-      WebApp.BottomButton.show({
+      WebApp.MainButton.hide();
+      WebApp.MainButton.show({
         text: 'Claim to Wallet',
         hasShineEffect: true,
         color: '#ffff00', // Yellow
@@ -5875,6 +5875,15 @@
         onClick: claimToWallet,
         isActive: false, 
         position: 'left'
+      });
+      WebApp.SecondaryButton.show({
+        text: 'Get TON',
+        hasShineEffect: true,
+        color: '#111', // Yellow
+        textColor: '#444', // White
+        onClick: getton,
+        isActive: false, 
+        position: 'right'
       });
     }
 
