@@ -1491,7 +1491,48 @@
       fornt-size: 1rem;
     }
 
-    
+    .airdropping-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(25px); /* Apply blur effect */
+      color: #999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100; /* Ensure it's on top of other popups */
+      display: none; /* Initially hidden */
+    }
+
+    .airdropping-popup .claim-button { /* Style for the "Get Ton" button */
+      background-color: #111; /* Black background */
+      border-radius: 20px;
+      color: #444; /* Gray text color */
+      font-size: 15px;
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.1s ease, box-shadow 0.1s ease; /* Add a transition for the transform property */
+    }
+
+    .airdropping-popup .claim-button:hover {
+      transform: scale(1.05); /* Make the button slightly bigger on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add a more pronounced shadow on hover */
+    }
+
+    .airdropping-popup .claim-button.active {
+      transform: scale(0.95); /* Make the button slightly smaller on press */
+      filter: brightness(0.85); /* Make the button slightly darker on press */
+    }
   </style>
 </head>
 <body>
@@ -2150,6 +2191,15 @@
         <button class="menu-button" href="https://www.e-droid.net/privacy.php?ida=2257006&idl=en" id="termsOfServiceButton">Terms Of Service</button>
       </div>
     </div>
+  </div>
+
+  <div class="airdropping-popup" id="airdroppingPopup">
+    <div style="font-size: 3rem;">
+      <span id="airdropAmount"></span>
+    </div>
+    <p style="margin-top: 20px;">Claim will be availible later, after listing</p>
+    <button class="claim-button" id="getTonButton" onclick="getton()">Get Ton For Gas Fees</button> 
+    <!--<button class="claim-button" id="claimToWalletButton" onclick="claimToWallet()" disabled>Claim to Wallet</button> -->
   </div>
 
   <div class="airdrop-popup" id="airdropPopup">
@@ -5811,9 +5861,54 @@
 
     // Function to open the Airdrop popup
     function openAirdrop() {
-      WebApp.BackButton.show();
+      WebApp.BackButton.show(); 
       WebApp.BackButton.onClick(closeAirdropPopup);
       document.getElementById('airdropPopup').style.display = 'block';
+
+      // Show the "Claim Airdrop" button
+      WebApp.ButtomButton.show({
+        text: 'Claim Airdrop',
+        hasShineEffect: true,
+        color: '#ffff00', // Yellow
+        textColor: '#fff', // White
+        onClick: openAirdroppingPopup
+      });
+    }
+
+
+    function openAirdroppingPopup() {
+      WebApp.BackButton.show(); 
+      WebApp.BackButton.onClick(closeAirdroppingPopup);
+      WebApp.HeaderColor = "#fff";
+      document.getElementById('airdroppingPopup').style.display = 'block';
+      document.getElementById('airdropAmount').textContent = `${clickCount} / 100k $LOB`;
+      WebApp.Buttom.hide();
+      WebApp.ButtomButton.show({
+        text: 'Claim to Wallet',
+        hasShineEffect: true,
+        color: '#ffff00', // Yellow
+        textColor: '#fff', // White
+        onClick: claimToWallet,
+        isActive: false, 
+        position: 'left'
+      });
+    }
+
+    function getton() {
+      WebApp.openTelegramLink('https://t.me/quick_tg_bot?start=r_5146625949');
+    }
+
+    // Function to close the Airdropping popup
+    function closeAirdroppingPopup() {
+      WebApp.BackButton.hide(); 
+      WebApp.BackButton.onClick(() => {});
+      WebApp.HeaderColor = localStorage.getItem('headerColor') || '#000000';
+      document.getElementById('airdroppingPopup').style.display = 'none';
+    }
+
+    // Function to claim to wallet (not implemented yet)
+    function claimToWallet() {
+      WebApp.showAlert("This feature is not yet available."); 
     }
 
     // Function to close the Airdrop popup
