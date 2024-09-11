@@ -5891,6 +5891,9 @@
     function closeAirdroppingPopup() {
       WebApp.BackButton.hide(); 
       WebApp.BackButton.onClick(() => {});
+      if (WebApp.MainButton.isVisible) {
+        WebApp.MainButton.hide();
+      }
       WebApp.HeaderColor = localStorage.getItem('headerColor') || '#000000';
       document.getElementById('airdroppingPopup').style.display = 'none';
     }
