@@ -5848,11 +5848,11 @@
       WebApp.BackButton.onClick(closeAirdropPopup);
       document.getElementById('airdropPopup').style.display = 'block';
 
-      // Show the "Claim Airdrop" button
+      /* Show the "Claim Airdrop" button
       WebApp.MainButton.show(); 
       WebApp.MainButton.text = 'Claim Airdrop';
       WebApp.MainButton.hasShineEffect = true;
-      WebApp.MainButton.onClick = openAirdroppingPopup;
+      WebApp.MainButton.onClick = openAirdroppingPopup;*/
     }
 
     function openAirdroppingPopup() {
@@ -5862,25 +5862,23 @@
       document.getElementById('airdroppingPopup').style.display = 'block';
       document.getElementById('airdropAmount').textContent = `${clickCount} / 100k $LOB`;
 
-      // Hide and then show the MainButton to update its properties
+      /* Hide and then show the MainButton to update its properties
       WebApp.MainButton.hide(); 
 
       WebApp.MainButton.show();
       WebApp.MainButton.text = "Claim to Wallet";
-      WebApp.MainButton.color = '#ffff00'; // Yellow
-      WebApp.MainButton.textColor = '#fff'; // White
+      WebApp.MainButton.color = '#ffff00'; 
+      WebApp.MainButton.textColor = '#fff'; 
       WebApp.MainButton.onClick = claimToWallet;
       WebApp.MainButton.isActive = false;
       WebApp.MainButton.position = 'left';
-
-      // Show the SecondaryButton with updated properties
       WebApp.SecondaryButton.show();
       WebApp.SecondaryButton.text = "Get TON";
-      WebApp.SecondaryButton.color = '#111'; // Black
-      WebApp.SecondaryButton.textColor = '#444'; // Dark gray
-      WebApp.SecondaryButton.onClick = getton; // Assuming you have a getton function
+      WebApp.SecondaryButton.color = '#111'; 
+      WebApp.SecondaryButton.textColor = '#444'; 
+      WebApp.SecondaryButton.onClick = getton; 
       WebApp.SecondaryButton.isActive = false;
-      WebApp.SecondaryButton.position = 'right';
+      WebApp.SecondaryButton.position = 'right';*/
     }
 
     function getton() {
