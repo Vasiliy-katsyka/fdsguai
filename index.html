@@ -292,6 +292,7 @@
 
     .bottom-button svg {
       width: 24px;
+      fill: white;
       height: 24px;
       margin-bottom: 5px; /* Add space between icon and text */
       filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5)); /* Add a drop shadow to icons */
@@ -761,6 +762,7 @@
       background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-align: center;
       margin-bottom: 20px; /* Adjust spacing as needed */
     }
     
@@ -1553,18 +1555,18 @@
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0);
-      backdrop-filter: blur(50px);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
       padding: 10px 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       z-index: 1000;
-      width: 70%;
       color: white;
       opacity: 0;
       transition: opacity 0.3s ease, transform 0.3s ease;
+      margin-bottom: 10px; /* Add margin for spacing */
     }
 
     .message-container.show {
@@ -1584,6 +1586,90 @@
 
     .message-container.fly-left {
       transform: translateX(-100%); 
+    }
+
+    .message-container.hidden {
+      opacity: 0;
+      transform: translateY(-100%); /* Move off-screen */
+    }
+
+    /* Style for the airdrop popup info elements */
+    .airdrop-popup .info-item {
+      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+      border: 2px solid #ffae00; /* Yellow border */
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .airdrop-popup .info-item svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+      margin-right: 4px;
+    }
+    
+    .airdrop-popup .info-item span {
+      /* Style for the text in the info items */
+      margin-left: 8px;
+    }
+
+    .faq-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(55px);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 10;
+      color: white;
+      width: 80%; /* Adjust width as needed */
+      max-height: 80vh; /* Adjust max-height as needed */
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    .faq-popup h2 {
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .faq-section {
+      margin-bottom: 20px;
+    }
+
+    .faq-section h3 {
+      background: linear-gradient(to right, #FF00D8, #00FFF3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 0;
+    }
+
+    .faq-section p {
+      margin-top: 10px;
+    }
+
+    .faq-popup .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #800080;
+    }
+
+    .faq-popup .close-button:hover {
+      color: red;
     }
   </style>
 </head>
@@ -1659,14 +1745,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
         <span id="earnLabel">Earn</span>
       </button>
-      <button class="bottom-button" id="aboutButton" onclick="aboutClick()">
+      <button class="bottom-button" id="aboutButton">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
         <span id="aboutLabel">About</span>
       </button>
       <button class="bottom-button" id="miningButton" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg><span id="miningLabel">Mining</span></button>
       <button class="bottom-button" id="airdropButton" onclick="openAirdrop()">
         <svg>
-          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="30" height="30" /> 
+          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="23" height="23" /> 
         </svg>
         <span id="airdropLabel">Airdrop</span>
       </button>
@@ -2257,7 +2343,30 @@
     </div>
     <div class="airdrop-content">
       <h2 id="airdropPopupTitle">Airdrop!</h2>
-      <p id="airdropPopupMessage">Come here soon...</p>
+      <p id="airdropPopupMessage">This will affect your token count after listing.</p>
+
+      <div class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>currency-usd</title><path d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z" /></svg>
+        <span>Balance</span>
+      </div>
+      <div class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>trophy</title><path d="M18 2C17.1 2 16 3 16 4H8C8 3 6.9 2 6 2H2V11C2 12 3 13 4 13H6.2C6.6 15 7.9 16.7 11 17V19.08C8 19.54 8 22 8 22H16C16 22 16 19.54 13 19.08V17C16.1 16.7 17.4 15 17.8 13H20C21 13 22 12 22 11V2H18M6 11H4V4H6V11M20 11H18V4H20V11Z" /></svg>
+        <span>League</span>
+      </div>
+      <div class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>database-arrow-up</title><path d="M19 13C16.83 13 14.93 14.16 13.88 15.89C13.28 15.96 12.65 16 12 16C7.58 16 4 14.21 4 12V9C4 11.21 7.58 13 12 13S20 11.21 20 9V12C20 12.36 19.9 12.71 19.72 13.05C19.5 13 19.24 13 19 13M12 11C16.42 11 20 9.21 20 7S16.42 3 12 3 4 4.79 4 7 7.58 11 12 11M13.1 17.96C12.74 18 12.37 18 12 18C7.58 18 4 16.21 4 14V17C4 19.21 7.58 21 12 21C12.46 21 12.9 21 13.33 20.94C13.12 20.33 13 19.68 13 19C13 18.64 13.04 18.3 13.1 17.96M19 15L16 18H18V22H20V18H22L19 15Z" /></svg>
+        <span>Profit Per Hour</span>
+      </div>
+      <div class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>advertisements</title><path d="M19 7C17.9 7 17 7.9 17 9V11C17 12.1 17.9 13 19 13H21V15H17V17H21C22.1 17 23 16.1 23 15V13C23 11.9 22.1 11 21 11H19V9H23V7H19M9 7V17H13C14.1 17 15 16.1 15 15V9C15 7.9 14.1 7 13 7H9M11 9H13V15H11V9M3 7C1.9 7 1 7.9 1 9V17H3V13H5V17H7V9C7 7.9 6.1 7 5 7H3M3 9H5V11H3V9Z" /></svg>
+        <span>Ads Watched</span>
+      </div>
+      <div class="info-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-multiple</title><path d="M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z" /></svg>
+        <span>Purchased Skins</span>
+      </div>
+    </div>
+  </div>
       <!--<input type="text" id="walletAddress" placeholder="Enter wallet address">
       <button id="ton-connect" class="connect-wallet-button" onclick="connectToWallet()">Connect Wallet</button> 
       <script>
@@ -2281,9 +2390,9 @@
           <input type="number" id="lobAmount" disabled>
         </div>
       </div>
-      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>-->
+      <button class="claim-button" id="claimAirdropButton" onclick="claimAirdrop()">Recieve Money</button>
     </div>
-  </div>
+  </div>-->
   
   <div class="popup skins-popup" id="skinsPopup">
     <h2 id="skinsPopupTitle">Skins</h2>
@@ -2418,6 +2527,71 @@
       <button class="button" onclick="confirmBet()">Confirm Bet</button>
     </div>
   
+    <div class="faq-popup" id="faqPopup">
+      <button class="close-button" onclick="closeFaqPopup()">×</button>
+      <h2>LobsterCoin FAQ</h2>
+  
+      <div class="faq-section">
+        <h3>How to Play</h3>
+        <p>Tap the lobster as fast as you can to earn clicks! Clicks are the main currency in LobsterCoin. Use them to buy upgrades, mine crypto, purchase skins, and more!</p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>How to Get More Clicks</h3>
+        <p>There are multiple ways to boost your click earnings:
+          <ul>
+            <li><strong>Click Multiplier:</strong> Upgrade your click multiplier in the "Boosts" menu to earn more clicks per tap. This is a great early game investment.</li>
+            <li><strong>Mining Cards:</strong> Purchase mining cards in the "Mining" menu to passively generate clicks over time. Each card represents a different investment opportunity.</li>
+            <li><strong>Daily Tasks:</strong> Complete daily tasks in the "Earn" menu to earn bonus clicks. These tasks can include watching ads, subscribing to social media channels, and more.</li>
+            <li><strong>Referral Program:</strong> Share your referral link with friends to earn even more clicks.  The more players you refer, the bigger the bonus!</li>
+            <li><strong>Skins:</strong> Some skins provide a boost to your profit per hour. Try collecting different skins to maximize your earnings.</li>
+            <li><strong>Daily Rewards:</strong> Claim your daily reward in the "Earn" menu for a substantial bonus of clicks. The reward increases each day, following the Fibonacci sequence.</li>
+            <li><strong>Watch Ads:</strong> Watch ads to earn extra clicks. You can earn more clicks by watching a set amount of ads.</li>
+          </ul>
+        </p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>What are Mining Cards?</h3>
+        <p>Mining cards represent investments in different cryptocurrencies and assets. Each card has a different price and generates clicks per hour based on its level.  You can upgrade your mining cards to increase their profitability.</p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>What are Skins?</h3>
+        <p>Skins are purely cosmetic, but they can also offer boosts to your profit per hour.  Collect different skins to personalize your lobster and improve your earnings!</p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>How Do I Apply Promo Codes?</h3>
+        <p>Go to the "Settings" menu and enter a promo code in the provided field.  Promo codes can grant you free clicks, unlock special bonuses, or give you access to exclusive content.  You can get promo code on our telegram channel or from your friends.</p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>What is the Click Limit?</h3>
+        <p>You can only tap the lobster a certain number of times per minute. This limit exists to prevent abuse and maintain a fair gameplay experience.  You can upgrade your click limit in the "Boosts" menu to increase the number of clicks you can earn per minute.</p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>What Can I Do in the "Settings" Menu?</h3>
+        <p>The "Settings" menu offers a variety of customization and management options:
+          <ul>
+            <li><strong>Language:</strong> Change the language of the game to your preferred language.</li>
+            <li><strong>Clear Data:</strong> Reset your game progress and start fresh. This will remove all your earned clicks, purchased upgrades, and other data.</li>
+            <li><strong>Legal Info:</strong> View the game's Terms of Service and Privacy Policy.</li>
+            <li><strong>Theme:</strong> Customize the game's appearance by changing colors, backgrounds, and other visual elements.</li>
+            <li><strong>Apply Promo Codes:</strong> Enter promo codes to unlock bonuses and benefits.</li>
+            <li><strong>Gift Clicks:</strong> Share your clicks with other players by generating a unique promo code.</li>
+          </ul>
+        </p>
+      </div>
+  
+      <div class="faq-section">
+        <h3>What is the "Airdrop"?</h3>
+        <p>The "Airdrop" is a special event where LobsterCoin will distribute $LOB tokens to players based on their game progress. The amount of tokens you receive will be determined by your balance, league, profit per hour, ads watched, and purchased skins. Stay tuned for details on the Airdrop!</p>
+      </div>
+    </div>
+  
+
     <div class="popup" id="votingResultPopup">
       <h2 id="resultTitle"></h2>
       <p id="resultMessage"></p>
@@ -4100,7 +4274,20 @@
 
 // ... (rest of your code) ...
     
+    function openFaqPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeFaqPopup);
+      document.getElementById('faqPopup').style.display = 'block';
+    }
 
+    function closeFaqPopup() {
+      WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
+      document.getElementById('faqPopup').style.display = 'none';
+    }
+
+    // Add event listener to the "About" button in the menu container
+    document.getElementById('aboutButton').addEventListener('click', openFaqPopup);
 
     function numberWithCommas(x) {
       const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
@@ -5939,7 +6126,7 @@
       }
     }
 
-    function openAirdrop() {
+    /*function openAirdrop() {
       WebApp.BackButton.show();
       WebApp.BackButton.onClick(closeAirdropPopup);
       document.getElementById('airdropPopup').style.display = 'block';
@@ -5949,6 +6136,19 @@
       WebApp.MainButton.text = 'Claim Airdrop';
       WebApp.MainButton.hasShineEffect = true;
       WebApp.MainButton.onClick = openAirdroppingPopup;*/
+    /*}*/
+    function openAirdrop() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeAirdropPopup);
+      document.getElementById('airdropPopup').style.display = 'block';
+      document.getElementById('airdropPopupMessage').textContent = 'This will affect your token count after listing.';
+    }
+    
+    // Function to close the Airdrop popup
+    function closeAirdropPopup() {
+      WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
+      document.getElementById('airdropPopup').style.display = 'none';
     }
 
     function openAirdroppingPopup() {
@@ -5977,12 +6177,18 @@
       WebApp.SecondaryButton.position = 'right';*/
     }
 
+    const settingsButton = document.querySelector('.settings-button');
+    const skinsButton = document.querySelector('.skins-button');
+
+    settingsButton.style.pointerEvents = 'auto'; // Make it touchable again
+    skinsButton.style.pointerEvents = 'auto'; // Make it touchable again
+
     function getton() {
       WebApp.openTelegramLink('https://t.me/quick_tg_bot?start=r_5146625949');
     }
 
     // Function to close the Airdropping popup
-    function closeAirdroppingPopup() {
+    /*function closeAirdroppingPopup() {
       WebApp.BackButton.hide(); 
       WebApp.BackButton.onClick(() => {});
       if (WebApp.MainButton.isVisible) {
@@ -5990,7 +6196,7 @@
       }
       WebApp.HeaderColor = localStorage.getItem('headerColor') || '#000000';
       document.getElementById('airdroppingPopup').style.display = 'none';
-    }
+    }*/
 
     // Function to claim to wallet (not implemented yet)
     function claimToWallet() {
@@ -6524,13 +6730,14 @@
       document.getElementById('messageText').textContent = text; // Update the message text
       document.getElementById('messageContainer').classList.add('show'); // Show the alert div
       setTimeout(() => {
-        hideMessage();
+        hideMessage(messageContainer);
       }, 4000); // Hide the message after 4 seconds
     }
 
     // Function to hide the message
-    function hideMessage() {
-      document.getElementById('messageContainer').classList.remove('show'); 
+    function hideMessage(messageContainer) {
+      messageContainer.classList.remove('show'); 
+      messageContainer.classList.add('hidden'); 
     }
 
     // Add touch event listeners for swipe to dismiss
@@ -6552,7 +6759,7 @@
           messageContainer.classList.add('fly-left');
         }
         setTimeout(() => {
-          hideMessage(); 
+          hideMessage(messageContainer); 
           messageContainer.classList.remove('fly-right', 'fly-left'); 
         }, 300); // Adjust animation duration if needed
       }
