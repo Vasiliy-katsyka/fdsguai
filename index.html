@@ -35,11 +35,11 @@
       height: 100vh;
       margin: 0;
       background-color: #f0f0f0;
-      background: linear-gradient(0deg, #ffdd00 60%, #000000 100%);/*#000 url(https://cdn.midjourney.com/f4959eaa-d01a-4b63-a96c-c380c3aa4768/0_3.png) center center/cover no-repeat;*/*
+      background: linear-gradient(0deg, #ffae00 70%, #000000 100%);/*#000 url(https://cdn.midjourney.com/f4959eaa-d01a-4b63-a96c-c380c3aa4768/0_3.png) center center/cover no-repeat;*/*
     }
 
     .container {
-      background: #ffffff url(https://cdn.midjourney.com/46a77421-c05f-4acc-8307-c212669c3820/0_3.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
+      background: linear-gradient(0deg, /*#ffdd00*/#111 60%, #222 100%);/*: #ffffff url(https://cdn.midjourney.com/24efaca6-a028-4022-b8e8-972e9bd51786/0_3.png) center center/cover no-repeat;/*#ffffff url(https://cdn.midjourney.com/46a77421-c05f-4acc-8307-c212669c3820/0_3.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
       border-top: 2px solid #ffae00;
       border-radius: 40px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -147,7 +147,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      /*background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;*/
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -162,8 +164,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #000 url(https://cdn.midjourney.com/16e3a3b9-ff9f-476e-87ec-d82dafc49196/0_1.png) center center/cover no-repeat; /*(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ 
-      padding: 20px;
+      background: #000 url(https://cdn.midjourney.com/a33d717d-45bf-4f50-b6c5-0c631d6c5ca0/0_3.png) center center/cover no-repeat; /*(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ 
+      padding: 20px; /*duvrov https://cdn.midjourney.com/16e3a3b9-ff9f-476e-87ec-d82dafc49196/0_1.png*/
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       display: none;
@@ -257,7 +259,7 @@
     }
 
     .menu-container {
-      background: #ffffff url(https://cdn.midjourney.com/4cd2f462-fe7c-4c75-906f-0594c8ccbea8/0_0.png) center center/cover no-repeat;
+      background: linear-gradient(0deg, /*#ffdd00*/#111 60%, #222 100%); /*#ffffff url(https://cdn.midjourney.com/24efaca6-a028-4022-b8e8-972e9bd51786/0_3.png) center center/cover no-repeat;*/
       width: 100%;
       display: flex;
       position: fixed;
@@ -413,8 +415,10 @@
       border-radius: 15px;
       width: 120px;
       height: 228px;
-      background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
-      position: relative;
+      /*background: #ffffff url(https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3JhZGllbnQlMjBibHVlfGVufDB8fDB8fHww) center center/cover no-repeat;
+      */position: relative;
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
     }
 
     .mining-card h3 {
@@ -452,12 +456,12 @@
 
     .mining-card .card-info .card-level {
       font-size: 13px;
-      color: #800080; /* Purple color */
+      color: #fff; /* Purple color */
     }
 
     .mining-card .card-info .card-price {
       font-size: 13px;
-      color: #800080; /* Purple color */
+      color: #fff; /* Purple color */
     }
 
     .mining-card .buy-button {
@@ -559,7 +563,8 @@
     }
 
     .settings-button {
-      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
+      background: rgba(245, 229, 229, 0.26);
+      backdrop-filter: blur(5px);
       border: none;
       border-radius: 50%;
       padding: 8px;
@@ -623,7 +628,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1125,7 +1131,9 @@
     }
     
     .skins-button {
-      background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;
+      /*background: #ffffff url(https://cdn.midjourney.com/5d055091-3959-4673-80a5-27eab3aa5fdc/0_1.png) center center/cover no-repeat;*/
+      background: rgba(245, 229, 229, 0.26); 
+      backdrop-filter: blur(5px);
       border: none;
       border-radius: 50%;
       padding: 8px;
@@ -1152,6 +1160,8 @@
     /* Skins popup styles */
     .skins-popup {
       /* ... existing popup styles ... */
+      background: rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(5px);
     }
 
     .skins-popup .skins-container { /* New container for scrolling */
@@ -1167,9 +1177,11 @@
       flex-direction: column;
       align-items: center;
       border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.014); 
+      backdrop-filter: blur(5px);
       padding: 10px;
       margin-bottom: 10px;
-      border-radius: 5px;
+      border-radius: 10px;
       height: 270px; /* Increased height */
     }
 
@@ -1221,7 +1233,7 @@
     .profElem {
       width: 120px;
       height: 53px;
-      border-top: 2px solid #ffae00;
+      border-top: 2px solid #15ff00;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
       backdrop-filter: blur(5px); /* Apply blur effect */
@@ -1539,7 +1551,7 @@
 <body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <div class="lpopup" id="loadingPopup" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <p id="freedurov">#freedurov</p>
+    <p id="freedurov">Halloween is coming...</p>
     <h2 id="loadingTitle" style="background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
@@ -1552,10 +1564,10 @@
   <div class="title-container">
     <div class="button-container">
       <button class="settings-button" onclick="openSettingsPopup()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: white;"><title>cog</title><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
       </button>
       <button class="skins-button" onclick="openSkinsPopup()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: white;"><title>palette-outline</title><path d="M12 3C16.41 3 20 6.59 20 11C20 12.3 19.53 13.56 18.84 14.73L18.16 15.5C19.22 16.8 20 18.36 20 20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20C4 18.36 4.78 16.8 5.84 15.5L5.16 14.73C4.47 13.56 4 12.3 4 11C4 6.59 7.59 3 12 3M12 5C8.13 5 5 8.13 5 12S8.13 19 12 19 19 15.87 19 12 15.87 5 12 5M12 7C9.24 7 7 9.24 7 12S9.24 17 12 17 17 14.76 17 12 14.76 7 12 7Z" /></svg>
       </button>
     </div>
     <div class="title" id="gameTitle">LobsterCoin</div>
@@ -2018,10 +2030,10 @@
             </div>
           </div>
           <div class="mining-card">
-            <img src="https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" alt="Card image" />
-            <h3 id="edTitle">Ed Sheeran</h3>
+            <img src="https://res.cloudinary.com/vivaticket/image/fetch/q_auto:eco,f_auto/https://backendcdn.vivaticket.it/img_eventi_new/390x390_668faffe2bbba.png" alt="Card image" />
+            <h3 id="edTitle">Ed Sheeran 2025</h3>
             <div class="card-info">
-              <span id="edProfit">Profit/hour: <a class="gold-text">+3000 clicks</a></span>
+              <span id="edProfit">Profit/hour: <a class="gold-text">+5000 clicks</a></span>
               <span class="card-price" id="edPrice">Price: 15000 clicks</span>
               <span class="card-level" id="edLevel">Level: 0</span>
             </div>
@@ -3668,10 +3680,10 @@
         imageUrl: "https://cdn.midjourney.com/d86dc31d-13b0-4a2c-be36-d4716f6e8ad9/0_1.png" 
       },
       ed: {
-        profitPerHour: 3000,
+        profitPerHour: 5000,
         price: 15000,
         level: 0,
-        imageUrl: "https://cdn.midjourney.com/38ac4238-21e7-4688-9197-a2e0f8fa3c7f/0_2.png" 
+        imageUrl: "https://res.cloudinary.com/vivaticket/image/fetch/q_auto:eco,f_auto/https://backendcdn.vivaticket.it/img_eventi_new/390x390_668faffe2bbba.png" 
       },
       us6: {
         profitPerHour: 1000,
@@ -4388,13 +4400,22 @@
         document.getElementById(`upgradeCost${i + 1}`).textContent = `Cost: ${numberWithCommas(upgradeCosts[i] * upgradeAmount)} clicks`;
       }
     }
+
+    const defaultSkin = {
+      name: "Default Lobster",
+      imageUrl: "https://i.ibb.co/fdT7cKC/vasiliy939-very-cute-beautiful-logo-of-a-soft-lobster-soft-ma-71833c81-e4bb-4799-b26e-2610a9c3c0aa-0.png", // Replace with your default skin image
+      price: 0, // Free!
+      profit: 0, // No extra profit from default skin
+      description: "The original lobster"
+    };
     
     const skins = [
+      defaultSkin,
       {
         name: "Blue Lobster",
         imageUrl: "https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png",
-        price: 1,
-        profit: 1,
+        price: 10000,
+        profit: 1000,
         description: "Classic and elegant" 
       },
       {
@@ -4783,8 +4804,20 @@
       } else {
         WebApp.showAlert("You don't have enough clicks to buy the custom skin!");
       }
+
     }
 
+    function loadEquippedSkin() {
+      // Load equippedSkin from localStorage
+      equippedSkin = localStorage.getItem('equippedSkin') || null;
+
+      // If no other skin is equipped, equip the default skin
+      if (!equippedSkin) {
+        equippedSkin = defaultSkin.name; 
+        localStorage.setItem('equippedSkin', equippedSkin); 
+        applySkin(defaultSkin.imageUrl); // Apply the default skin image
+      }
+    }
 
     // Function to equip the custom skin
     function equipCustomSkin() {
@@ -4876,7 +4909,7 @@
     // Function to apply the selected skin
     function applySkin(imageUrl) {
       const coin = document.querySelector('.coin');
-      coin.style.background = `#ffcc00 url(${imageUrl}) center center/cover no-repeat`;
+      coin.style.background = `url(${imageUrl}) center center/cover no-repeat`;
     }
 
     // Apply the last purchased skin on page load
@@ -5263,6 +5296,9 @@
     // Function to add "earn per hour" to click count
     function buyCard(cardType) {
       if (clickCount >= miningCards[cardType].price) {
+        if (cardType === 'ed') {
+          WebApp.openLink('https://edsheeran.com');
+        }
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
         
@@ -6463,6 +6499,7 @@
       updateMiningCardLevels(); // Load levels from localStorage
       loadTheme();
       updateLimitBoostCost();
+      loadEquippedSkin();
     });
 
     // Update click count every second
@@ -6541,6 +6578,27 @@
       skinProfitPerHour = parseInt(localStorage.getItem('skinProfitPerHour'));
       updateProfitPerHour(); // Update the profit display on page load
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all popups and airdrop-popups on the page
+      const popups = document.querySelectorAll('.popup, .airdrop-popup'); 
+
+      // Loop through each popup and add a close button
+      popups.forEach(popup => {
+        // Create the close button element
+        const closeButton = document.createElement('button');
+        closeButton.classList.add('close-button'); // Add the class you defined for the close button
+        closeButton.textContent = '×'; // Or use an image: <img src="close-icon.png" alt="Close">
+
+        // Add click event listener to the close button
+        closeButton.addEventListener('click', () => {
+          popup.style.display = 'none'; // Hide the popup
+        });
+
+        // Append the close button to the popup
+        popup.appendChild(closeButton);
+      });
+    });
 
     function resetClicksRemaining() {
       clicksRemaining = clicksPerMinuteLimit;
