@@ -149,7 +149,7 @@
       transform: translate(-50%, -50%);
       /*background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;*/
       background: rgba(255, 255, 255, 0.1); 
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(50px);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1546,6 +1546,44 @@
       transform: scale(0.95); /* Make the button slightly smaller on press */
       filter: brightness(0.85); /* Make the button slightly darker on press */
     }
+
+    .message-container {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(50px);
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+      width: 70%;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .message-container.show {
+      opacity: 1;
+    }
+
+    .message-container svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      fill: white;
+    }
+
+    .message-container.fly-right {
+      transform: translateX(100%); 
+    }
+
+    .message-container.fly-left {
+      transform: translateX(-100%); 
+    }
   </style>
 </head>
 <body>
@@ -1559,6 +1597,11 @@
       <div class="spinner"></div>
     </div>
     <p id="loadingPercentage" style="font-size: 2rem; margin-top: 20px;"></p> <p id="versionText" style="position: absolute; bottom: 20px;">v1.70</p>
+  </div>
+
+  <div class="message-container" id="messageContainer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>information-outline</title><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
+    <span id="messageText"></span>
   </div>
 
   <div class="title-container">
@@ -3815,46 +3858,46 @@
       let promoCode = document.getElementById('promoCode').value;
       if (pr10.includes(promoCode)) {
         clickCount += 10000;
-        WebApp.showAlert("Promo code applied! You've received 10,000 clicks!");
+        showMessage("Promo code applied! You've received 10,000 clicks!");
       } else if (pr100.includes(promoCode)) {
         clickCount += 100000;
-        WebApp.showAlert("Promo code applied! You've received 100,000 clicks!");
+        showMessage("Promo code applied! You've received 100,000 clicks!");
       } else if (pr1m.includes(promoCode)) {
         clickCount += 1000000;
-        WebApp.showAlert("Promo code applied! You've received 1,000,000 clicks!");
+        showMessage("Promo code applied! You've received 1,000,000 clicks!");
       } else if (pr1b.includes(promoCode)) {
         clickCount += 1000000000;
-        WebApp.showAlert("Promo code applied! You've received 1,000,000,000 clicks!");
+        showMessage("Promo code applied! You've received 1,000,000,000 clicks!");
       } else if (promoCode === "developer-tester") {
         clickCount += 500000000; // Add 500 million clicks
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 500 million clicks!");
+        showMessage("Promo code applied! You've received 500 million clicks!");
       } else if (promoCode === "SUMMER24") {
         clickCount += 10000;
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 10K clicks!");
+        showMessage("Promo code applied! You've received 10K clicks!");
       } else if (promoCode === "15YOULOB") {
         clickCount += 10000000000000;
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 10T clicks!");
+        showMessage("Promo code applied! You've received 10T clicks!");
       } else if (promoCode === "VASILIY939") {
         clickCount += 50000; 
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!");
+        showMessage("Promo code applied! You've received 50K clicks!");
       } else if (promoCode === "IDI_NAHUI") {
         clickCount += 50000; 
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
+        showMessage("Promo code applied! You've received 50K clicks!"); 
       } else if (promoCode === "ILOVEBIGDICK") {
         clickCount += 1000000000000000000000000000; 
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received some clicks!"); 
+        showMessage("Promo code applied! You've received some clicks!"); 
       } else if (promoCode === "qwertyui") {
         clickCount += 30900987; 
         updateClickCount();
-        WebApp.showAlert("Promo code applied! You've received 50K clicks!"); 
+        showMessage("Promo code applied! You've received 50K clicks!"); 
       } else {
-        WebApp.showAlert("Invalid promo code.");
+        showMessage("Invalid promo code.");
       }
     }
 
@@ -3870,108 +3913,108 @@
 
       if (localStorage.getItem('adTask') == 20) {
         if (localStorage.getItem('adsWatched') >= 20) {
-          WebApp.showAlert(`You've watched 20 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 20 ads! Here is your ${rewardAds} reward!`);
           clickCount += 2000000;
           updateClickCount();
           localStorage.setItem('adTask', 40)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${20 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${20 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 40) {
         if (localStorage.getItem('adsWatched') >= 40) {
-          WebApp.showAlert(`You've watched 40 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 40 ads! Here is your ${rewardAds} reward!`);
           clickCount += 4000000;
           updateClickCount();
           localStorage.setItem('adTask', 80)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${40 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${40 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 80) {
         if (localStorage.getItem('adsWatched') >= 80) {
-          WebApp.showAlert(`You've watched 80 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 80 ads! Here is your ${rewardAds} reward!`);
           clickCount += 8000000;
           updateClickCount();
           localStorage.setItem('adTask', 160)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${80 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${80 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 160) {
         if (localStorage.getItem('adsWatched') >= 160) {
-          WebApp.showAlert(`You've watched 160 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 160 ads! Here is your ${rewardAds} reward!`);
           clickCount += 16000000;
           updateClickCount();
           localStorage.setItem('adTask', 320)
         }
         else {  
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${160 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${160 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 320) {
         if (localStorage.getItem('adsWatched') >= 320) {
-          WebApp.showAlert(`You've watched 320 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 320 ads! Here is your ${rewardAds} reward!`);
           clickCount += 32000000;
           updateClickCount();
           localStorage.setItem('adTask', 640)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${320 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${320 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 640) {
         if (localStorage.getItem('adsWatched') >= 640) {
-          WebApp.showAlert(`You've watched 640 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 640 ads! Here is your ${rewardAds} reward!`);
           clickCount += 64000000;
           updateClickCount();
           localStorage.setItem('adTask', 1280)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${640 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${640 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 1280) {
         if (localStorage.getItem('adsWatched') >= 1280) {
-          WebApp.showAlert(`You've watched 1280 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 1280 ads! Here is your ${rewardAds} reward!`);
           clickCount += 128000000;
           updateClickCount();
           localStorage.setItem('adTask', 2560)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${1280 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${1280 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 2560) {
         if (localStorage.getItem('adsWatched') >= 2560) {
-          WebApp.showAlert(`You've watched 2560 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 2560 ads! Here is your ${rewardAds} reward!`);
           clickCount += 256000000;
           updateClickCount();
           localStorage.setItem('adTask', 5120)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${2560 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${2560 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       }
       else if (localStorage.getItem('adTask') == 5120) {
         if (localStorage.getItem('adsWatched') >= 5120) {
-          WebApp.showAlert(`You've watched 5120 ads! Here is your ${rewardAds} reward!`);
+          showMessage(`You've watched 5120 ads! Here is your ${rewardAds} reward!`);
           clickCount += 512000000;
           updateClickCount();
           localStorage.setItem('adTask', 10240)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${5120 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${5120 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       } else if (localStorage.getItem('adTask') == 10240) {
         if (localStorage.getItem('adsWatched') >= 10000) {
-          WebApp.showAlert(`You've watched 10240 ads! Here is your ${getRewardAmount(1024000000)} reward!`);
+          showMessage(`You've watched 10240 ads! Here is your ${getRewardAmount(1024000000)} reward!`);
           clickCount += 1024000000;
           updateClickCount();
           localStorage.setItem('adTask', 777)
         }
         else {
-          WebApp.showAlert(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${10000 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
+          showMessage(`You haven't watched only ${localStorage.getItem('adsWatched')} ads yet! You need ${10000 - localStorage.getItem('adsWatched')} more ads to get the reward.`);
         }
       }
       else if (localStorage.getItem('adTask') == 777) {
-        WebApp.showAlert(`You've completed all ads tasks!`);
+        showMessage(`You've completed all ads tasks!`);
       }
     }
 
@@ -3989,7 +4032,7 @@
               adsCount = localStorage.getItem('adsWatched');
             }
             localStorage.setItem('adsWatched', adsCount + 1);
-            WebApp.showAlert("You earned 10,000 clicks! Thanks for watching the ad. You have watched " + adsCount + " ads.");
+            showMessage("You earned 10,000 clicks! Thanks for watching the ad. You have watched " + adsCount + " ads.");
           }
         })
         .catch(result => {
@@ -4090,14 +4133,14 @@
 
     function claimPremiumBonus() {
       if (premiumBonusClaimed) {
-        WebApp.showAlert(currentTranslations.premiumBonusAlreadyClaimed);
+        showMessage(currentTranslations.premiumBonusAlreadyClaimed);
         return;
       }
 
       if (WebApp.initDataUnsafe.user.is_premium) {
         clickCount += getRewardAmount(50000); 
         updateClickCount();
-        WebApp.showAlert(currentTranslations.premiumBonusSuccess);
+        showMessage(currentTranslations.premiumBonusSuccess);
 
         // Disable the button after claiming
         premiumBonusClaimed = true;
@@ -4105,7 +4148,7 @@
         document.getElementById('premiumButton').disabled = true;
         document.getElementById('premiumButton').style.backgroundColor = '#ccc';
       } else {
-        WebApp.showAlert(currentTranslations.premiumBonusNotPremium);
+        showMessage(currentTranslations.premiumBonusNotPremium);
       }
     }
 
@@ -4161,12 +4204,12 @@
         clicksRemaining = clicksPerMinuteLimit;
 
         updateClicksRemaining();
-        WebApp.showAlert(`Click limit upgraded by ${numberWithCommas(increaseAmount)}!`); 
+        showMessage(`Click limit upgraded by ${numberWithCommas(increaseAmount)}!`); 
 
         localStorage.setItem('limitBoostPrice', limitBoostPrice);
         localStorage.setItem('limitBoostLevel', limitBoostLevel); 
       } else {
-        WebApp.showAlert("You don't have enough clicks to upgrade the click limit!");
+        showMessage("You don't have enough clicks to upgrade the click limit!");
       }
     }
 
@@ -4181,7 +4224,7 @@
 
           // **Check if clicks remaining is 0 or less BEFORE processing clicks**
           if (clicksRemaining <= localStorage.getItem('clickMultiplier')) {
-            WebApp.showAlert('Tap limit reached! Wait for the timer to reset.');
+            showMessage('Tap limit reached! Wait for the timer to reset.');
             return; // Prevent further clicks
           }
 
@@ -4202,7 +4245,7 @@
       } else {
         // **Check if clicks remaining is 0 or less BEFORE processing clicks**
         if (clicksRemaining <= localStorage.getItem('clickMultiplier')) {
-          WebApp.showAlert('Tap limit reached! Wait for the timer to reset.');
+          showMessage('Tap limit reached! Wait for the timer to reset.');
           return; // Prevent further clicks
         }
 
@@ -4341,7 +4384,7 @@
     function gasPump() {
       WebApp.openTelegramLink("https://t.me/gasPump_bot/app?startapp=eyJyZWZfdXNlcl9pZCI6NTE0NjYyNTk0OSwidG9rZW5fYWRkcmVzcyI6IkVRQzN4WDVzbExycjJfQnkzZkpsNjEtRWFHUnppUGlKbmZFU3RSUUlWSUw1Q0ZSTSJ9");
       clickCount += 100000;
-      WebApp.showAlert("You have claimed the gas pump bonus! You recieved 100,000 clicks!");
+      showMessage("You have claimed the gas pump bonus! You recieved 100,000 clicks!");
     }
 
     // Function to handle click upgradep
@@ -4365,7 +4408,7 @@
           break;
         } else {
           let costToEarn = (upgradeCosts[upgradeIndex] * upgradeAmount) - clickCount;
-          WebApp.showAlert(`You don't have enough clicks! Earn ${numberWithCommas(costToEarn)} clicks more!`); 
+          showMessage(`You don't have enough clicks! Earn ${numberWithCommas(costToEarn)} clicks more!`); 
         }
         upgradeIndex++;
       }
@@ -4760,14 +4803,14 @@
 
         updateClickCount();
         updateBonusUpgradeCosts(); // Update the display
-        WebApp.showAlert("Bonus upgraded!");
+        showMessage("Bonus upgraded!");
 
         // Save updated values to localStorage
         localStorage.setItem('bonusChance', bonusChance);
         localStorage.setItem('bonusMultiplier', bonusMultiplier);
         localStorage.setItem('bonusUpgradeLevel', bonusUpgradeLevel); // Save bonusUpgradeLevel
       } else {
-        WebApp.showAlert("You don't have enough clicks to upgrade this feature!");
+        showMessage("You don't have enough clicks to upgrade this feature!");
       }
     }
 
@@ -4783,7 +4826,7 @@
 
     function buyCustomSkin() {
       if (customSkinPurchased) {
-        WebApp.showAlert("You've already purchased the custom skin!");
+        showMessage("You've already purchased the custom skin!");
         return;
       }
 
@@ -4794,7 +4837,7 @@
         customSkinPurchased = true;
         localStorage.setItem('customSkinPurchased', 'true');
 
-        WebApp.showAlert("Custom skin purchased! Now upload your image.");
+        showMessage("Custom skin purchased! Now upload your image.");
 
         // Trigger the file upload dialog
         document.getElementById('customSkinUploader').click();
@@ -4802,7 +4845,7 @@
         // DO NOT call equipCustomSkin() here. It will be called 
         // automatically from the image upload handler once the image is loaded. 
       } else {
-        WebApp.showAlert("You don't have enough clicks to buy the custom skin!");
+        showMessage("You don't have enough clicks to buy the custom skin!");
       }
 
     }
@@ -4822,7 +4865,7 @@
     // Function to equip the custom skin
     function equipCustomSkin() {
       if (!customSkinPurchased) {
-        WebApp.showAlert("You need to purchase the custom skin first!");
+        showMessage("You need to purchase the custom skin first!");
         return;
       }
 
@@ -4833,9 +4876,9 @@
         localStorage.setItem('customSkinEquipped', 'true'); 
         applySkin(customSkin.imageUrl);
         displaySkins(); // Update the button states
-        WebApp.showAlert("Custom skin equipped!");
+        showMessage("Custom skin equipped!");
       } else {
-        WebApp.showAlert("Please upload an image for your custom skin first.");
+        showMessage("Please upload an image for your custom skin first.");
         document.getElementById('customSkinUploader').click(); 
       }
     }
@@ -4855,7 +4898,7 @@
           equipCustomSkin();
         } 
 
-        WebApp.showAlert("Custom skin image uploaded!");
+        showMessage("Custom skin image uploaded!");
       }
 
       reader.readAsDataURL(file);
@@ -4884,9 +4927,9 @@
         // Update the display *after* updating purchasedSkins
         displaySkins(); 
 
-        WebApp.showAlert(`You purchased the ${skin.name} skin!`);
+        showMessage(`You purchased the ${skin.name} skin!`);
       } else {
-        WebApp.showAlert("You don't have enough clicks to buy this skin!");
+        showMessage("You don't have enough clicks to buy this skin!");
       }
     }
     
@@ -4903,7 +4946,7 @@
 
       applySkin(skin.imageUrl); // Apply the skin
       displaySkins(); // Update the button states
-      WebApp.showAlert(`${skin.name} skin equipped!`);
+      showMessage(`${skin.name} skin equipped!`);
     }
 
     // Function to apply the selected skin
@@ -4990,7 +5033,7 @@
 
     // Function for "Mining" button
     function miningClick() {
-      WebApp.showAlert("Mining feature is under development!");
+      showMessage("Mining feature is under development!");
     }
 
     // Function to open the earn popup
@@ -5069,7 +5112,7 @@
           // Reset any other relevant variables in your game
           // ... 
 
-          WebApp.showAlert("Data cleared successfully!");
+          showMessage("Data cleared successfully!");
         }
       }
     }
@@ -5101,13 +5144,13 @@
     // Function to open the YouTube channel
     function openYouTube() {
       if (youtubeBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
+        showMessage("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://youtube.com/@kvikontent");
       clickCount += 5000;
       updateClickCount();
-      WebApp.showAlert("You earned 5,000 clicks! Thanks for subscribing!");
+      showMessage("You earned 5,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       youtubeBonusClaimed = true;
       localStorage.setItem('youtubeBonusClaimed', 'true');
@@ -5119,13 +5162,13 @@
     // Function to subscribe to the Telegram channel
     function subscribeTelegram() {
       if (telegramBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
+        showMessage("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://t.me/freemusic2023");
       clickCount += 1000;
       updateClickCount();
-      WebApp.showAlert("You earned 1,000 clicks! Thanks for subscribing!");
+      showMessage("You earned 1,000 clicks! Thanks for subscribing!");
       closeEarnPopup(); // Close the popup after opening the link
       telegramBonusClaimed = true;
       localStorage.setItem('telegramBonusClaimed', 'true');
@@ -5154,9 +5197,9 @@
         document.getElementById('promoCodeContainer').style.display = 'block'; // Show the code
         clickCount -= amount;
         updateClickCount();
-        WebApp.showAlert("Promo code generated! Tap to copy.");
+        showMessage("Promo code generated! Tap to copy.");
       } else {
-        WebApp.showAlert("You don't have enough clicks to gift this amount!");
+        showMessage("You don't have enough clicks to gift this amount!");
       }
     }
 
@@ -5175,24 +5218,24 @@
       let promoCode = document.getElementById('generatedPromoCode').textContent;
       navigator.clipboard.writeText(promoCode)
         .then(() => {
-          WebApp.showAlert("Promo code copied to clipboard!");
+          showMessage("Promo code copied to clipboard!");
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
-          WebApp.showAlert('Failed to copy code. Please try again.');
+          showMessage('Failed to copy code. Please try again.');
         });
     }
 
     // Function to subscribe to the X channel
     function subscribeX() {
       if (telegramBonusClaimed) {
-        WebApp.showAlert("You've already claimed this bonus!");
+        showMessage("You've already claimed this bonus!");
         return; // Exit the function if the bonus is already claimed
       }
       window.open("https://x.com/lobsterfounder?t=FsSqEDhJyx27oH3bc5foNQ&s=09");
       clickCount += 5000;
       updateClickCount();
-      WebApp.showAlert("You earned 5,000 clicks! Thanks for subscribing! Stay tuned)");
+      showMessage("You earned 5,000 clicks! Thanks for subscribing! Stay tuned)");
       closeEarnPopup(); // Close the popup after opening the link
       telegramBonusClaimed = true;
       localStorage.setItem('xBonusClaimed', 'true');
@@ -5203,7 +5246,7 @@
 
     // Replace Telegram Premium with a 'Buy Premium' button
     function buyPremium() {
-      WebApp.showAlert("Not implemented yet");
+      showMessage("Not implemented yet");
     }
 
     // Function for "About" button
@@ -5316,13 +5359,13 @@
         cardCooldown[cardType] = 30; 
         showCardCooldown(cardType);
         startCooldownTimer(cardType);
-        WebApp.showAlert(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
+        showMessage(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
         // Check if the purchased card is part of the daily combo
 
       } else if (cardCooldown[cardType]) {
-        WebApp.showAlert("Please wait for the cooldown timer to expire.");
+        showMessage("Please wait for the cooldown timer to expire.");
       } else {
-        WebApp.showAlert("You don't have enough clicks to purchase this card!");
+        showMessage("You don't have enough clicks to purchase this card!");
       }
     }
 
@@ -5465,7 +5508,7 @@
         if (referralCode === "Hyid9") {
           clickCount += getRewardAmount(100000); // Add 100k clicks
           updateClickCount();
-          WebApp.showAlert('Referral bonus applied! +100,000 clicks');
+          showMessage('Referral bonus applied! +100,000 clicks');
         } 
         // Handle JiXZy0olpixMMh referral (with binary stars)
         else if (referralCode.includes("JiXZy0olpixMMh")) { 
@@ -5474,13 +5517,13 @@
 
           // Error handling
           if (isNaN(decimal)) {
-            WebApp.showAlert("Invalid referral code.");
+            showMessage("Invalid referral code.");
             return; // Exit the function if the conversion fails
           }
 
           clickCount += getRewardAmount(decimal);
           updateClickCount();
-          WebApp.showAlert('Referral bonus applied! +' + decimal + ' clicks');
+          showMessage('Referral bonus applied! +' + decimal + ' clicks');
         }
       }
     }
@@ -5738,7 +5781,7 @@
       // Update UI
       updateDailyRewardUI();
       updateProfitPerHour(); // Update profit per hour after multiplier change
-      WebApp.showAlert('Daily reward claimed!');
+      showMessage('Daily reward claimed!');
     }
 
     function loadTranslations() {
@@ -5813,7 +5856,7 @@
       try {
         connectedWallet = await tonConnectUI.connectWallet();
         console.log("Connected wallet:", connectedWallet);
-        WebApp.showAlert("Wallet connected successfully!");
+        showMessage("Wallet connected successfully!");
 
         if (connectedWallet) {
           localStorage.setItem('connectedWallet', JSON.stringify(connectedWallet));
@@ -5827,7 +5870,7 @@
 
       } catch (error) {
         console.error("Error connecting to wallet:", error);
-        WebApp.showAlert("Error connecting to wallet: " + error.message);
+        showMessage("Error connecting to wallet: " + error.message);
       }
     }
 
@@ -5845,11 +5888,11 @@
         const walletAddress = connectedWallet;
       }
       if (!connectedWallet) {
-        WebApp.showAlert("Connect your wallet first.");
+        showMessage("Connect your wallet first.");
       }
 
       if (amount <= 1) {
-        WebApp.showAlert("You don't have enough clicks to claim the airdrop.");
+        showMessage("You don't have enough clicks to claim the airdrop.");
         return;
       }
 
@@ -5878,20 +5921,20 @@
         });
 
         console.log("Transaction sent:", response);
-        WebApp.showAlert(`Airdrop sent! You received ${amount} LOB`);
+        showMessage(`Airdrop sent! You received ${amount} LOB`);
       } catch (error) {
         console.error("Error sending airdrop:", error);
-        WebApp.showAlert("Error sending airdrop. Please try again.");
+        showMessage("Error sending airdrop. Please try again.");
       }
       // Handle common error types and display user-friendly messages:
       if (error.code === 500) { // Example: Network error
-        WebApp.showAlert("Network error. Please check your internet connection and try again."); 
+        showMessage("Network error. Please check your internet connection and try again."); 
       } else if (error.message.includes('insufficient funds')) { 
-        WebApp.showAlert("Insufficient funds in your wallet to cover the transaction fees.");
+        showMessage("Insufficient funds in your wallet to cover the transaction fees.");
       } else if (error.message.includes('rejected')) { // User rejected the transaction
-        WebApp.showAlert("Airdrop transaction rejected.");
+        showMessage("Airdrop transaction rejected.");
       } else { 
-        WebApp.showAlert("An error occurred. Please try again later."); // Generic error message
+        showMessage("An error occurred. Please try again later."); // Generic error message
       }
     }
 
@@ -5950,7 +5993,7 @@
 
     // Function to claim to wallet (not implemented yet)
     function claimToWallet() {
-      WebApp.showAlert("This feature is not yet available."); 
+      showMessage("This feature is not yet available."); 
     }
 
     // Function to close the Airdrop popup
@@ -6018,7 +6061,7 @@
         closeVotingPopup();
         showVotingResult(currentVotingCard, betAmount);
       } else {
-        WebApp.showAlert("Please select an artist first!");
+        showMessage("Please select an artist first!");
       }
     }
 
@@ -6088,7 +6131,7 @@
     function saveLanguage() {
       let selectedLanguage = document.getElementById('languageSelect').value;
       localStorage.setItem('language', selectedLanguage);
-      WebApp.showAlert(currentTranslations.languageSavedAlert); // Show alert using translation
+      showMessage(currentTranslations.languageSavedAlert); // Show alert using translation
 
       // Reload the translations 
       currentTranslations = loadTranslations(); 
@@ -6214,7 +6257,7 @@
         });
         clickCount += getRewardAmount(1000000); // Assuming the base reward is 1M
         updateClickCount();
-        WebApp.showAlert("You earned 1,000,000 clicks! Thanks for sharing to your story!");
+        showMessage("You earned 1,000,000 clicks! Thanks for sharing to your story!");
         closeEarnPopup(); 
         storyBonusClaimed = true;
         localStorage.setItem('storyBonusClaimed', 'true');
@@ -6223,7 +6266,7 @@
         document.querySelector('[onclick="postStory()"]').style.backgroundColor = '#ccc'; 
       } catch (error) {
         console.error("Error sharing to story:", error);
-        WebApp.showAlert("Error sharing to story. Please try again later.");
+        showMessage("Error sharing to story. Please try again later.");
       }
     }
 
@@ -6278,7 +6321,7 @@
       // ... apply other theme settings ... 
       WebApp.setHeaderColor(headerColor); // Update the header color immediately
       closeThemePopup(); 
-      WebApp.showAlert("Theme applied! If some changes are not visible, please refresh the app.");
+      showMessage("Theme applied! If some changes are not visible, please refresh the app.");
     }
 
     // Image Uploads
@@ -6317,7 +6360,7 @@
     async function generateImage() {
       let prompt = document.getElementById('aiPrompt').value;
       if (prompt === "") {
-        WebApp.showAlert("Please enter a prompt!");
+        showMessage("Please enter a prompt!");
         return;
       }
 
@@ -6353,7 +6396,7 @@
         displayGeneratedImage(result);
       } catch (error) {
         console.error("Error generating image:", error);
-        WebApp.showAlert("Error generating image. Please try again later.");
+        showMessage("Error generating image. Please try again later.");
       }
     }
 
@@ -6377,9 +6420,9 @@
           localStorage.setItem('bottomMenuImage', bottomMenuImage); 
         }
         closeAIGeneratorPopup(); 
-        WebApp.showAlert("Image applied! Apply your theme to see the changes.");
+        showMessage("Image applied! Apply your theme to see the changes.");
       } else {
-        WebApp.showAlert("No image generated yet!");
+        showMessage("No image generated yet!");
       }
     }
 
@@ -6475,6 +6518,44 @@
         document.body.removeChild(bubble);
       }, 15000); // 3 seconds for the animation
     }
+
+    function showMessage(text) {
+      document.getElementById('messageText').textContent = text; // Update the message text
+      document.getElementById('messageContainer').classList.add('show'); // Show the alert div
+      setTimeout(() => {
+        hideMessage();
+      }, 4000); // Hide the message after 4 seconds
+    }
+
+    // Function to hide the message
+    function hideMessage() {
+      document.getElementById('messageContainer').classList.remove('show'); 
+    }
+
+    // Add touch event listeners for swipe to dismiss
+    const messageContainer = document.getElementById('messageContainer');
+    let touchStartX = 0;
+    let touchEndX = 0;
+    messageContainer.addEventListener('touchstart', (event) => {
+      touchStartX = event.touches[0].clientX;
+    });
+
+    messageContainer.addEventListener('touchend', (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (Math.abs(swipeDistance) > 50) { // Adjust threshold for swipe distance
+        if (swipeDistance > 0) {
+          messageContainer.classList.add('fly-right');
+        } else {
+          messageContainer.classList.add('fly-left');
+        }
+        setTimeout(() => {
+          hideMessage(); 
+          messageContainer.classList.remove('fly-right', 'fly-left'); 
+        }, 300); // Adjust animation duration if needed
+      }
+    });
 
     // Spawn bubbles every 1 second
     timeOut = randint(100, 900)
