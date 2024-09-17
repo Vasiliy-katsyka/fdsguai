@@ -39,7 +39,7 @@
     }
 
     .container {
-      background: #ffffff url(https://cdn.midjourney.com/46a77421-c05f-4acc-8307-c212669c3820/0_3.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
+      background-color: #000;/*: #ffffff url(https://cdn.midjourney.com/46a77421-c05f-4acc-8307-c212669c3820/0_3.png) center center/cover no-repeat; /* was: https://cdn.midjourney.com/451f94de-224e-4bc3-aa86-675a6f963883/0_2.png, beautiful - https://cdn.midjourney.com/75fa0b1a-746f-44d1-9082-a9255f045bbe/0_0.png */
       border-top: 2px solid #ffae00;
       border-radius: 40px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -54,6 +54,7 @@
       align-items: center;
     }
 
+    /* Styles for screens smaller than 600px */
     @media (min-width: 768px) {
       .container {
         width: 70%;
@@ -73,8 +74,8 @@
       opacity: 100%;
       cursor: pointer;
       margin: 0 auto;
-      margin-top: 15px;
-      background: #ffcc00 url(https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png) center center/cover no-repeat;
+      margin-top: 15px;  /*<a href="https://imgbb.com/"><img src="https://i.ibb.co/fdT7cKC/vasiliy939-very-cute-beautiful-logo-of-a-soft-lobster-soft-ma-71833c81-e4bb-4799-b26e-2610a9c3c0aa-0.png" alt="vasiliy939-very-cute-beautiful-logo-of-a-soft-lobster-soft-ma-71833c81-e4bb-4799-b26e-2610a9c3c0aa-0" border="0"></a>*/
+      background: url(https://i.ibb.co/fdT7cKC/vasiliy939-very-cute-beautiful-logo-of-a-soft-lobster-soft-ma-71833c81-e4bb-4799-b26e-2610a9c3c0aa-0.png) center center/cover no-repeat; /*blue https://cdn.midjourney.com/6ba656b3-6dfa-438c-9a67-89df6a8c1618/0_0.png*/
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       position: relative;
       margin-bottom: 10px;
@@ -161,7 +162,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #000 url(https://cdn.midjourney.com/a33d717d-45bf-4f50-b6c5-0c631d6c5ca0/0_3.png) center center/cover no-repeat; /* free durov - https://cdn.midjourney.com/16e5c252-2a70-4b9e-96c3-a8953f09527c/0_2.png; (https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ 
+      background: #000 url(https://cdn.midjourney.com/16e3a3b9-ff9f-476e-87ec-d82dafc49196/0_1.png) center center/cover no-repeat; /*(https://cdn.midjourney.com/ec33bf6a-3af0-4758-8156-fcb2f6ec6557/0_2.png) /* was https://cdn.midjourney.com/dc3904c2-6396-46d2-b55f-e90dc25d4637/0_1.png*/ 
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1538,7 +1539,7 @@
 <body>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <div class="lpopup" id="loadingPopup" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <p id="freedurov">Halloween is Coming...</p>
+    <p id="freedurov">#freedurov</p>
     <h2 id="loadingTitle" style="background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
@@ -4060,6 +4061,21 @@
       }
     }
 
+    function numberWithCommas2(x) {
+      if (x < 1000000) {
+        return x.toLocaleString(); // Format with commas for thousands separators
+      } else {
+        const units = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd"]; 
+
+        let i = 0;
+        while (x >= 1000 && i < units.length - 1) {
+          x /= 1000;
+          i++;
+        }
+        return x.toFixed(2) + units[i]; // Two decimal places for numbers 1M or greater
+      }
+    }
+
     function claimPremiumBonus() {
       if (premiumBonusClaimed) {
         WebApp.showAlert(currentTranslations.premiumBonusAlreadyClaimed);
@@ -5362,7 +5378,7 @@
       // Add skin profit to the total
       totalProfit += skinProfitPerHour; 
 
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas2(totalProfit); 
       localStorage.setItem('profitPerHour', totalProfit);
     }
 
