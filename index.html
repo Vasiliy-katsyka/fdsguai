@@ -196,7 +196,7 @@
     /* Optional: Add placeholder text styles */
     input[type="number"]::placeholder,
     input[type="text"]::placeholder {
-      color: #800080; /* Adjust placeholder color as needed */
+      color: #fff; /* Adjust placeholder color as needed */
     }
 
     /* Optional: Customize the appearance of the number input spinner */
@@ -5530,6 +5530,7 @@
         }
         clickCount -= miningCards[cardType].price;
         miningCards[cardType].level++;
+        showMessage(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
         
         // Calculate total profit per hour (add to existing profit)
         profitPerHour += miningCards[cardType].profitPerHour * miningCards[cardType].level;
@@ -5545,7 +5546,7 @@
         cardCooldown[cardType] = 30; 
         showCardCooldown(cardType);
         startCooldownTimer(cardType);
-        showMessage(`You purchased a ${cardType} card! Close and reopen Telegram webapp to see the effect`);
+        
         // Check if the purchased card is part of the daily combo
 
       } else if (cardCooldown[cardType]) {
@@ -6726,6 +6727,7 @@
 
     function showMessage(text) {
       document.getElementById('messageText').textContent = text; // Update the message text
+      document.getElementById('messageContainer').classList.remove('hidden'); // Show the alert div
       document.getElementById('messageContainer').classList.add('show'); // Show the alert div
       setTimeout(() => {
         hideMessage(messageContainer);
