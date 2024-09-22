@@ -1679,11 +1679,11 @@
     <p id="freedurov">Halloween is coming...</p>
     <h2 id="loadingTitle" style="background: linear-gradient(to right, #FF00D8, #00FFF3);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent; font-size: 4rem;">Lobster Coin</h2>
+      -webkit-text-fill-color: transparent; font-size: 3.2rem;">Lobster Coin</h2>
     <div style="display: flex; align-items: center; justify-content: center; margin-top: 50px;">
       <div class="spinner"></div>
     </div>
-    <p id="loadingPercentage" style="font-size: 2rem; margin-top: 20px;"></p> <p id="versionText" style="position: absolute; bottom: 20px;">v1.70</p>
+    <p id="loadingPercentage" style="font-size: 2rem; margin-top: 20px;"></p> <p id="versionText" style="position: absolute; bottom: 20px;">v1.80</p>
   </div>
 
   <div class="message-container" id="messageContainer">
@@ -2256,7 +2256,6 @@
       <input type="text" id="promoCode" placeholder="Enter promo code">
       <button class="menu-button" id="applyPromoCodeButton" onclick="applyPromoCode()">Apply Promo Code</button>
       <button class="menu-button" id="themeButton" onclick="openThemePopup()">Theme</button> 
-      <buttpn class="menu-button" id="giftButton">Gift Clicks</button>
     </div>
 
     <div class="popup privacy-popup" id="privacyPopup">
@@ -2580,7 +2579,6 @@
             <li><strong>Legal Info:</strong> View the game's Terms of Service and Privacy Policy.</li>
             <li><strong>Theme:</strong> Customize the game's appearance by changing colors, backgrounds, and other visual elements.</li>
             <li><strong>Apply Promo Codes:</strong> Enter promo codes to unlock bonuses and benefits.</li>
-            <li><strong>Gift Clicks:</strong> Share your clicks with other players by generating a unique promo code.</li>
           </ul>
         </p>
       </div>
@@ -2721,7 +2719,7 @@
       },
       ru: { 
         clicks: "Клики",
-        clickMultiplier: "Клики за нажатие",
+        clickMultiplier: "Клик за тап",
         profitPerHour: "Прибыль в час",
         league: "Лига",
         boosts: "Ускорители",
@@ -4027,7 +4025,6 @@
       }
     }
 
-    document.getElementById('giftButton').addEventListener('click', openGiftPopup);
 
     function applyPromoCode() {
       let promoCode = document.getElementById('promoCode').value;
