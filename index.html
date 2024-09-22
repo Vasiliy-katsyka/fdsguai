@@ -277,22 +277,23 @@
       display: flex;
       flex-direction: column; /* Stack icon above text */
       align-items: center;
+      border: none;
       padding: 10px;  /* Reduced padding */
       border-radius: 15px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
-      backdrop-filter: blur(5px); /* Apply blur effect */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: none;/*rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      /*backdrop-filter: blur(5px); /* Apply blur effect */
+      /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
       margin: 0 5px; /* Reduced margin */
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      /*transition: background-color 0.2s ease, box-shadow 0.2s ease;*/
       font-size: 12px; /* Smaller font size */
       width: 70px; /* Reduced width */
-      color: white; /* Set button text to white */
+      color: #888; /* Set button text to white */
     }
 
     .bottom-button svg {
       width: 24px;
-      fill: white;
+      fill: #888;
       height: 24px;
       margin-bottom: 5px; /* Add space between icon and text */
       filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5)); /* Add a drop shadow to icons */
@@ -1223,7 +1224,7 @@
 
     .airdrop-popup .airdrop-content {
       overflow-y: auto; /* Make the airdrop content scrollable */
-      max-height: 300px; /* Set a fixed height for the container - adjust this value as needed */
+      max-height: 400px; /* Set a fixed height for the container - adjust this value as needed */
     }
 
     .profContainer {
@@ -1732,7 +1733,7 @@
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
     <div style="font-size: 18px; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: center;">
-      <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="20" width="20"> 
+      <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="23" width="auto"> 
       <span id="clicksRemaining"></span>
     </div>
 
@@ -5607,7 +5608,7 @@
       console.log("New profit per hour: ", profitPerHour);
       totalProfit = Number(profitPerHour);
       localStorage.setItem('profitPerHour', profitPerHour);
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas(totalProfit); 
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas2(totalProfit); 
     }
 
     function numberWithCommas1(x) {
@@ -6440,7 +6441,7 @@
       translateElement('premiumBonusLabel', 'premiumBonusLabel');
 
       // Update the dynamic values (no translation needed here)
-      document.getElementById('profitPerHourValue').textContent = numberWithCommas(parseInt(localStorage.getItem('profitPerHour')));
+      document.getElementById('profitPerHourValue').textContent = numberWithCommas2(parseInt(localStorage.getItem('profitPerHour')));
       document.getElementById('clicksPerTapValue').textContent = numberWithCommas(clickMultiplier);
       document.getElementById('leagueValue').textContent = leagues[currentLeagueIndex];; // Assuming you have a variable 'currentLeague'
 
@@ -6848,6 +6849,11 @@
     });
 
 
+    function checkLeagueObject() {
+      if (document.getElementById('leagueValue').innerHTML === '[object Object]') {
+        updateLeague();
+      }
+    }
     coin.addEventListener('touchend', () => {
       isClicking = false;
     });
@@ -6908,6 +6914,7 @@
     setInterval(updateRewardDisplay, 1000); 
     setInterval(updateDailyRewardUI, 3600000); // Update every hour
     setInterval(addEarnPerHour, 1000);
+    setInterval(checkLeagueObject, 1000);
   </script>
 </body>
 </html>
