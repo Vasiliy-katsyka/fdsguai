@@ -947,7 +947,7 @@
       background: #ffffff url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThRU2gtlFFlqN86x7rS6d7xnEmeE4ToeweAQ&s) center center/cover no-repeat;
       position: fixed;
       bottom: 100px; /* Adjust position as needed */
-      left: 0;
+      left: 10px;
       width: 95%;
       padding: 10px;
       display: flex;
@@ -1672,6 +1672,69 @@
     .faq-popup .close-button:hover {
       color: red;
     }
+
+    .leaderboard-popup {
+      /* ... your existing popup styles ... */
+      width: 80%; /* Adjust width as needed */
+      max-height: 80vh; /* Adjust max-height as needed */
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    .leaderboard-popup h2 {
+      /* ... your existing h2 styles ... */
+      margin-bottom: 20px;
+    }
+
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Align items to the left */
+      gap: 10px;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1); /* Transparent background with blur effect */
+      backdrop-filter: blur(5px); /* Apply blur effect */
+    }
+
+    .leaderboard-item .rank {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffae00;
+    }
+
+    .leaderboard-item .username {
+      font-size: 18px;
+      color: white;
+      margin-left: 10px; /* Add spacing between rank and username */
+    }
+
+    .leaderboard-item .balance {
+      font-size: 18px;
+      color: white;
+    }
+
+    .limandbo {
+      display: flex; /* Use flexbox for easy layout */
+      justify-content: space-between; /* Distribute elements evenly */
+      width: 100%; /* Make it full width */
+    }
+
+    .limandbo div {
+      /* Add additional styles here for the left and right elements */
+      padding: 10px; 
+    }
+
+    /* Add any additional styles for the elements */
+    .limandbo img {
+      margin-right: 5px; /* Add spacing between the icon and text */
+    }
   </style>
 </head>
 <body>
@@ -1732,15 +1795,25 @@
     </div>
     <div class="coin" onclick="clickCoin()"></div>
     <div class="click-text" id="clickText"></div>
-    <div style="font-size: 18px; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: center;">
-      <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="23" width="auto"> 
-      <span id="clicksRemaining"></span>
+    <div class="limandbo">
+      <div style="font-size: 18px; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: flex-end; ">
+        <img src="https://images.emojiterra.com/microsoft/fluent-emoji/128px/26a1_color.png" alt="Lightning Bolt" height="23" width="auto"> 
+        <span id="clicksRemaining"></span>
+      </div>
+      <div style="font-size: 18px; color: white; margin-top: 10px; display: flex; align-items: center; justify-content: flex-start;"> 
+        <img src="https://images.emojiterra.com/microsoft/fluent-emoji/512px/1f680_color.png" alt="Rocket" height="23" width="auto"> 
+        <span id="boost">Boost</span>
+      </div>
     </div>
 
+
     <div class="menu-container">
-      <button class="bottom-button" id="boostsButton" onclick="openPopup()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>rocket-launch-outline</title><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M19.22 4C19.5 4 19.75 4 19.96 4.05C20.13 5.44 19.94 8.3 16.66 11.58C14.96 13.29 12.93 14.6 10.65 15.47L8.5 13.37C9.42 11.06 10.73 9.03 12.42 7.34C15.18 4.58 17.64 4 19.22 4M19.22 2C17.24 2 14.24 2.69 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.62 17.27 10.13 17.5 10.66 17.5C10.89 17.5 11.13 17.44 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39S20.7 2 19.22 2M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" /></svg>
-        <span id="boostsLabel">Boosts</span>
+      <button class="bottom-button" id="leaderboardButton" onclick="openLeaderboardPopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>trophy</title>
+          <path d="M18 2C17.1 2 16 3 16 4H8C8 3 6.9 2 6 2H2V11C2 12 3 13 4 13H6.2C6.6 15 7.9 16.7 11 17V19.08C8 19.54 8 22 8 22H16C16 22 16 19.54 13 19.08V17C16.1 16.7 17.4 15 17.8 13H20C21 13 22 12 22 11V2H18M6 11H4V4H6V11M20 11H18V4H20V11Z" />
+        </svg>
+        <span>Rank</span>
       </button>
       <button class="bottom-button" id="earnButton" onclick="earnClick()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bitcoin</title><path d="M14.24 10.56C13.93 11.8 12 11.17 11.4 11L11.95 8.82C12.57 9 14.56 9.26 14.24 10.56M11.13 12.12L10.53 14.53C11.27 14.72 13.56 15.45 13.9 14.09C14.26 12.67 11.87 12.3 11.13 12.12M21.7 14.42C20.36 19.78 14.94 23.04 9.58 21.7C4.22 20.36 .963 14.94 2.3 9.58C3.64 4.22 9.06 .964 14.42 2.3C19.77 3.64 23.03 9.06 21.7 14.42M14.21 8.05L14.66 6.25L13.56 6L13.12 7.73C12.83 7.66 12.54 7.59 12.24 7.53L12.68 5.76L11.59 5.5L11.14 7.29C10.9 7.23 10.66 7.18 10.44 7.12L10.44 7.12L8.93 6.74L8.63 7.91C8.63 7.91 9.45 8.1 9.43 8.11C9.88 8.22 9.96 8.5 9.94 8.75L8.71 13.68C8.66 13.82 8.5 14 8.21 13.95C8.22 13.96 7.41 13.75 7.41 13.75L6.87 15L8.29 15.36C8.56 15.43 8.82 15.5 9.08 15.56L8.62 17.38L9.72 17.66L10.17 15.85C10.47 15.93 10.76 16 11.04 16.08L10.59 17.87L11.69 18.15L12.15 16.33C14 16.68 15.42 16.54 16 14.85C16.5 13.5 16 12.7 15 12.19C15.72 12 16.26 11.55 16.41 10.57C16.61 9.24 15.59 8.53 14.21 8.05Z" /></svg>
@@ -1753,7 +1826,7 @@
       <button class="bottom-button" id="miningButton" onclick="openMiningPopup()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minecraft</title><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M6,6V10H10V12H8V18H10V16H14V18H16V12H14V10H18V6H14V10H10V6H6Z" /></svg><span id="miningLabel">Mining</span></button>
       <button class="bottom-button" id="airdropButton" onclick="openAirdrop()">
         <svg>
-          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/logo/logo-transparent.png?raw=true" width="23" height="23" /> 
+          <image href="https://github.com/Vasiliy-katsyka/fdsguai/blob/main/images/coin/coin-lobster.png?raw=true" width="23" height="23" /> 
         </svg>
         <span id="airdropLabel">Airdrop</span>
       </button>
@@ -2590,6 +2663,12 @@
       </div>
     </div>
   
+    <div class="popup leaderboard-popup" id="leaderboardPopup">
+      <button class="close-button" onclick="closeLeaderboardPopup()">×</button>
+      <h2>LobsterCoin Leaderboard</h2>
+      <div class="leaderboard-list" id="leaderboardList"></div>
+      <span id="playerPosition"></span>
+    </div>
 
     <div class="popup" id="votingResultPopup">
       <h2 id="resultTitle"></h2>
@@ -4009,6 +4088,65 @@
         cooldown: 10 
       }
     };
+    document.getElementById('leaderboardButton').addEventListener('click', openLeaderboardPopup); 
+    function updateLeaderboard() {
+      const leaderboardList = document.getElementById('leaderboardList');
+      leaderboardList.innerHTML = ''; // Clear previous content
+
+      // Your leaderboard data (in order)
+      const leaderboardData = [
+        { rank: 1, username: "Рома 193Qu", balance: "193Qu" },
+        { rank: 2, username: "@dima_0426", balance: "1.92Qa" },
+        { rank: 3, username: "@Vasiliy939", balance: "992T" },
+        { rank: 4, username: "@Vanya5655", balance: "103T" },
+        { rank: 5, username: "@DaNieLpopovog", balance: "12T" },
+        { rank: 6, username: "@ZLdh", balance: "190B" },
+        { rank: 7, username: "Алексей Шипанов", balance: "143B" },
+        { rank: 8, username: "@Ruisi9932", balance: "124B" },
+        { rank: 9, username: "@Qwertyui_is_promocde", balance: "30B" },
+        { rank: 10, username: "@AKHFiidu", balance: "29B" }
+      ];
+
+      for (let i = 0; i < leaderboardData.length; i++) {
+        let item = leaderboardData[i];
+        let leaderboardItem = document.createElement('div');
+        leaderboardItem.classList.add('leaderboard-item');
+        leaderboardItem.innerHTML = `
+          <span class="rank">${item.rank}</span>
+          <span class="username">${item.username}</span>
+          <span class="balance">${item.balance}</span>
+        `;
+        leaderboardList.appendChild(leaderboardItem);
+      }
+    }
+
+    // Function to open the leaderboard popup
+    function openLeaderboardPopup() {
+      WebApp.BackButton.show();
+      WebApp.BackButton.onClick(closeLeaderboardPopup);
+      document.getElementById('leaderboardPopup').style.display = 'block';
+      updateLeaderboard(); 
+    }
+
+    // Function to close the leaderboard popup
+    function closeLeaderboardPopup() {
+      WebApp.BackButton.hide();
+      WebApp.BackButton.onClick(() => {});
+      document.getElementById('leaderboardPopup').style.display = 'none';
+    }
+
+    // Function to update the player's position on the leaderboard (FIXED)
+    function updatePlayerPosition() {
+      let position = "10000+"; // Default to 10,000+
+      if (clickCount >= 1000000) {
+        position = "1000+";
+      } else if (clickCount >= 200000000) {
+        position = "100+";
+      }
+      // Get the player position element (already added to HTML)
+      let playerPositionElement = document.getElementById('playerPosition');
+      playerPositionElement.textContent = position; 
+    }
 
     // Load data from localStorage
     if (localStorage.getItem('clickCount')) {
@@ -4374,6 +4512,7 @@
       localStorage.setItem('clickCount', Number(clickCount)); 
       localStorage.setItem('clickMultiplier', clickMultiplier);
       localStorage.setItem('upgradeLevel', JSON.stringify(upgradeLevel));
+      updatePlayerPosition();
       localStorage.setItem('upgradeCosts', JSON.stringify(upgradeCosts));
     }
 
@@ -5244,6 +5383,7 @@
 
     // Add event listener to the league text to open the popup
     document.getElementById('leagueValue').addEventListener('click', openLeaguePopup);
+    document.getElementById('boost').addEventListener('click', openPopup);
 
     // Function for "Mining" button
     function miningClick() {
@@ -6969,6 +7109,8 @@
     updateTranslatedText(); 
     let showOfflineEarningsPopupFlag = false;
     // Initialize the game
+    updateClickCount();
+    updatePlayerPosition();
     updateClickCount();
     updateProfitPerHour();
     updateLeague();
