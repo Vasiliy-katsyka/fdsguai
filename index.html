@@ -4401,7 +4401,7 @@
 
 	// Initialize Adsgram SDK
     const AdController = window.Adsgram.init({ blockId: "353" }); // Replace "353" with your actual block ID
-
+    const adsCount = localStorage.getItem('adsWatched') || 0; // Initialize adsCount with the number of ads watched
     // Function to show an ad
     function showAd() {
       AdController.show() // Call show() directly on the AdController
@@ -4409,9 +4409,7 @@
           if (result.done) {
             clickCount += 10000; // Add 10k clicks
             updateClickCount();
-            if (localStorage.getItem('adsWatched')) {
-              adsCount = localStorage.getItem('adsWatched');
-            }
+            adsCount++;
             localStorage.setItem('adsWatched', adsCount + 1);
             showMessage("You earned 10,000 clicks! Thanks for watching the ad. You have watched " + adsCount + " ads.");
           }
