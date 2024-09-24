@@ -7145,7 +7145,7 @@
     }
     resetClicksRemaining(); 
     function updateAdsWatched() {
-      document.getElementById('adsWatchedTitle').innerHTML = localStorage.getItem('adsWatched');
+      document.getElementById('adsWatchedTitle').innerHTML = localStorage.getItem('adsWatched') || 0;
     }
     updateAdsWatched();
     
