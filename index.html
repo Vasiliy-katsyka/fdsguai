@@ -7042,15 +7042,13 @@
       updateMiningCardLevels(); // Load levels from localStorage
       loadTheme();
       updateLimitBoostCost();
-      loadEquippedSkin();
-      changeTitle();
+      loadEquippedSkin();;
     });
 
     function changeTitle() {
       try {
         document.getElementById('gameTitle').textContent = WebApp.initDataUnsafe.receiver.first_name;
       } catch (error) {
-        console.error(error);
         document.getElementById('gameTitle').textContent = 'LobsterCoin';
       }
     }
