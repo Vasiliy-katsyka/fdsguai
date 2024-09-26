@@ -7043,7 +7043,16 @@
       loadTheme();
       updateLimitBoostCost();
       loadEquippedSkin();
+      changeTitle();
     });
+
+    function changeTitle() {
+      try {
+        document.getElementById('gameTitle').textContent = WebApp.WebAppUser.first_name;
+      } catch (error) {
+        document.getElementById('gameTitle').textContent = 'LobsterCoin';
+      }
+    }
 
     // Update click count every second
 	  setInterval(addEarnPerHour, 1000);
