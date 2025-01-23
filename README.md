@@ -16,7 +16,7 @@ Lopster coin is open-source crypto clicker game based Telegram platform.
 
 ## Try Out Now
 
-Here is our bot on telegram - [link](https://t.me/lopster_coin_bot)
+Here is our bot on telegram - [link](https://t.me/lobster_coin_bot/lobstercoin)
 
 ## Contribute
 
